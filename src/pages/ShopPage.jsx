@@ -8,8 +8,10 @@ import useProducts from "../hooks/useProducts";
 import useDataCount from "../hooks/useDataCount";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../store/slices/cartSlice";
-import { orderBy } from "firebase/firestore";
 import mergeSearchParams from "../helpers/mergeSearchParams";
+import Slider from "rc-slider";
+import "rc-slider/assets/index.css";
+import getMaxFieldValue from "../helpers/getMaxFieldValue";
 
 const Shop = () => {
   const { pageParam } = useParams();
@@ -33,13 +35,30 @@ const Shop = () => {
     searchParams.get("typeFilters")?.split(",") || []
   );
 
+  const [maxPrice, setMaxPrice] = useState(300000);
+  const [minPriceFilter, setMinPriceFilter] = useState(
+    parseInt(searchParams.get("from")) || 0
+  );
+  const [maxPriceFilter, setMaxPriceFilter] = useState(
+    parseInt(searchParams.get("to")) || 300000
+  );
+
+  useEffect(() => {
+    getMaxFieldValue("price").then((maxPrice) => {
+      if (!searchParams.get("to")) setMaxPriceFilter(maxPrice);
+      setMaxPrice(maxPrice);
+    });
+  }, []);
+
   const products = useProducts(
     (page - 1) * showedCards,
     page * showedCards,
-    [sortMethod, typeFilters],
+    [sortMethod, typeFilters, minPriceFilter, maxPriceFilter],
     sortMethod,
     {
       typeFilters,
+      priceFrom: minPriceFilter,
+      priceTo: maxPriceFilter,
     }
   );
 
@@ -104,7 +123,7 @@ const Shop = () => {
     setTypeFilters(typesUpdated);
 
     if (typesUpdated.length === 0) typesUpdated = undefined;
-    
+
     setSearchParams(
       mergeSearchParams(searchParams, { typeFilters: typesUpdated })
     );
@@ -112,6 +131,14 @@ const Shop = () => {
 
   const filtersBlock = useRef(null);
   const hideFilters = useRef(null);
+
+  const handleRangeChange = (values) => {
+    setMinPriceFilter(values[0]);
+    setMaxPriceFilter(values[1]);
+    setSearchParams(
+      mergeSearchParams(searchParams, { from: values[0], to: values[1] })
+    );
+  };
 
   return (
     <>
@@ -233,7 +260,7 @@ const Shop = () => {
                     type="checkbox"
                     onChange={(e) => handleTypeFilter(e)}
                     name="Table"
-                    checked = {typeFilters.includes("Table")}
+                    checked={typeFilters.includes("Table")}
                     className="mr-1"
                   />
                   <span>Table</span>
@@ -243,7 +270,7 @@ const Shop = () => {
                     type="checkbox"
                     name="CoffeTable"
                     className="mr-1"
-                    checked = {typeFilters.includes("CoffeTable")}
+                    checked={typeFilters.includes("CoffeTable")}
                     onChange={(e) => handleTypeFilter(e)}
                   />
                   <span>Coffe Table</span>
@@ -253,7 +280,7 @@ const Shop = () => {
                     type="checkbox"
                     name="Console"
                     className="mr-1"
-                    checked = {typeFilters.includes("Console")}
+                    checked={typeFilters.includes("Console")}
                     onChange={(e) => handleTypeFilter(e)}
                   />
                   <span>Console</span>
@@ -262,7 +289,7 @@ const Shop = () => {
                   <input
                     type="checkbox"
                     name="Sofa"
-                    checked = {typeFilters.includes("Sofa")}
+                    checked={typeFilters.includes("Sofa")}
                     className="mr-1"
                     onChange={(e) => handleTypeFilter(e)}
                   />
@@ -273,7 +300,7 @@ const Shop = () => {
                     type="checkbox"
                     name="ChairTable"
                     className="mr-1"
-                    checked = {typeFilters.includes("ChairTable")}
+                    checked={typeFilters.includes("ChairTable")}
                     onChange={(e) => handleTypeFilter(e)}
                   />
                   <span>Chair & Table</span>
@@ -283,7 +310,7 @@ const Shop = () => {
                     type="checkbox"
                     name="SofaSet"
                     className="mr-1"
-                    checked = {typeFilters.includes("SofaSet")}
+                    checked={typeFilters.includes("SofaSet")}
                     onChange={(e) => handleTypeFilter(e)}
                   />
                   <span>Sofa Set</span>
@@ -293,14 +320,62 @@ const Shop = () => {
                     type="checkbox"
                     name="Sideboard"
                     className="mr-1"
-                    checked = {typeFilters.includes("Sideboard")}
+                    checked={typeFilters.includes("Sideboard")}
                     onChange={(e) => handleTypeFilter(e)}
                   />
                   <span>Sideboard</span>
                 </label>
               </div>
               <div className="">
-                <h2 className="text-2xl font-semibold">Types</h2>
+                <h2 className="text-2xl font-semibold">Price</h2>
+                <div className="mt-3">
+                  <Slider
+                    className="!w-4/5 !mx-auto"
+                    value={[minPriceFilter, maxPriceFilter]}
+                    min={0}
+                    max={maxPrice}
+                    range
+                    allowCross={false}
+                    onChange={handleRangeChange}
+                  />
+                  <div className="flex justify-around mt-2">
+                    <input
+                      type="number"
+                      className="block w-2/6 px-4 py-2 rounded-md"
+                      name="priceFrom"
+                      value={minPriceFilter}
+                      max={maxPriceFilter}
+                      onChange={(e) => {
+                        const minValue =
+                          parseInt(e.target.value) > maxPriceFilter
+                            ? maxPriceFilter - 1
+                            : parseInt(e.target.value);
+
+                        setMinPriceFilter(minValue);
+                        setSearchParams(
+                          mergeSearchParams(searchParams, { from: minValue })
+                        );
+                      }}
+                    />
+                    <input
+                      type="number"
+                      className="block w-2/6 px-4 py-2 rounded-md"
+                      name="priceFrom"
+                      value={maxPriceFilter}
+                      onChange={(e) => {
+                        const maxValue =
+                          parseInt(e.target.value) < minPriceFilter
+                            ? minPriceFilter + 1
+                            : parseInt(e.target.value);
+
+                        setMaxPriceFilter(maxValue);
+                        setSearchParams(
+                          mergeSearchParams(searchParams, { to: maxValue })
+                        );
+                      }}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
             <button

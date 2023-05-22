@@ -1,26 +1,16 @@
-const getMaxFieldValue = async (field, queryParams, orderProducts) => {
-  const productsCollectionRef = collection(db, "products");
+import { orderBy } from "firebase/firestore";
+import getProductsDocs from "./getProductsDocs";
 
-  const filteredParams = queryParams.filter((arg) => {
-    if (Array.isArray(arg)) {
-      return arg.length !== 0;
-    }
-    return arg !== undefined && arg !== null && arg !== "";
-  });
-
+const getMaxFieldValue = async (field, queryParams = []) => {
   let product;
-  
+
   try {
-    const data = await getDocs(
-      query(productsCollectionRef, ...filteredParams, orderProducts, limit(1))
-    );
-    const doc = data.docs[0];
-    product = { ...doc.data(), id: doc.id };
+    product = await getProductsDocs(1, queryParams, orderBy(field, "desc"));
   } catch (err) {
     console.error(err);
   }
 
-  return product[field];
+  return product[0][field];
 };
 
 export default getMaxFieldValue;

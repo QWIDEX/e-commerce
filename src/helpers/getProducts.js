@@ -1,32 +1,15 @@
 import { getDownloadURL, ref } from "firebase/storage";
 import { db, storage } from "../firebase";
-import { getDocs, collection, limit, query } from "firebase/firestore";
+import getProductsDocs from "./getProductsDocs";
 
 const getProducts = async (count, queryParams, orderProducts) => {
-
-  const productsCollectionRef = collection(db, "products");
   let fullProductData;
 
-  const filteredParams = queryParams.filter((arg) => {
-    if (Array.isArray(arg)) {
-      return arg.length !== 0;
-    }
-    return arg !== undefined && arg !== null && arg !== "";
-  })
-
   try {
-    const data = await getDocs(
-      query(productsCollectionRef, ...filteredParams, orderProducts, limit(count))
-    );
-    const filteredData = data.docs.map((doc) => {
-      return {
-        ...doc.data(),
-        id: doc.id,
-      };
-    });
+    const data = await getProductsDocs(count, queryParams, orderProducts);
 
     fullProductData = await Promise.all(
-      filteredData.map(async (product) => {
+      data.map(async (product) => {
         const imgUrl = await getDownloadURL(
           ref(storage, `images/products/${product.label}`)
         );

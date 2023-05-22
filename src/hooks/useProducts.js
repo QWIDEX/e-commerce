@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import getProducts from "../helpers/getProducts";
 import { setOptProducts, setProducts } from "../store/slices/productsSlice";
 import { orderBy, where } from "firebase/firestore";
+import getOptProducts from "../helpers/getOptProducts";
 
 let prevOptDeps = [];
 
@@ -13,17 +14,6 @@ const useProducts = (
   orderProducts = "ordered",
   queryParams = {}
 ) => {
-
-  function convertSortMethod(sortMethod) {
-    if (sortMethod === "priceUp") {
-      return orderBy("price", "asc");
-    } else if (sortMethod === "priceDown") {
-      return orderBy("price", "desc");
-    } else if (sortMethod) {
-      return orderBy(sortMethod);
-    }
-  }
-
   function filterArr(arr) {
     if (!Array.isArray(arr)) return [];
     return arr.filter((arg) => {
@@ -50,35 +40,30 @@ const useProducts = (
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (
-      filterArr(Object.values(queryParams)).length !== 0 ||
-      orderProducts !== "ordered"
-    ) {
+    const debounceTimer = setTimeout(() => {
       if (
-        JSON.stringify(prevOptDeps) !== JSON.stringify(deps) ||
-        to > storeProducts.length
+        filterArr(Object.values(queryParams)).length !== 0 ||
+        orderProducts !== "ordered"
       ) {
-        const typeFiltersArr = filterArr(queryParams.typeFilters);
-        const typeFilters =
-          typeFiltersArr.length === 0
-            ? undefined
-            : where("type", "in", typeFiltersArr);
+        if (
+          JSON.stringify(prevOptDeps) !== JSON.stringify(deps) ||
+          to > storeProducts.length
+        ) {
+          getOptProducts(dispatch, queryParams, orderBy(orderProducts), to);
+        }
+        prevOptDeps = deps;
+      } else if (to > storeProducts.length) {
         dispatch((dispatch) =>
-          getProducts(to, [typeFilters], convertSortMethod(orderProducts)).then(
-            (products) => {
-              dispatch(setOptProducts(products));
-            }
+          getProducts(to, [], [orderBy("ordered")]).then((products) =>
+            dispatch(setProducts(products))
           )
         );
       }
-      prevOptDeps = deps;
-    } else if (to > storeProducts.length) {
-      dispatch((dispatch) =>
-        getProducts(to, [], convertSortMethod(orderProducts)).then((products) =>
-          dispatch(setProducts(products))
-        )
-      );
-    }
+    }, 400);
+
+    return () => {
+      clearTimeout(debounceTimer);
+    };
   }, [...deps, to]);
 
   return storeProducts.slice(from, to);
