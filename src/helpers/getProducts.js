@@ -1,6 +1,6 @@
 import { getDownloadURL, ref } from "firebase/storage";
 import { db, storage } from "../firebase";
-import { getDocs, collection, limit, query, where } from "firebase/firestore";
+import { getDocs, collection, limit, query } from "firebase/firestore";
 
 const getProducts = async (count, queryParams, orderProducts) => {
 

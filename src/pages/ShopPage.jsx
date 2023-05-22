@@ -8,7 +8,7 @@ import useProducts from "../hooks/useProducts";
 import useDataCount from "../hooks/useDataCount";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../store/slices/cartSlice";
-import { orderBy, where } from "firebase/firestore";
+import { orderBy } from "firebase/firestore";
 import mergeSearchParams from "../helpers/mergeSearchParams";
 
 const Shop = () => {
@@ -24,7 +24,7 @@ const Shop = () => {
     searchParams.get("cardStyle") || "blocks"
   );
   const [sortMethod, setSortMethod] = useState(
-    convertSortMethod(searchParams.get("sortMethod")) || orderBy("ordered")
+    searchParams.get("sortMethod") || "ordered"
   );
   const [showedCards, setShowedCards] = useState(
     searchParams.get("showedCards") || "16"
@@ -61,19 +61,9 @@ const Shop = () => {
     }
   }
 
-  function convertSortMethod(sortMethod) {
-    if (sortMethod === "priceUp") {
-      return orderBy("price", "asc");
-    } else if (sortMethod === "priceDown") {
-      return orderBy("price", "desc");
-    } else if (sortMethod) {
-      return orderBy(sortMethod);
-    }
-  }
-
   function handleSortMethod(e) {
     const sortMethod = e.target.value;
-    setSortMethod(convertSortMethod(sortMethod));
+    setSortMethod(sortMethod);
     setSearchParams(
       mergeSearchParams(searchParams, { sortMethod: sortMethod })
     );
@@ -203,7 +193,7 @@ const Shop = () => {
               Sort by
               <select
                 onChange={(e) => handleSortMethod(e)}
-                value={searchParams.get("sortMethod") || "ordered"}
+                value={sortMethod}
                 className="text-[#9f9f9f] ml-2 px-3 text-lg py-1"
               >
                 <option value="ordered">Popularity</option>

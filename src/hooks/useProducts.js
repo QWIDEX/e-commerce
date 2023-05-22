@@ -10,25 +10,35 @@ const useProducts = (
   from,
   to,
   deps = [],
-  orderProducts = orderBy("ordered"),
+  orderProducts = "ordered",
   queryParams = {}
 ) => {
+
+  function convertSortMethod(sortMethod) {
+    if (sortMethod === "priceUp") {
+      return orderBy("price", "asc");
+    } else if (sortMethod === "priceDown") {
+      return orderBy("price", "desc");
+    } else if (sortMethod) {
+      return orderBy(sortMethod);
+    }
+  }
+
   function filterArr(arr) {
-    if (!Array.isArray(arr)) return []
+    if (!Array.isArray(arr)) return [];
     return arr.filter((arg) => {
       if (Array.isArray(arg)) {
         return arg.length !== 0;
       }
       return arg !== undefined && arg !== null && arg !== "";
-    })
+    });
   }
 
   const storeProducts = useSelector((state) => {
     let products;
     if (
       filterArr(Object.values(queryParams)).length !== 0 ||
-      JSON.stringify(orderProducts) !==
-        '{"_field":{"segments":["ordered"],"offset":0,"len":1},"_direction":"asc","type":"orderBy"}'
+      orderProducts !== "ordered"
     ) {
       products = state.products.optProduts;
     } else {
@@ -42,26 +52,29 @@ const useProducts = (
   useEffect(() => {
     if (
       filterArr(Object.values(queryParams)).length !== 0 ||
-      JSON.stringify(orderProducts) !==
-        '{"_field":{"segments":["ordered"],"offset":0,"len":1},"_direction":"asc","type":"orderBy"}'
+      orderProducts !== "ordered"
     ) {
       if (
         JSON.stringify(prevOptDeps) !== JSON.stringify(deps) ||
         to > storeProducts.length
       ) {
-        const typeFiltersArr = filterArr(queryParams.typeFilters)
-        const typeFilters = typeFiltersArr.length === 0 ? undefined : where("type", "in", typeFiltersArr)
-
+        const typeFiltersArr = filterArr(queryParams.typeFilters);
+        const typeFilters =
+          typeFiltersArr.length === 0
+            ? undefined
+            : where("type", "in", typeFiltersArr);
         dispatch((dispatch) =>
-          getProducts(to, [typeFilters], orderProducts).then((products) => {
-            dispatch(setOptProducts(products));
-          })
+          getProducts(to, [typeFilters], convertSortMethod(orderProducts)).then(
+            (products) => {
+              dispatch(setOptProducts(products));
+            }
+          )
         );
       }
       prevOptDeps = deps;
     } else if (to > storeProducts.length) {
       dispatch((dispatch) =>
-        getProducts(to, [], orderProducts).then((products) =>
+        getProducts(to, [], convertSortMethod(orderProducts)).then((products) =>
           dispatch(setProducts(products))
         )
       );
