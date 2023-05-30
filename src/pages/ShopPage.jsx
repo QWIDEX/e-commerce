@@ -104,13 +104,11 @@ const Shop = () => {
 
   function handleShowedCards(e) {
     const showedCards = e.target.value;
-    if (e.target.value >= productsMaxFind) {
-      setShowedCards(parseInt(productsMaxFind));
-      setSearchParams(
-        mergeSearchParams(searchParams, { showedCards: productsMaxFind })
-      );
+    if (showedCards >= 20) {
+      setShowedCards(20);
+      setSearchParams(mergeSearchParams(searchParams, { showedCards: 20 }));
     } else {
-      setShowedCards(showedCards );
+      setShowedCards(showedCards);
       setSearchParams(
         mergeSearchParams(searchParams, { showedCards: showedCards })
       );
@@ -216,7 +214,8 @@ const Shop = () => {
               </button>
             </div>
             <div className="text-lg pl-5">
-              Showing {(page - 1) * showedCards + 1}–{(page - 1) * showedCards + products?.length} of{" "}
+              Showing {(page - 1) * showedCards + 1}–
+              {(page - 1) * showedCards + products?.length} of{" "}
               {productsMaxFind ? productsMaxFind : "many"} results
             </div>
           </div>

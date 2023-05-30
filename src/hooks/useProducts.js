@@ -10,6 +10,8 @@ import {
 } from "../store/slices/optProductsSlice";
 import filterProductsDocs from "../helpers/getOptProductsDocs";
 
+let prevOptDeps = [];
+
 const useProducts = (
   from,
   to,
@@ -31,7 +33,6 @@ const useProducts = (
   });
 
   let productsDocs = useSelector((state) => state.products.productsDocs);
-  let prevOptDeps = [];
   const dispatch = useDispatch();
 
   function filterArr(arr) {
@@ -66,12 +67,18 @@ const useProducts = (
               queryParams,
               orderProducts
             );
-            dispatch(setOptProductsDocs(optProdutsDocs));
-            dispatch((dispatch) => {
-              getProducts(optProdutsDocs.slice(0, to)).then((products) =>
-                dispatch(setOptProducts(products))
-              );
-            });
+            if (
+              to <= optProdutsDocs.length ||
+              storeProducts.length === 0 ||
+              JSON.stringify(prevOptDeps) !== JSON.stringify(deps)
+            ) {
+              dispatch(setOptProductsDocs(optProdutsDocs));
+              dispatch((dispatch) => {
+                getProducts(optProdutsDocs.slice(0, to)).then((products) =>
+                  dispatch(setOptProducts(products))
+                );
+              });
+            }
           }
           prevOptDeps = deps;
         } else if (storeProducts.length < to && productsDocs.length >= to) {
