@@ -5,13 +5,13 @@ import { useParams } from "react-router";
 import { useSearchParams } from "react-router-dom";
 import ProductCard from "../components/Reusable/ProductCard";
 import useProducts from "../hooks/useProducts";
-import useDataCount from "../hooks/useDataCount";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../store/slices/cartSlice";
 import mergeSearchParams from "../helpers/mergeSearchParams";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
-import getMaxFieldValue from "../helpers/getMaxFieldValue";
+import useMaxfieldValue from "../hooks/useMaxFieldValue";
+import useTotalProductsCount from "../hooks/useTotalProductsCount";
 
 const Shop = () => {
   const { pageParam } = useParams();
@@ -19,7 +19,6 @@ const Shop = () => {
   const page = Number(pageParam || 1);
 
   const [filtersOpened, setFilters] = useState(false);
-  const productsMaxFind = useDataCount();
   const dispatch = useDispatch();
 
   const [cardStyle, setCardStyle] = useState(
@@ -35,7 +34,7 @@ const Shop = () => {
     searchParams.get("typeFilters")?.split(",") || []
   );
 
-  const [maxPrice, setMaxPrice] = useState(300000);
+  const maxPrice = useMaxfieldValue("price");
   const [minPriceFilter, setMinPriceFilter] = useState(
     parseInt(searchParams.get("from")) || 0
   );
@@ -44,11 +43,14 @@ const Shop = () => {
   );
 
   useEffect(() => {
-    getMaxFieldValue("price").then((maxPrice) => {
-      if (!searchParams.get("to")) setMaxPriceFilter(maxPrice);
-      setMaxPrice(maxPrice);
-    });
-  }, []);
+    if (
+      maxPriceFilter === 300000 &&
+      300000 !== searchParams.get("to") &&
+      maxPrice
+    ) {
+      setMaxPriceFilter(maxPrice);
+    }
+  }, [maxPrice]);
 
   const products = useProducts(
     (page - 1) * showedCards,
@@ -57,10 +59,22 @@ const Shop = () => {
     sortMethod,
     {
       typeFilters,
-      priceFrom: minPriceFilter,
-      priceTo: maxPriceFilter,
+      priceFrom: minPriceFilter === 0 ? undefined : minPriceFilter,
+      priceTo: maxPriceFilter === maxPrice ? undefined : maxPriceFilter,
     }
   );
+
+  const productsMaxFind = useTotalProductsCount({
+    typeFilters,
+    priceFrom: minPriceFilter === 0 ? undefined : minPriceFilter,
+    priceTo: maxPriceFilter === maxPrice ? undefined : maxPriceFilter,
+  });
+
+  useEffect(() => {
+    // if (showedCards > productsMaxFind && productsMaxFind) {
+    //   setShowedCards(productsMaxFind)
+    // }
+  }, [productsMaxFind]);
 
   const displayPage = page - 1 === 0 ? page + 1 : page;
 
@@ -91,12 +105,12 @@ const Shop = () => {
   function handleShowedCards(e) {
     const showedCards = e.target.value;
     if (e.target.value >= productsMaxFind) {
-      setShowedCards(Number(productsMaxFind));
+      setShowedCards(parseInt(productsMaxFind));
       setSearchParams(
         mergeSearchParams(searchParams, { showedCards: productsMaxFind })
       );
     } else {
-      setShowedCards(Number(showedCards));
+      setShowedCards(showedCards );
       setSearchParams(
         mergeSearchParams(searchParams, { showedCards: showedCards })
       );
@@ -136,7 +150,10 @@ const Shop = () => {
     setMinPriceFilter(values[0]);
     setMaxPriceFilter(values[1]);
     setSearchParams(
-      mergeSearchParams(searchParams, { from: values[0], to: values[1] })
+      mergeSearchParams(searchParams, {
+        from: values[0],
+        to: values[1] === maxPrice ? undefined : values[1],
+      })
     );
   };
 
@@ -199,8 +216,8 @@ const Shop = () => {
               </button>
             </div>
             <div className="text-lg pl-5">
-              Showing 1–16 of {productsMaxFind ? productsMaxFind : "many"}{" "}
-              results
+              Showing {(page - 1) * showedCards + 1}–{(page - 1) * showedCards + products?.length} of{" "}
+              {productsMaxFind ? productsMaxFind : "many"} results
             </div>
           </div>
           <div className="flex">
@@ -209,10 +226,10 @@ const Shop = () => {
               <input
                 type="number"
                 min={0}
-                max={productsMaxFind}
+                max={20}
                 value={showedCards}
                 onInput={(e) => handleShowedCards(e)}
-                className="ml-2 text-[#9f9f9f] px-3 text-lg py-1"
+                className="ml-2 min-w-[4ch] text-[#9f9f9f] px-3 text-lg py-1"
                 style={{ width: `${3 + showedCards.length}ch` }}
               />
             </label>
@@ -344,6 +361,7 @@ const Shop = () => {
                       className="block w-2/6 px-4 py-2 rounded-md"
                       name="priceFrom"
                       value={minPriceFilter}
+                      min={0}
                       max={maxPriceFilter}
                       onChange={(e) => {
                         const minValue =
@@ -361,6 +379,7 @@ const Shop = () => {
                       type="number"
                       className="block w-2/6 px-4 py-2 rounded-md"
                       name="priceFrom"
+                      min={minPriceFilter}
                       value={maxPriceFilter}
                       onChange={(e) => {
                         const maxValue =

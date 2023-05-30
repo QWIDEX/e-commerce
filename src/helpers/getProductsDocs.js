@@ -1,7 +1,7 @@
-import { getDocs, query, limit, collection } from "firebase/firestore";
+import { getDocs, query, collection } from "firebase/firestore";
 import { db } from "../firebase";
 
-const getProductsDocs = async (count, queryParams, orderProducts) => {
+const getProductsDocs = async (queryParams, orderProducts) => {
   const productsCollectionRef = collection(db, "products");
 
   const filteredParams = queryParams.filter((arg) => {
@@ -18,7 +18,6 @@ const getProductsDocs = async (count, queryParams, orderProducts) => {
         productsCollectionRef,
         ...filteredParams,
         orderProducts,
-        limit(count)
       )
     );
     docs = data.docs.map((doc) => {

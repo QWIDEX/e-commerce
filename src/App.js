@@ -3,10 +3,10 @@ import { Route, Routes } from "react-router";
 import Layout from "./components/Layout/Layout";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
-import CartPage from './pages/CartPage'
-import ChekoutPage from './pages/ChekoutPage'
-import ContactPage from './pages/ContactPage'
-import ShopPage from './pages/ShopPage'
+import CartPage from "./pages/CartPage";
+import ChekoutPage from "./pages/ChekoutPage";
+import ContactPage from "./pages/ContactPage";
+import ShopPage from "./pages/ShopPage";
 import AddNewProductPage from "./pages/AddNewProductPage";
 
 const App = () => {

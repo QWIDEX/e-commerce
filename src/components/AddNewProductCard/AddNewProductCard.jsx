@@ -91,7 +91,7 @@ const AddNewProductCard = (props) => {
             <input
               type="number"
               value={newPrice}
-              onChange={(e) => setNewPrice(e.target.value)}
+              onChange={(e) => setNewPrice(parseInt(e.target.value))}
               size={toString(price).length}
               className="font-medium w-[80%]  text-2xl leading-normal"
             />

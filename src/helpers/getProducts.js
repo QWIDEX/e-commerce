@@ -1,15 +1,13 @@
 import { getDownloadURL, ref } from "firebase/storage";
-import { db, storage } from "../firebase";
+import { storage } from "../firebase";
 import getProductsDocs from "./getProductsDocs";
 
-const getProducts = async (count, queryParams, orderProducts) => {
-  let fullProductData;
+const getProducts = async (productsDocs) => {
+  let fullProductsData;
 
   try {
-    const data = await getProductsDocs(count, queryParams, orderProducts);
-
-    fullProductData = await Promise.all(
-      data.map(async (product) => {
+    fullProductsData = await Promise.all(
+      productsDocs.map(async (product) => {
         const imgUrl = await getDownloadURL(
           ref(storage, `images/products/${product.label}`)
         );
@@ -19,7 +17,7 @@ const getProducts = async (count, queryParams, orderProducts) => {
   } catch (err) {
     console.error(err);
   }
-  return fullProductData;
+  return fullProductsData;
 };
 
 export default getProducts;

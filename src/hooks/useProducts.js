@@ -1,11 +1,14 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { setProducts, setProductsDocs } from "../store/slices/productsSlice";
+import { orderBy } from "firebase/firestore";
+import getProductsDocs from "../helpers/getProductsDocs";
 import getProducts from "../helpers/getProducts";
-import { setOptProducts, setProducts } from "../store/slices/productsSlice";
-import { orderBy, where } from "firebase/firestore";
-import getOptProducts from "../helpers/getOptProducts";
-
-let prevOptDeps = [];
+import {
+  setOptProducts,
+  setOptProductsDocs,
+} from "../store/slices/optProductsSlice";
+import filterProductsDocs from "../helpers/getOptProductsDocs";
 
 const useProducts = (
   from,
@@ -14,6 +17,23 @@ const useProducts = (
   orderProducts = "ordered",
   queryParams = {}
 ) => {
+  const storeProducts = useSelector((state) => {
+    let products;
+    if (
+      filterArr(Object.values(queryParams)).length !== 0 ||
+      orderProducts !== "ordered"
+    ) {
+      products = state.optProducts.products;
+    } else {
+      products = state.products.products;
+    }
+    return products;
+  });
+
+  let productsDocs = useSelector((state) => state.products.productsDocs);
+  let prevOptDeps = [];
+  const dispatch = useDispatch();
+
   function filterArr(arr) {
     if (!Array.isArray(arr)) return [];
     return arr.filter((arg) => {
@@ -24,47 +44,50 @@ const useProducts = (
     });
   }
 
-  const storeProducts = useSelector((state) => {
-    let products;
-    if (
-      filterArr(Object.values(queryParams)).length !== 0 ||
-      orderProducts !== "ordered"
-    ) {
-      products = state.products.optProduts;
-    } else {
-      products = state.products.products;
-    }
-    return products;
-  });
-
-  const dispatch = useDispatch();
-
   useEffect(() => {
-    const debounceTimer = setTimeout(() => {
-      if (
-        filterArr(Object.values(queryParams)).length !== 0 ||
-        orderProducts !== "ordered"
-      ) {
+    if (productsDocs.length === 0) {
+      dispatch((dispatch) => {
+        getProductsDocs([], orderBy("ordered")).then((productsDocs) => {
+          dispatch(setProductsDocs(productsDocs));
+        });
+      });
+    } else {
+      const debounceTimer = setTimeout(() => {
         if (
-          JSON.stringify(prevOptDeps) !== JSON.stringify(deps) ||
-          to > storeProducts.length
+          filterArr(Object.values(queryParams)).length !== 0 ||
+          orderProducts !== "ordered"
         ) {
-          getOptProducts(dispatch, queryParams, orderBy(orderProducts), to);
+          if (
+            JSON.stringify(prevOptDeps) !== JSON.stringify(deps) ||
+            to > storeProducts.length
+          ) {
+            const optProdutsDocs = filterProductsDocs(
+              productsDocs,
+              queryParams,
+              orderProducts
+            );
+            dispatch(setOptProductsDocs(optProdutsDocs));
+            dispatch((dispatch) => {
+              getProducts(optProdutsDocs.slice(0, to)).then((products) =>
+                dispatch(setOptProducts(products))
+              );
+            });
+          }
+          prevOptDeps = deps;
+        } else if (storeProducts.length < to && productsDocs.length >= to) {
+          dispatch((dispatch) => {
+            getProducts(productsDocs.slice(0, to)).then((products) =>
+              dispatch(setProducts(products))
+            );
+          });
         }
-        prevOptDeps = deps;
-      } else if (to > storeProducts.length) {
-        dispatch((dispatch) =>
-          getProducts(to, [], [orderBy("ordered")]).then((products) =>
-            dispatch(setProducts(products))
-          )
-        );
-      }
-    }, 400);
+      }, 400);
 
-    return () => {
-      clearTimeout(debounceTimer);
-    };
-  }, [...deps, to]);
+      return () => {
+        clearTimeout(debounceTimer);
+      };
+    }
+  }, [...deps, to, productsDocs]);
 
   return storeProducts.slice(from, to);
 };

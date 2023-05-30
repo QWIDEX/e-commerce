@@ -1,13 +1,10 @@
-import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-const useDataCount = (queryParams) => {
-  const [dataCount, setDataCount] = useState();
-
-  const productsDocs = useSelector((state) => {
+const useTotalProductsCount = (queryParams) => {
+  const currentProductsDocs = useSelector((state) => {
     let products;
     if (filterArr(Object.values(queryParams)).length !== 0) {
-      products = state.optProducts.optProductsDocs;
+      products = state.optProducts.optProdutsDocs;
     } else {
       products = state.products.productsDocs;
     }
@@ -24,11 +21,7 @@ const useDataCount = (queryParams) => {
     });
   }
 
-  useEffect(() => {
-    setDataCount(productsDocs.length)
-  }, [...Object.values(queryParams)])
-
-  return dataCount;
+  return currentProductsDocs?.length;
 };
 
-export default useDataCount;
+export default useTotalProductsCount;

@@ -4,7 +4,6 @@ import { collection, addDoc, doc, updateDoc, deleteField } from "firebase/firest
 import { ref, uploadBytes } from "firebase/storage";
 import toast, { Toaster } from "react-hot-toast";
 import useProducts from "../hooks/useProducts";
-import getDataCount from "../helpers/getDataCount";
 import AddNewProductCard from "../components/AddNewProductCard/AddNewProductCard";
 
 const AddNewProductPage = () => {
@@ -12,15 +11,9 @@ const AddNewProductPage = () => {
   const [productPrice, setProductPrice] = useState(0);
   const [imageUpload, setImageUpload] = useState(undefined);
   const [productType, setProductType] = useState("noneSelected");
-  const [productsTotal, setProductsTotal] = useState();
+  const [productsTotal, setProductsTotal] = useState(100);
 
-  useEffect(() => {
-    getDataCount(collection(db, "products")).then((count) =>
-      setProductsTotal(count)
-    );
-  }, []);
-
-  const products = useProducts(0, productsTotal, [productsTotal]);
+  const products = useProducts(0, 100, [productsTotal]);
 
   const uploadFields = async () => {
     const productsCollectionRef = collection(db, "products");
@@ -133,7 +126,7 @@ const AddNewProductPage = () => {
           className="py-2 px-5 border-zinc-400 border-[1px] rounded-2xl"
           placeholder="Price of Product"
           value={productPrice}
-          onChange={(e) => setProductPrice(e.target.value)}
+          onChange={(e) => setProductPrice(parseInt(e.target.value))}
         />
         <button
           className="py-1 px-5 block border-black bg-[whiteSmoke] cursor-pointer border-[1px] rounded-lg"
