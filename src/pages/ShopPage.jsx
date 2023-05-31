@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import HeadingPathSect from "../components/Reusable/HeadingPathSect";
 import SwitchCatalogPage from "../components/SwitchCatalogPage/SwitchCatalogPage";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useSearchParams } from "react-router-dom";
 import ProductCard from "../components/Reusable/ProductCard";
 import useProducts from "../hooks/useProducts";
@@ -17,6 +17,7 @@ const Shop = () => {
   const { pageParam } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const page = Number(pageParam || 1);
+  const navigate = useNavigate();
 
   const [filtersOpened, setFilters] = useState(false);
   const dispatch = useDispatch();
@@ -52,31 +53,25 @@ const Shop = () => {
     }
   }, [maxPrice]);
 
-  const products = useProducts(
-    (page - 1) * showedCards,
-    page * showedCards,
-    [sortMethod, typeFilters, minPriceFilter, maxPriceFilter],
-    sortMethod,
-    {
-      typeFilters,
-      priceFrom: minPriceFilter === 0 ? undefined : minPriceFilter,
-      priceTo: maxPriceFilter === maxPrice ? undefined : maxPriceFilter,
-    }
-  );
-
-  const productsMaxFind = useTotalProductsCount({
+  const filters = {
     typeFilters,
     priceFrom: minPriceFilter === 0 ? undefined : minPriceFilter,
     priceTo: maxPriceFilter === maxPrice ? undefined : maxPriceFilter,
-  });
+  };
 
-  useEffect(() => {
-    // if (showedCards > productsMaxFind && productsMaxFind) {
-    //   setShowedCards(productsMaxFind)
-    // }
-  }, [productsMaxFind]);
+  const productsMaxFind = useTotalProductsCount(filters);
 
-  const displayPage = page - 1 === 0 ? page + 1 : page;
+  const products = useProducts(
+    (page - 1) * showedCards,
+    page * showedCards >= productsMaxFind
+      ? productsMaxFind
+      : page * showedCards,
+    [sortMethod, typeFilters, minPriceFilter, maxPriceFilter],
+    sortMethod,
+    filters
+  );
+
+  // const page = page - 1 === 0 ? page + 1 : page;
 
   function toggleFilters() {
     if (filtersOpened) {
@@ -97,8 +92,9 @@ const Shop = () => {
   function handleSortMethod(e) {
     const sortMethod = e.target.value;
     setSortMethod(sortMethod);
-    setSearchParams(
-      mergeSearchParams(searchParams, { sortMethod: sortMethod })
+    navigate(
+      `/shop/?${mergeSearchParams(searchParams, { sortMethod: sortMethod })}`,
+      { replace: true }
     );
   }
 
@@ -109,8 +105,11 @@ const Shop = () => {
       setSearchParams(mergeSearchParams(searchParams, { showedCards: 20 }));
     } else {
       setShowedCards(showedCards);
-      setSearchParams(
-        mergeSearchParams(searchParams, { showedCards: showedCards })
+      navigate(
+        `/shop/?${mergeSearchParams(searchParams, {
+          showedCards: showedCards,
+        })}`,
+        { replace: true }
       );
     }
   }
@@ -136,8 +135,11 @@ const Shop = () => {
 
     if (typesUpdated.length === 0) typesUpdated = undefined;
 
-    setSearchParams(
-      mergeSearchParams(searchParams, { typeFilters: typesUpdated })
+    navigate(
+      `/shop/?${mergeSearchParams(searchParams, {
+        typeFilters: typesUpdated,
+      })}`,
+      { replace: true }
     );
   }
 
@@ -154,7 +156,6 @@ const Shop = () => {
       })
     );
   };
-
   return (
     <>
       <HeadingPathSect />
@@ -434,10 +435,23 @@ const Shop = () => {
         </div>
 
         <div className="flex gap-2 justify-center mt-5 items-center">
-          <SwitchCatalogPage>{displayPage - 1}</SwitchCatalogPage>
-          <SwitchCatalogPage>{displayPage}</SwitchCatalogPage>
-          <SwitchCatalogPage>{displayPage + 1}</SwitchCatalogPage>
-          <SwitchCatalogPage>{"Next"}</SwitchCatalogPage>
+          {page - 1 !== 0 ? (
+            <SwitchCatalogPage>{page - 1}</SwitchCatalogPage>
+          ) : (
+            ""
+          )}
+          <SwitchCatalogPage>{page}</SwitchCatalogPage>
+          <SwitchCatalogPage disabled={productsMaxFind <= page * showedCards}>
+            {page + 1}
+          </SwitchCatalogPage>
+          <SwitchCatalogPage
+            disabled={productsMaxFind <= (page + 1) * showedCards}
+          >
+            {page + 2}
+          </SwitchCatalogPage>
+          <SwitchCatalogPage disabled={productsMaxFind <= page * showedCards}>
+            {"Next"}
+          </SwitchCatalogPage>
         </div>
       </section>
     </>

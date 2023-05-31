@@ -67,21 +67,15 @@ const useProducts = (
               queryParams,
               orderProducts
             );
-            if (
-              to <= optProdutsDocs.length ||
-              storeProducts.length === 0 ||
-              JSON.stringify(prevOptDeps) !== JSON.stringify(deps)
-            ) {
-              dispatch(setOptProductsDocs(optProdutsDocs));
-              dispatch((dispatch) => {
-                getProducts(optProdutsDocs.slice(0, to)).then((products) =>
-                  dispatch(setOptProducts(products))
-                );
-              });
-            }
+            dispatch(setOptProductsDocs(optProdutsDocs));
+            dispatch((dispatch) => {
+              getProducts(optProdutsDocs.slice(0, to)).then((products) =>
+                dispatch(setOptProducts(products))
+              );
+            });
           }
           prevOptDeps = deps;
-        } else if (storeProducts.length < to && productsDocs.length >= to) {
+        } else if (storeProducts.length < to) {
           dispatch((dispatch) => {
             getProducts(productsDocs.slice(0, to)).then((products) =>
               dispatch(setProducts(products))
