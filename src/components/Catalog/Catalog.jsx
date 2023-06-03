@@ -7,7 +7,7 @@ const Catalog = ({products}) => {
   const dispatch = useDispatch();
 
   return (
-    <div className="flex flex-wrap gap-x-7 min-h-[1000px] gap-y-4 w-fit justify-center max-w-[90%] mx-auto ">
+    <div className="flex flex-wrap gap-x-7 min-h-[500px] gap-y-4 w-fit justify-center max-w-[90%] mx-auto ">
       {products.map((product) => {
         return (
           <ProductCard product={product} key={product.id}>

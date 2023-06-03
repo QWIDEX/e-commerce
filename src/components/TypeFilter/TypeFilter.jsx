@@ -10,18 +10,15 @@ const TypeFilter = ({ children, name }) => {
 
   function handleTypeFilter(e) {
     const type = e.target.name;
-    const typesParam = searchParams.get("typeFilters")
-      ? searchParams.get("typeFilters").split(",")
-      : [];
     let typesUpdated;
 
     if (e.target.checked) {
-      typesUpdated = [...typesParam, type];
+      typesUpdated = [...typeFilters, type];
     } else {
-      const typeIdx = typesParam.indexOf(type);
+      const typeIdx = typeFilters.indexOf(type);
       typesUpdated = [
-        ...typesParam.slice(0, typeIdx),
-        ...typesParam.slice(typeIdx + 1),
+        ...typeFilters.slice(0, typeIdx),
+        ...typeFilters.slice(typeIdx + 1),
       ];
     }
 

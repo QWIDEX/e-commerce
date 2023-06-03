@@ -1,96 +1,30 @@
-import React, { useState, useEffect, useRef } from "react";
-import Slider from "rc-slider";
+import React, { useState, useRef, useEffect } from "react";
 import mergeSearchParams from "../../helpers/mergeSearchParams";
 import { useSearchParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import useMaxfieldValue from "../../hooks/useMaxFieldValue";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import TypeFilter from "../TypeFilter/TypeFilter";
+import PriceFilter from "../PriceFilter/PriceFilter";
+import SortBy from "../SortBy/SortBy";
+import ShowCards from "../ShowCards/ShowCards";
 
-const Filters = ({ products = {} }) => {
+const Filters = ({ productsLength = 0, showedCards, productsMaxFind = 16 }) => {
   const [filtersOpened, setFilters] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const { pageParam } = useParams();
-  const page = Number(pageParam || 1);
-  console.log(page);
 
-  const dispatch = useDispatch();
+  const page = Number(pageParam || 1);
 
   const [cardStyle, setCardStyle] = useState(
     searchParams.get("cardStyle") || "blocks"
   );
-  const [sortMethod, setSortMethod] = useState(
-    searchParams.get("sortMethod") || "ordered"
-  );
-  const [showedCards, setShowedCards] = useState(
-    searchParams.get("showedCards") || "16"
-  );
-
-  const maxPrice = useMaxfieldValue("price");
-  const [minPriceFilter, setMinPriceFilter] = useState(
-    parseInt(searchParams.get("from")) || 0
-  );
-  const [maxPriceFilter, setMaxPriceFilter] = useState(
-    parseInt(searchParams.get("to")) || 300000
-  );
-
-  useEffect(() => {
-    if (
-      maxPriceFilter === 300000 &&
-      300000 !== searchParams.get("to") &&
-      maxPrice
-    ) {
-      setMaxPriceFilter(maxPrice);
-    }
-  }, [maxPrice]);
-
-  const productsMaxFind = 16;
-
-  function handleSortMethod(e) {
-    const sortMethod = e.target.value;
-    setSortMethod(sortMethod);
-    navigate(
-      `/shop/?${mergeSearchParams(searchParams, { sortMethod: sortMethod })}`,
-      { replace: true }
-    );
-  }
-
-  function handleShowedCards(e) {
-    const showedCards = e.target.value;
-    if (showedCards >= 20) {
-      setShowedCards(20);
-      setSearchParams(mergeSearchParams(searchParams, { showedCards: 20 }));
-    } else {
-      setShowedCards(showedCards);
-      navigate(
-        `/shop/?${mergeSearchParams(searchParams, {
-          showedCards: showedCards,
-        })}`,
-        { replace: true }
-      );
-    }
-  }
-
-  function handleRangeChange(values) {
-    setMinPriceFilter(values[0]);
-    setMaxPriceFilter(values[1]);
-    setSearchParams(
-      mergeSearchParams(searchParams, {
-        from: values[0],
-        to: values[1] === maxPrice ? undefined : values[1],
-      })
-    );
-  }
 
   function toggleFilters() {
     if (filtersOpened) {
       setFilters(false);
       filtersBlock.current.style.left = `-${filtersBlock.current.offsetWidth}px`;
-      hideFilters.current.style.transitionDelay = "0ms";
       hideFilters.current.style.opacity = "0";
       hideFilters.current.style.zIndex = "-1";
     } else {
-      hideFilters.current.style.transitionDelay = "300ms";
       hideFilters.current.style.opacity = "1";
       filtersBlock.current.style.left = "0";
       hideFilters.current.style.zIndex = "2";
@@ -159,42 +93,18 @@ const Filters = ({ products = {} }) => {
           </div>
           <div className="text-lg pl-5">
             Showing {(page - 1) * showedCards + 1}–
-            {(page - 1) * showedCards + products?.length} of{" "}
+            {(page - 1) * showedCards + productsLength } of{" "}
             {productsMaxFind ? productsMaxFind : "many"} results
           </div>
         </div>
         <div className="flex">
-          <label className="text-xl mr-2">
-            Show
-            <input
-              type="number"
-              min={0}
-              max={20}
-              value={showedCards}
-              onInput={(e) => handleShowedCards(e)}
-              className="ml-2 min-w-[4ch] text-[#9f9f9f] px-3 text-lg py-1"
-              style={{ width: `${3 + showedCards.length}ch` }}
-            />
-          </label>
-          <label className="text-xl">
-            Sort by
-            <select
-              onChange={(e) => handleSortMethod(e)}
-              value={sortMethod}
-              className="text-[#9f9f9f] ml-2 px-3 text-lg py-1"
-            >
-              <option value="ordered">Popularity</option>
-              <option value="label">Name</option>
-              <option value="priceUp">Price Up</option>
-              <option value="priceDown">Price Down</option>
-            </select>
-          </label>
+          <ShowCards />
+          <SortBy />
         </div>
       </div>
-      <div className="relative">
-        <div className="absolute flex w-full h-full  ">
+        <div className="absolute flex w-full h-[calc(100%-76px)]  ">
           <div
-            className="m-0 w-1/3 h-full flex p-5 gap-2 flex-col relative bg-[#faf4f4] transition-all duration-300 -left-1/3"
+            className="m-0 w-1/3 z-10 h-full flex p-5 gap-2 flex-col relative bg-[#faf4f4] transition-all duration-300 -left-1/3"
             ref={filtersBlock}
           >
             <button className="absolute top-5 right-5" onClick={toggleFilters}>
@@ -220,18 +130,17 @@ const Filters = ({ products = {} }) => {
               <TypeFilter name={"SofaSet"}>Sofa Set</TypeFilter>
               <TypeFilter name={"Sideboard"}>Sideboard</TypeFilter>
             </div>
-            <div className="">
+            <div>
               <h2 className="text-2xl font-semibold">Price</h2>
-
+              <PriceFilter />
             </div>
           </div>
           <button
-            className="bg-[rgba(0,0,0,0.3)] opacity-0 w-2/3 h-full z-[-1] transition-all duration-300"
+            className="bg-[rgba(0,0,0,0.3)] opacity-0 w-full absolute h-full z-[-1] transition-all duration-300"
             ref={hideFilters}
             onClick={toggleFilters}
           ></button>
         </div>
-      </div>
     </>
   );
 };

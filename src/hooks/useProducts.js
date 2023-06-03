@@ -58,6 +58,7 @@ const useProducts = (
           filterArr(Object.values(queryParams)).length !== 0 ||
           orderProducts !== "ordered"
         ) {
+          console.log(prevOptDeps, deps)
           if (
             JSON.stringify(prevOptDeps) !== JSON.stringify(deps) ||
             to > storeProducts.length
@@ -69,8 +70,10 @@ const useProducts = (
             );
             dispatch(setOptProductsDocs(optProdutsDocs));
             dispatch((dispatch) => {
-              getProducts(optProdutsDocs.slice(0, to)).then((products) =>
-                dispatch(setOptProducts(products))
+              getProducts(optProdutsDocs.slice(0, to)).then((products) => {
+                console.log(products, to)
+                return dispatch(setOptProducts(products))
+              }
               );
             });
           }
