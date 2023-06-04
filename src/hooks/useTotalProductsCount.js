@@ -1,5 +1,8 @@
 import { useSelector } from "react-redux";
 
+let renderCount = 0
+let prevQueryParams = []
+
 const useTotalProductsCount = (queryParams) => {
   const currentProductsDocs = useSelector((state) => {
     let products;
@@ -21,7 +24,17 @@ const useTotalProductsCount = (queryParams) => {
     });
   }
 
-  return currentProductsDocs?.length;
+  if (JSON.stringify(queryParams) !== JSON.stringify(prevQueryParams)) renderCount = 0
+
+  renderCount++
+  prevQueryParams = queryParams
+  
+  if (renderCount > 2 && filterArr(Object.entries(queryParams)).length !== 0) {
+    return currentProductsDocs?.length;
+  } else if (filterArr(Object.entries(queryParams)).length === 0) {
+    return currentProductsDocs?.length
+  } else return undefined
+
 };
 
 export default useTotalProductsCount;

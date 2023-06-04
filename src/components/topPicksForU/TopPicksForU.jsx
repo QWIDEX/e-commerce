@@ -8,7 +8,7 @@ const TopPicksForU = () => {
     document.documentElement.clientWidth / 282
   ) - 1;
 
-  const products = useProducts(0, desideHowManyRender)
+  const {products, error, loading} = useProducts(0, desideHowManyRender)
 
   return (
     <section>

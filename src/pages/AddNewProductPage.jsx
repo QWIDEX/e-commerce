@@ -13,7 +13,7 @@ const AddNewProductPage = () => {
   const [productType, setProductType] = useState("noneSelected");
   const [productsTotal, setProductsTotal] = useState(100);
 
-  const products = useProducts(0, 100, [productsTotal]);
+  const {products, loading, error} = useProducts(0, 100, [productsTotal]);
 
   const uploadFields = async () => {
     const productsCollectionRef = collection(db, "products");

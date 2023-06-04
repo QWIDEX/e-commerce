@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setProducts, setProductsDocs } from "../store/slices/productsSlice";
 import { orderBy } from "firebase/firestore";
@@ -19,6 +19,9 @@ const useProducts = (
   orderProducts = "ordered",
   queryParams = {}
 ) => {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   const storeProducts = useSelector((state) => {
     let products;
     if (
@@ -48,9 +51,13 @@ const useProducts = (
   useEffect(() => {
     if (productsDocs.length === 0) {
       dispatch((dispatch) => {
-        getProductsDocs([], orderBy("ordered")).then((productsDocs) => {
-          dispatch(setProductsDocs(productsDocs));
-        });
+        getProductsDocs([], orderBy("ordered"))
+          .then((productsDocs) => {
+            dispatch(setProductsDocs(productsDocs));
+          })
+          .catch((error) => {
+            setError(error);
+          });
       });
     } else {
       const debounceTimer = setTimeout(() => {
@@ -58,11 +65,11 @@ const useProducts = (
           filterArr(Object.values(queryParams)).length !== 0 ||
           orderProducts !== "ordered"
         ) {
-          console.log(prevOptDeps, deps)
           if (
             JSON.stringify(prevOptDeps) !== JSON.stringify(deps) ||
             to > storeProducts.length
           ) {
+            setLoading(true)
             const optProdutsDocs = filterProductsDocs(
               productsDocs,
               queryParams,
@@ -70,19 +77,28 @@ const useProducts = (
             );
             dispatch(setOptProductsDocs(optProdutsDocs));
             dispatch((dispatch) => {
-              getProducts(optProdutsDocs.slice(0, to)).then((products) => {
-                console.log(products, to)
-                return dispatch(setOptProducts(products))
-              }
-              );
+              getProducts(optProdutsDocs.slice(0, to))
+                .then((products) => dispatch(setOptProducts(products)))
+                .catch((error) => {
+                  setError(error);
+                })
+                .finally(() => {
+                  setLoading(false);
+                });
             });
           }
           prevOptDeps = deps;
         } else if (storeProducts.length < to) {
+          setLoading(true)
           dispatch((dispatch) => {
-            getProducts(productsDocs.slice(0, to)).then((products) =>
-              dispatch(setProducts(products))
-            );
+            getProducts(productsDocs.slice(0, to))
+              .then((products) => dispatch(setProducts(products)))
+              .catch((error) => {
+                setError(error);
+              })
+              .finally(() => {
+                setLoading(false);
+              });
           });
         }
       }, 400);
@@ -93,7 +109,7 @@ const useProducts = (
     }
   }, [...deps, to, productsDocs]);
 
-  return storeProducts.slice(from, to);
+  return { products: storeProducts.slice(from, to), error, loading };
 };
 
 export default useProducts;

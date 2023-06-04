@@ -33,7 +33,7 @@ const CatalogWithFilters = () => {
       ? productsMaxFind
       : page * showedCards;
 
-  const products = useProducts(
+  const productsState = useProducts(
     from,
     to,
     [sortMethod, typeFilters, minPriceFilter, maxPriceFilter],
@@ -45,11 +45,11 @@ const CatalogWithFilters = () => {
     <section>
       <div className="relative h-full">
         <Filters
-          productsLength={products.length}
+          productsLength={productsState.products.length}
           productsMaxFind={productsMaxFind}
           showedCards={showedCards}
         ></Filters>
-        <Catalog products={products}></Catalog>
+        <Catalog productsState={productsState} ></Catalog>
       </div>
 
       <div className="flex gap-2 justify-center mt-5 items-center">

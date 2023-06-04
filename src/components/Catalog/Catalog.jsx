@@ -2,9 +2,29 @@ import React from "react";
 import ProductCard from "../Reusable/ProductCard";
 import { addToCart } from "../../store/slices/cartSlice";
 import { useDispatch } from "react-redux";
+import LoadingIndicator from "../LoadingIndicator/LoadingIndicator";
+import ErrorIndicator from "../ErrorIndicator/ErrorIndicator";
 
-const Catalog = ({products}) => {
+const Catalog = ({ productsState }) => {
+  const { products, loading, error } = productsState;
+
   const dispatch = useDispatch();
+  console.log(products, loading)
+  if (loading) {
+    return (
+      <div className="flex min-h-[500px] w-full justify-center items-center max-w-[90%] mx-auto ">
+        <LoadingIndicator />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex min-h-[500px] w-full justify-center items-center max-w-[90%] mx-auto ">
+        <ErrorIndicator />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-wrap gap-x-7 min-h-[500px] gap-y-4 w-fit justify-center max-w-[90%] mx-auto ">
