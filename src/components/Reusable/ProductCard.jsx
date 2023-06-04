@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 const ProductCard = (props) => {
   const { label, price, imgUrl } = props.product;
@@ -18,23 +18,32 @@ const ProductCard = (props) => {
     return result.split("").reverse().join("");
   };
 
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+  };
+
   return (
-    <div className="flex flex-col max-w-287px items-center md:!items-start ">
+    <div style={{ display: imageLoaded ? "flex" : "none" }} className="flex flex-col max-w-287px items-center md:!items-start ">
       <img
         src={imgUrl}
         alt="Granite-square-side-table"
         className="max-w-242px w-full m-5 md:w-11/12"
+        onLoad={handleImageLoad}
       />
       <div className="w-[100%] flex ">
         <div className="w-[80%]">
-          <p className="font-normal  text-base leading-snug mb-3 text-center md:text-start max-w-74%">
-            {label}
-          </p>
-          <h2 className="font-medium text-2xl leading-normal">
-            {`${separateThousands(price)}$`}
-          </h2>
+          <div>
+            <p className="font-normal  text-base leading-snug mb-3 text-center md:text-start max-w-74%">
+              {label}
+            </p>
+            <h2 className="font-medium text-2xl leading-normal">
+              {`${separateThousands(price)}$`}
+            </h2>
+          </div>
         </div>
-          {icons}
+        {icons}
       </div>
     </div>
   );

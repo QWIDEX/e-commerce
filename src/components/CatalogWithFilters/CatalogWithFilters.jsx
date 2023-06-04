@@ -1,17 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import Filters from "../Filters/Filters";
 import Catalog from "../Catalog/Catalog";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import useTotalProductsCount from "../../hooks/useTotalProductsCount";
 import useProducts from "../../hooks/useProducts";
 import SwitchCatalogPage from "../../components/SwitchCatalogPage/SwitchCatalogPage";
 import { useSearchParams } from "react-router-dom";
-import useMaxfieldValue from "../../hooks/useMaxFieldValue";
 
-const CatalogWithFilters = () => {
+const CatalogWithFilters = ({ProductCard}) => {
   const { pageParam } = useParams();
   const page = parseInt(pageParam || 1);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   const showedCards = searchParams.get("showedCards") || 16;
   const sortMethod = searchParams.get("sortMethod") || "ordered";
@@ -49,7 +48,7 @@ const CatalogWithFilters = () => {
           productsMaxFind={productsMaxFind}
           showedCards={showedCards}
         ></Filters>
-        <Catalog productsState={productsState} ></Catalog>
+        <Catalog productsState={productsState} ProductCard={ProductCard} ></Catalog>
       </div>
 
       <div className="flex gap-2 justify-center mt-5 items-center">
