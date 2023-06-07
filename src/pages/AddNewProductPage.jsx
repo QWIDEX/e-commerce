@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { db, storage } from "../firebase";
-import { collection, addDoc, doc, updateDoc, deleteField } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  doc,
+  updateDoc,
+  deleteField,
+} from "firebase/firestore";
 import { ref, uploadBytes } from "firebase/storage";
 import toast, { Toaster } from "react-hot-toast";
 import useProducts from "../hooks/useProducts";
 import AddNewProductCard from "../components/AddNewProductCard/AddNewProductCard";
+import CatalogWithFilters from "../components/CatalogWithFilters/CatalogWithFilters";
 
 const AddNewProductPage = () => {
   const [productName, setProductName] = useState("");
@@ -12,8 +19,6 @@ const AddNewProductPage = () => {
   const [imageUpload, setImageUpload] = useState(undefined);
   const [productType, setProductType] = useState("noneSelected");
   const [productsTotal, setProductsTotal] = useState(100);
-
-  const {products, loading, error} = useProducts(0, 100, [productsTotal]);
 
   const uploadFields = async () => {
     const productsCollectionRef = collection(db, "products");
@@ -32,7 +37,7 @@ const AddNewProductPage = () => {
     const imagesFolderRef = ref(storage, `images/products/${productName}`);
     try {
       await uploadBytes(imagesFolderRef, imageUpload);
-      setImageUpload(undefined)
+      setImageUpload(undefined);
     } catch (err) {
       toast.error(err);
     }
@@ -51,7 +56,7 @@ const AddNewProductPage = () => {
       setImageUpload(null);
       setProductName("");
       setProductPrice(0);
-      setProductType("noneSelected")
+      setProductType("noneSelected");
       setProductsTotal(productsTotal + 1);
     } else if (productName === "") {
       toast.error("Напиши ім'я продукту");
@@ -66,7 +71,7 @@ const AddNewProductPage = () => {
 
   return (
     <>
-      <div className="pt-24 gap-5 flex justify-around flex-col items-center">
+      <div className="pt-24 gap-5 flex justify-around flex-col mb-5 items-center">
         <h1 className="font-bold text-2xl">Add new Product</h1>
         <label
           htmlFor="addProductImage"
@@ -94,7 +99,7 @@ const AddNewProductPage = () => {
           onChange={(e) => {
             console.log(e.target.files);
             setImageUpload(e.target.files[0]);
-            e.target.value = ''
+            e.target.value = "";
           }}
         />
         <input
@@ -135,13 +140,7 @@ const AddNewProductPage = () => {
           Submit
         </button>
       </div>
-      <div className="flex justify-center flex-wrap">
-        {products.map((product, idx) => {
-          return (
-            <AddNewProductCard idx={idx} product={product} key={product.id} />
-          );
-        })}
-      </div>
+      <CatalogWithFilters ProductCard={AddNewProductCard} />
       <Toaster />
     </>
   );

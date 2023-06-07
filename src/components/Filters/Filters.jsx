@@ -102,7 +102,7 @@ const Filters = ({ productsLength = 0, showedCards, productsMaxFind = 16 }) => {
           <SortBy />
         </div>
       </div>
-        <div className="absolute flex w-full h-[calc(100%-76px)]  ">
+        <div style={{zIndex: filtersOpened ? 100 : -1}} className="absolute flex w-full h-[calc(100%-76px)]  ">
           <div
             className="m-0 w-1/3 z-10 h-full flex p-5 gap-2 flex-col relative bg-[#faf4f4] transition-all duration-300 -left-1/3"
             ref={filtersBlock}

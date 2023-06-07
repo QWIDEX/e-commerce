@@ -8,6 +8,7 @@ import ChekoutPage from "./pages/ChekoutPage";
 import ContactPage from "./pages/ContactPage";
 import ShopPage from "./pages/ShopPage";
 import AddNewProductPage from "./pages/AddNewProductPage";
+import SingleProductPage from "./pages/SingleProductPage";
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
         <Route path="login" element={<LoginPage />} />
         <Route path="shop/:pageParam?" element={<ShopPage />} />
         <Route path="add-product" element={<AddNewProductPage />} />
+        <Route path="product/:productID" element={<SingleProductPage />} />
       </Route>
     </Routes>
   );

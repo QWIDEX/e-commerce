@@ -23,9 +23,9 @@ const Catalog = ({ productsState, ProductCard }) => {
 
   return (
     <div className="flex flex-wrap gap-x-7 min-h-[500px] gap-y-4 w-fit justify-center max-w-[90%] mx-auto ">
-      {products.map((product) => {
+      {products.map((product, idx) => {
         return (
-          <ProductCard product={product} key={product.id}/>
+          <ProductCard product={product} idx={idx} key={product.id}/>
         );
       })}
     </div>

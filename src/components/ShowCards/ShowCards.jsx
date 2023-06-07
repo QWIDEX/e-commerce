@@ -8,7 +8,7 @@ const ShowCards = () => {
   const navigate = useNavigate();
 
   const [showedCards, setShowedCards] = useState(
-    searchParams.get("showedCards") || 16
+    parseInt(searchParams.get("showedCards")) || 16
   );
 
   function handleShowedCards(e) {
@@ -36,8 +36,7 @@ const ShowCards = () => {
         max={20}
         value={showedCards}
         onInput={(e) => handleShowedCards(e)}
-        className="ml-2 min-w-[4ch] text-[#9f9f9f] px-3 text-lg py-1"
-        style={{ width: `${3 + showedCards.length}ch` }}
+        className="ml-2 w-[4.5ch] text-[#9f9f9f] px-3 text-lg py-1"
       />
     </label>
   );

@@ -7,7 +7,7 @@ import useProducts from "../../hooks/useProducts";
 import SwitchCatalogPage from "../../components/SwitchCatalogPage/SwitchCatalogPage";
 import { useSearchParams } from "react-router-dom";
 
-const CatalogWithFilters = ({ProductCard}) => {
+const CatalogWithFilters = ({ ProductCard }) => {
   const { pageParam } = useParams();
   const page = parseInt(pageParam || 1);
   const [searchParams] = useSearchParams();
@@ -48,7 +48,10 @@ const CatalogWithFilters = ({ProductCard}) => {
           productsMaxFind={productsMaxFind}
           showedCards={showedCards}
         ></Filters>
-        <Catalog productsState={productsState} ProductCard={ProductCard} ></Catalog>
+        <Catalog
+          productsState={productsState}
+          ProductCard={ProductCard}
+        ></Catalog>
       </div>
 
       <div className="flex gap-2 justify-center mt-5 items-center">
