@@ -21,13 +21,22 @@ const ProductDesc = ({ product = {} }) => {
   };
 
   return (
-    <div className="w-1/2">
-      <div className=" max-w-md">
-        <h1 className="text-4xl leading-normal">Asgaard sofa</h1>
+    <div className="w-full lg-sm:w-1/2">
+      <div className=" max-w-md mx-auto">
+        <h1 className="text-4xl leading-normal text-center lg-sm:text-left">
+          Asgaard sofa
+        </h1>
         <p className="text-2xl leading-normal text-[rgb(159,159,159)] font-medium">
           250,000.00 $
         </p>
-        <RateProduct />
+        <div className="flex gap-5 items-center">
+          <RateProduct className="py-2" />{" "}
+          <div className="h-7 w-0.5 rounded-lg bg-[#9F9F9F]" />
+          <div className="text-sm leading-normal text-[#9F9F9F]">
+            5 Customer Review
+          </div>
+        </div>
+
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque quos
           odit eius numquam placeat quibusdam mollitia velit repudiandae nam
@@ -105,7 +114,7 @@ const ProductDesc = ({ product = {} }) => {
               </button>
             </div>
             <button
-              className="text-xl px-12 py-4 border border-[#000000] rounded-xl cursor-pointer border-solid"
+              className="text-xl lg:px-12 px-8 hover:bg-black transition-all duration-300 hover:text-[#ffffff]  py-4 border border-[#000000] rounded-xl cursor-pointer border-solid"
               onClick={() => dispatch(addToCart(product, orderProductCount))}
             >
               Add To Cart

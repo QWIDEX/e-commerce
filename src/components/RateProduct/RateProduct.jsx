@@ -1,18 +1,14 @@
 import React from "react";
 
-const RateProduct = ({ reviews = [] }) => {
+const RateProduct = ({ className, size = 20 }) => {
   return (
-    <div className="flex gap-5 py-2">
-      <div className="flex">
-        <FullStar />
-        <FullStar />
-        <FullStar />
-        <HalfStar />
-        <EmptyStar />
-      </div>
-      <div className="h-7 w-0.5 relative -top-1 rounded-lg bg-[#9F9F9F]" />
-      <div className="text-sm leading-normal text-[#9F9F9F]">
-        {reviews.length} Customer Review
+    <div  className={`flex gap-5 ${className}`}>
+      <div className="flex">  
+        <Star type={"fullStar"} size={size} />
+        <Star type={"fullStar"} size={size} />
+        <Star type={"fullStar"} size={size} />
+        <Star type={"halfStar"} size={size} />
+        <Star type={"emptyStar"} size={size} />
       </div>
     </div>
   );
@@ -20,11 +16,17 @@ const RateProduct = ({ reviews = [] }) => {
 
 export default RateProduct;
 
-const FullStar = () => {
+const Star = ({ type, size }) => {
+  if (type === "fullStar") return <FullStar size={size} />;
+  if (type === "halfStar") return <HalfStar size={size} />;
+  if (type === "emptyStar") return <EmptyStar size={size} />;
+};
+
+const FullStar = ({ size }) => {
   return (
     <svg
-      width="20"
-      height="20"
+      width={size}
+      height={size}
       viewBox="0 0 20 20"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -37,11 +39,11 @@ const FullStar = () => {
   );
 };
 
-const HalfStar = () => {
+const HalfStar = ({ size }) => {
   return (
     <svg
-      width="20"
-      height="20"
+    width={size}
+    height={size}
       viewBox="0 0 20 20"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -58,11 +60,11 @@ const HalfStar = () => {
   );
 };
 
-const EmptyStar = () => {
+const EmptyStar = ({ size }) => {
   return (
     <svg
-      width="20"
-      height="20"
+    width={size}
+    height={size}
       viewBox="0 0 20 20"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
