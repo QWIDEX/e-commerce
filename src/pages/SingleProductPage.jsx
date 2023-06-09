@@ -9,6 +9,8 @@ const SingleProduct = () => {
     <div>
       <MiniHeadingPathSect />
       <ProductMainDesc />
+      <div className="border my-12 border-[#D9D9D9] w-full"></div>
+      
     </div>
   );
 };

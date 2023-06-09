@@ -14,9 +14,9 @@ const ProductImgsSect = () => {
   };
 
   useEffect(() => {
-    setSwiperWidth(wrapperRef.current.offsetWidth - 112 )
+    setSwiperWidth(wrapperRef.current.offsetWidth - 112 > 553 ? 553 : wrapperRef.current.offsetWidth - 112)
     const eventListener = window.addEventListener('resize',() => {
-      setSwiperWidth(wrapperRef.current.offsetWidth - 112 )
+    setSwiperWidth(wrapperRef.current.offsetWidth - 112 > 553 ? 553 : wrapperRef.current.offsetWidth - 112)
     })
     return () => {
       window.removeEventListener("resize", eventListener)
@@ -25,7 +25,7 @@ const ProductImgsSect = () => {
 
 
   return (
-    <div ref={wrapperRef} className="flex min-w-[455px] gap-8 w-1/2 px-[auto] ">
+    <div ref={wrapperRef} className="flex justify-center min-w-[455px] gap-8 w-1/2 px-[auto] ">
       <div  className="flex flex-col min-w-[70px] max-w-[80px] gap-8 overflow-y-auto max-h-[500px]">
         <ImgSelector
           selected={true}
@@ -37,7 +37,7 @@ const ProductImgsSect = () => {
         <ImgSelector img={img} idx={2} handleImgSelector={handleImgSelector} />
         <ImgSelector img={img} idx={3} handleImgSelector={handleImgSelector} />
       </div>
-      <div style={{"width": swiperWidth}} >
+      <div style={{"width": swiperWidth} } >
         <Swiper
           slidesPerView={1}
           width={swiperWidth}
