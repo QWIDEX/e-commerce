@@ -1,8 +1,8 @@
 import React from "react";
 
-const ButtonOutlineBtm = ({ children }) => {
+const ButtonOutlineBtm = ({ children, onClick }) => {
   return (
-    <button className="border-b-2 border-black font-medium max-w-max pb-2 text-2xl">
+    <button onClick={(e) => {onClick(e)}} className="border-b-2 border-black font-medium max-w-max pb-2 text-2xl">
       {children}
     </button>
   );

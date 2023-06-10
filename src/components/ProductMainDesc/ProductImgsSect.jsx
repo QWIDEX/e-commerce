@@ -14,16 +14,18 @@ const ProductImgsSect = () => {
   };
 
   useEffect(() => {
-    if (document.documentElement.offsetWidth < 930)
-      setSwiperWidth(wrapperRef.current.offsetWidth);
-    else setSwiperWidth(wrapperRef.current.offsetWidth - 112);
-    const eventListener = window.addEventListener("resize", () => {
+    const handleResize = () => {
       if (document.documentElement.offsetWidth < 930)
         setSwiperWidth(wrapperRef.current.offsetWidth);
       else setSwiperWidth(wrapperRef.current.offsetWidth - 112);
-    });
+    };
+  
+    handleResize();
+  
+    window.addEventListener("resize", handleResize);
+  
     return () => {
-      window.removeEventListener("resize", eventListener);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 

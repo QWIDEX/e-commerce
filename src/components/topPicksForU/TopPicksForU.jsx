@@ -1,7 +1,10 @@
 import React from "react";
 import ButtonOutlineBtm from "../Reusable/BtnOutlineBtm";
 import ProductCard from "../Reusable/ProductCard";
+import { Link } from "react-router-dom";
 import useProducts from "../../hooks/useProducts";
+import LoadingIndicator from "../LoadingIndicator/LoadingIndicator";
+import ErrorIndicator from "../ErrorIndicator/ErrorIndicator";
 
 const TopPicksForU = () => {
   const desideHowManyRender = Math.floor(
@@ -22,12 +25,12 @@ const TopPicksForU = () => {
             suspension, floor and table lights.
           </p>
         </div>
-        <div className="flex flex-wrap justify-center">
-          {products.map((product) => {
+        <div className="flex flex-wrap min-h-[370px] mb-5 justify-center">
+          { error ? <ErrorIndicator /> : (loading ? <LoadingIndicator /> : products.map((product) => {
             return <ProductCard product={product} key={product.id} />;
-          })}
+          }))}
         </div>
-        <ButtonOutlineBtm>View More</ButtonOutlineBtm>
+        <Link to={"/shop"}><ButtonOutlineBtm>View More</ButtonOutlineBtm></Link>
       </div>
     </section>
   );

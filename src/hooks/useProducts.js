@@ -104,7 +104,7 @@ const useProducts = (
                 setLoading(false);
               });
           });
-        }
+        } else setLoading(false)
       }, 400);
 
       return () => {

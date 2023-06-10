@@ -2,6 +2,7 @@ import React from "react";
 import ButtonOutlineBtm from "../components/Reusable/BtnOutlineBtm";
 import ButtonOutline from "../components/Reusable/BtnOutline";
 import TopPicksForU from "../components/topPicksForU/TopPicksForU";
+import { Link } from "react-router-dom";
 
 const HomePage = () => {
   return (
@@ -12,7 +13,9 @@ const HomePage = () => {
             <h1 className="font-semibold leading-normal text-6xl max-w-md mb-10 text-center md:text-start">
               Rocket single seater
             </h1>
-            <ButtonOutlineBtm>Shop Now</ButtonOutlineBtm>
+            <Link to='/shop'>
+              <ButtonOutlineBtm>Shop Now</ButtonOutlineBtm>{" "}
+            </Link>
           </div>
           <img
             src={require("../images/HomePage/Rocket-single-seater-1.png")}
