@@ -5,6 +5,9 @@ import ProductMainDesc from "../components/ProductMainDesc/ProductMainDesc";
 import ProductDetailedDesc from "../components/ProductDetailedDesc/ProductDetailedDesc";
 import TopPicksForU from "../components/topPicksForU/TopPicksForU";
 import useProduct from "../hooks/useProduct";
+import ErrorIndicator from "../components/ErrorIndicator/ErrorIndicator";
+import LoadingIndicator from "../components/LoadingIndicator/LoadingIndicator";
+import { Toaster } from "react-hot-toast";
 
 const SingleProduct = () => {
   const { productID } = useParams();
@@ -13,11 +16,20 @@ const SingleProduct = () => {
 
   return (
     <div>
-      <MiniHeadingPathSect />
-      <ProductMainDesc />
-      <div className="border my-12 border-[#D9D9D9] w-full"></div>
-      <ProductDetailedDesc />
+      {error ? (
+        <ErrorIndicator />
+      ) : loading ? (
+        <LoadingIndicator />
+      ) : (
+        <>
+          <MiniHeadingPathSect label={product?.label} />
+          <ProductMainDesc product={product} />
+          <div className="border my-12 border-[#D9D9D9] w-full"></div>
+          <ProductDetailedDesc product={product} />
+        </>
+      )}
       <TopPicksForU />
+      <Toaster />
     </div>
   );
 };

@@ -49,9 +49,6 @@ const useProducts = (
   }
 
   useEffect(() => {
-    if (storeProducts.length === to) {
-      setLoading(false)
-    }
 
     if (productsDocs.length === 0) {
       dispatch((dispatch) => {

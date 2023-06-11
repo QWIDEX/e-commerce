@@ -1,15 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { db, storage } from "../firebase";
 import {
   collection,
-  addDoc,
-  doc,
-  updateDoc,
-  deleteField,
+  addDoc
 } from "firebase/firestore";
 import { ref, uploadBytes } from "firebase/storage";
 import toast, { Toaster } from "react-hot-toast";
-import useProducts from "../hooks/useProducts";
 import AddNewProductCard from "../components/AddNewProductCard/AddNewProductCard";
 import CatalogWithFilters from "../components/CatalogWithFilters/CatalogWithFilters";
 

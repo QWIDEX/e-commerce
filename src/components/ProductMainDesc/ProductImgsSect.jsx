@@ -3,9 +3,9 @@ import img from "../../images/HomePage/Asgaard-sofa-1.png";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 
-const ProductImgsSect = () => {
+const ProductImgsSect = ({ imgs = [] }) => {
   const [swiper, setSwiper] = useState(null);
-  const [slideSelected, setSlideSelected] = useState(1);
+  const [slideSelected, setSlideSelected] = useState(0);
   const wrapperRef = useRef();
   const [swiperWidth, setSwiperWidth] = useState(500);
 
@@ -19,11 +19,11 @@ const ProductImgsSect = () => {
         setSwiperWidth(wrapperRef.current.offsetWidth);
       else setSwiperWidth(wrapperRef.current.offsetWidth - 112);
     };
-  
+
     handleResize();
-  
+
     window.addEventListener("resize", handleResize);
-  
+
     return () => {
       window.removeEventListener("resize", handleResize);
     };
@@ -35,28 +35,17 @@ const ProductImgsSect = () => {
       className="flex flex-col-reverse lg-sm:flex-row min-w-0 lg-sm:min-w-[445px] justify-center gap-8 w-full lg-sm:w-1/2 px-[auto] "
     >
       <div className="flex justify-center">
-        <div className="flex flex-row lg-sm:flex-col min-w-[70px] lg-sm:max-w-[80px] gap-8 overflow-x-auto overflow-y-auto max-h-[500px]">
-          <ImgSelector
-            selected={true}
-            img={img}
-            idx={0}
-            handleImgSelector={handleImgSelector}
-          />
-          <ImgSelector
-            img={img}
-            idx={1}
-            handleImgSelector={handleImgSelector}
-          />
-          <ImgSelector
-            img={img}
-            idx={2}
-            handleImgSelector={handleImgSelector}
-          />
-          <ImgSelector
-            img={img}
-            idx={3}
-            handleImgSelector={handleImgSelector}
-          />
+        <div className="flex flex-row lg-sm:flex-col lg-sm:justify-start min-w-[70px] lg-sm:max-w-[80px] gap-8 overflow-x-auto overflow-y-auto max-h-[500px]">
+          {imgs.map((img, idx) => {
+            return (
+              <ImgSelector key={img}
+                selected={slideSelected === idx}
+                img={img}
+                idx={idx}
+                handleImgSelector={handleImgSelector}
+              />
+            );
+          })}
         </div>
       </div>
 
@@ -68,18 +57,11 @@ const ProductImgsSect = () => {
           onSwiper={(swiper) => setSwiper(swiper)}
           onSlideChange={(e) => setSlideSelected(e.activeIndex)}
         >
-          <SwiperSlide>
-            <SlideImg img={img} />
-          </SwiperSlide>
-          <SwiperSlide>
-            <SlideImg img={img} />
-          </SwiperSlide>
-          <SwiperSlide>
-            <SlideImg img={img} />
-          </SwiperSlide>
-          <SwiperSlide>
-            <SlideImg img={img} />
-          </SwiperSlide>
+          {imgs.map((img) => (
+            <SwiperSlide key={img}>
+              <SlideImg img={img} />
+            </SwiperSlide>
+          ))}
         </Swiper>
       </div>
     </div>
@@ -108,7 +90,7 @@ const SlideImg = ({ img }) => {
   return (
     <div className="w-full h-full flex items-center justify-center">
       <div className="bg-[#fff9e5] p-5 rounded-lg max-w-[480px] flex justify-center items-center aspect-square">
-        <img src={img} alt="" className="w-full " />
+        <img src={img} alt="" className="w-full h-full " />
       </div>
     </div>
   );

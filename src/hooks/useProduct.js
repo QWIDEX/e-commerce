@@ -1,6 +1,5 @@
-import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { db } from "../firebase";
+import getProduct from "../helpers/getProduct";
 
 const useProduct = (docID) => {
   const [error, setError] = useState(false);
@@ -8,16 +7,10 @@ const useProduct = (docID) => {
   const [product, setProduct] = useState(null);
 
   useEffect(() => {
-    const productRef = doc(db, "products", docID);
-    getDoc(productRef)
-      .then((product) =>
-        product.exists
-          ? setProduct(product.data())
-          : setError("Product doesn't exist")
-      )
+    getProduct(docID)
+      .then((product) => setProduct(product))
       .catch((err) => setError(err))
       .finally(setLoading(false));
-
   }, [docID]);
 
   return { product, loading, error };
