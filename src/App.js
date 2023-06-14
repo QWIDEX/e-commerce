@@ -10,6 +10,7 @@ import AddNewProductPage from "./pages/AddNewProductPage";
 import SingleProductPage from "./pages/SingleProductPage";
 import AuthPage from "./pages/AuthPage";
 import ProfilePage from "./pages/ProfilePage";
+import EditProductPage from "./pages/EditProductPage";
 
 const App = () => {
   return (
@@ -24,6 +25,7 @@ const App = () => {
         <Route path="shop/:pageParam?" element={<ShopPage />} />
         <Route path="add-product" element={<AddNewProductPage />} />
         <Route path="product/:productID" element={<SingleProductPage />} />
+        <Route path="edit-product/:productID" element={<EditProductPage />} />
       </Route>
     </Routes>
   );

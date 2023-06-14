@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Review from "../Review/Review";
 
-const ProductDetailedDesc = ({ product }) => {
+const ProductDetailedDesc = ({ product, editing }) => {
   const [swiper, setSwiper] = useState(null);
   const [slideSelected, setSlideSelected] = useState(0);
 
@@ -12,6 +12,10 @@ const ProductDetailedDesc = ({ product }) => {
     setSlideSelected(idx);
     swiper.disable();
   };
+
+  useEffect(() => {
+    swiper?.disable();
+  }, [swiper]);
 
   return (
     <div>
@@ -46,63 +50,25 @@ const ProductDetailedDesc = ({ product }) => {
       >
         <SwiperSlide>
           <div className="w-3/4 mx-auto">
-            <p className="my-7">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-              Quibusdam ipsa voluptate deserunt amet numquam et eligendi
-              quisquam dicta impedit, ex sit incidunt, magnam dolorum quia quas
-              accusantium nam libero repellat!
-            </p>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem
-              iure, est esse aspernatur fuga tempora quae assumenda quibusdam
-              repellendus placeat ullam voluptate iusto, nam totam. Autem
-              deserunt ut assumenda reiciendis?
-            </p>
-          </div>
-          <div className="flex md:flex-row flex-col mt-7 gap-7 mx-24">
-            <img
-              className="bg-[#fff9e5] w-full md:w-1/2 h-[400px]"
-              src=""
-              alt=""
-            />
-            <img
-              className="bg-[#fff9e5] w-full md:w-1/2 h-[400px]"
-              src=""
-              alt=""
-            />
+            <p className="my-7">{product.detailedDesc}</p>
+            {product.descImgs?.map((img) => {
+              <img
+                className="bg-[#fff9e5] rounded-lg w-full md:w-1/2 h-[400px]"
+                src={img}
+                alt=""
+              />;
+            })}
           </div>
         </SwiperSlide>
         <SwiperSlide>
           <div className="w-3/4 mx-auto">
-            <p className="py-7">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-              Quibusdam ipsa voluptate deserunt amet numquam et eligendi
-              quisquam dicta impedit, ex sit incidunt, magnam dolorum quia quas
-              accusantium nam libero repellat! Lorem ipsum, dolor sit amet
-              consectetur adipisicing elit. Quibusdam ipsa voluptate deserunt
-              amet numquam et eligendi quisquam dicta impedit, ex sit incidunt,
-              magnam dolorum quia quas accusantium nam libero repellat! Lorem
-              ipsum, dolor sit amet consectetur adipisicing elit. Quibusdam ipsa
-              voluptate deserunt amet numquam et eligendi quisquam dicta
-              impedit, ex sit incidunt, magnam dolorum quia quas accusantium nam
-              libero repellat! Lorem ipsum, dolor sit amet consectetur
-              adipisicing elit. Quibusdam ipsa voluptate deserunt amet numquam
-              et eligendi quisquam dicta impedit, ex sit incidunt, magnam
-              dolorum quia quas accusantium nam libero repellat! Lorem ipsum,
-              dolor sit amet consectetur adipisicing elit. Quibusdam ipsa
-              voluptate deserunt amet numquam et eligendi quisquam dicta
-              impedit, ex sit incidunt, magnam dolorum quia quas accusantium nam
-              libero repellat! Lorem ipsum, dolor sit amet consectetur
-              adipisicing elit. Quibusdam ipsa voluptate deserunt amet numquam
-              et eligendi quisquam dicta impedit, ex sit incidunt, magnam
-              dolorum quia quas accusantium nam libero repellat!
-            </p>
+            <p className="my-7">{product.additionalInfo}</p>
           </div>
         </SwiperSlide>
         <SwiperSlide>
-            <div className="flex gap-5">
-                <Review />
-            </div>
+          <div className="flex gap-5">
+            <Review />
+          </div>
         </SwiperSlide>
       </Swiper>
     </div>

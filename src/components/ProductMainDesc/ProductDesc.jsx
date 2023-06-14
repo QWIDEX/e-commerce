@@ -1,13 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import RateProduct from "../RateProduct/RateProduct";
-import { useSearchParams } from "react-router-dom";
-import mergeSearchParams from "../../helpers/mergeSearchParams";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../store/slices/cartSlice";
 
-const ProductDesc = ({ product = {} }) => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const { available = 5 } = product;
+const ProductDesc = ({ product, editing = false }) => {
+  const { available } = product;
 
   const [orderProductCount, setOrderProductCount] = useState(1);
 
@@ -20,73 +17,46 @@ const ProductDesc = ({ product = {} }) => {
     if (count === "") setOrderProductCount(count);
   };
 
+  const separateThousands = (number) => {
+    const reversedNumber = String(number).split("").reverse();
+    let result = "";
+
+    for (let i = 0; i < reversedNumber.length; i++) {
+      if (i % 3 === 0 && i !== 0) {
+        result += ",";
+      }
+      result += reversedNumber[i];
+    }
+
+    return result.split("").reverse().join("");
+  };
+
+  useEffect(() => {
+    if (editing) {
+      const textArea = document.getElementById("smallDesc");
+      textArea.style.height = `${textArea.scrollHeight + 10}px`;
+    }
+  });
+
   return (
     <div className="w-full lg-sm:w-1/2">
       <div className=" max-w-md mx-auto">
         <h1 className="text-4xl leading-normal text-center lg-sm:text-left">
-          Asgaard sofa
+          {product.label}
         </h1>
+
         <p className="text-2xl leading-normal text-[rgb(159,159,159)] font-medium">
-          250,000.00 $
+          {`${separateThousands(product.price)}$`}
         </p>
+
         <div className="flex gap-5 items-center">
           <RateProduct className="py-2" />{" "}
           <div className="h-7 w-0.5 rounded-lg bg-[#9F9F9F]" />
           <div className="text-sm leading-normal text-[#9F9F9F]">
-            5 Customer Review
+            {product.reviews.length} Customer Reviews
           </div>
         </div>
-
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque quos
-          odit eius numquam placeat quibusdam mollitia velit repudiandae nam
-          magni voluptatibus, quaerat esse fuga? Aliquid non accusantium ex quam
-          magni.
-        </p>
-        <div className="mt-5">
-          <h4 className="text-[#9F9F9F] text-base">Size</h4>
-          <div className="flex gap-4 mt-3">
-            <button
-              style={
-                !searchParams.get("size") || searchParams.get("size") === "L"
-                  ? { backgroundColor: "#FBEBB5" }
-                  : {}
-              }
-              className="h-8 w-8 text-sm bg-[#FAF4F4] rounded-lg"
-              onClick={() =>
-                setSearchParams(mergeSearchParams(searchParams, { size: "L" }))
-              }
-            >
-              L
-            </button>
-            <button
-              style={
-                searchParams.get("size") === "XL"
-                  ? { backgroundColor: "#FBEBB5" }
-                  : {}
-              }
-              className="h-8 w-8 text-sm bg-[#FAF4F4] rounded-lg"
-              onClick={() =>
-                setSearchParams(mergeSearchParams(searchParams, { size: "XL" }))
-              }
-            >
-              XL
-            </button>
-            <button
-              style={
-                searchParams.get("size") === "XS"
-                  ? { backgroundColor: "#FBEBB5" }
-                  : {}
-              }
-              className="h-8 w-8 text-sm bg-[#FAF4F4] rounded-lg"
-              onClick={() =>
-                setSearchParams(mergeSearchParams(searchParams, { size: "XS" }))
-              }
-            >
-              XS
-            </button>
-          </div>
-        </div>
+        <p>{product.smallDesc}</p>
         <div className="mt-5">
           <p className="text-[#9F9F9F] mb-2 text-base">{available} available</p>
           <div className="flex gap-5">

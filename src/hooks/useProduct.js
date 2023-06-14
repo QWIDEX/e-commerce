@@ -8,9 +8,14 @@ const useProduct = (docID) => {
 
   useEffect(() => {
     getProduct(docID)
-      .then((product) => setProduct(product))
-      .catch((err) => setError(err))
-      .finally(setLoading(false));
+      .then((product) => {
+        setProduct(product);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err);
+        setLoading(false);
+      });
   }, [docID]);
 
   return { product, loading, error };

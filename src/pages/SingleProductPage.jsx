@@ -19,17 +19,16 @@ const SingleProduct = () => {
       {error ? (
         <ErrorIndicator />
       ) : loading ? (
-        <LoadingIndicator />
+        <LoadingIndicator className="py-9 h-[100vh]" />
       ) : (
         <>
-          <MiniHeadingPathSect label={product?.label} />
+          <MiniHeadingPathSect label={product.label} />
           <ProductMainDesc product={product} />
           <div className="border my-12 border-[#D9D9D9] w-full"></div>
           <ProductDetailedDesc product={product} />
         </>
       )}
       <TopPicksForU />
-      <Toaster />
     </div>
   );
 };

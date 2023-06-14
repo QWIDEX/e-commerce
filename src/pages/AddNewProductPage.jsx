@@ -2,12 +2,16 @@ import React, { useState } from "react";
 import { db, storage } from "../firebase";
 import {
   collection,
-  addDoc
+  addDoc,
+  updateDoc,
+  doc,
+  deleteField,
 } from "firebase/firestore";
 import { ref, uploadBytes } from "firebase/storage";
 import toast, { Toaster } from "react-hot-toast";
 import AddNewProductCard from "../components/AddNewProductCard/AddNewProductCard";
 import CatalogWithFilters from "../components/CatalogWithFilters/CatalogWithFilters";
+import useProducts from "../hooks/useProducts";
 
 const AddNewProductPage = () => {
   const [productName, setProductName] = useState("");
@@ -28,6 +32,8 @@ const AddNewProductPage = () => {
       toast.error(err);
     }
   };
+
+  const { products } = useProducts();
 
   const uploadImage = async () => {
     const imagesFolderRef = ref(storage, `images/products/${productName}`);
@@ -93,7 +99,6 @@ const AddNewProductPage = () => {
           placeholder="Add image"
           className="hidden"
           onChange={(e) => {
-            console.log(e.target.files);
             setImageUpload(e.target.files[0]);
             e.target.value = "";
           }}

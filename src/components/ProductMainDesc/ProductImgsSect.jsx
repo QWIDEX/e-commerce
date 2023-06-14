@@ -53,6 +53,7 @@ const ProductImgsSect = ({ imgs = [] }) => {
         <Swiper
           slidesPerView={1}
           width={swiperWidth}
+          className="h-full"
           spaceBetween={50}
           onSwiper={(swiper) => setSwiper(swiper)}
           onSlideChange={(e) => setSlideSelected(e.activeIndex)}
@@ -71,8 +72,8 @@ const ProductImgsSect = ({ imgs = [] }) => {
 const ImgSelector = ({ img, idx, handleImgSelector, selected }) => {
   return (
     <div
-      className="p-0.5 rounded-lg m-auto"
-      style={selected ? { border: "2px solid black" } : {}}
+      className="p-0.5 transition-all duration-300 rounded-lg"
+      style={selected ? { border: "2px solid black" } : {border: "2px solid transparent"}}
     >
       <button
         onClick={() => handleImgSelector(idx)}
