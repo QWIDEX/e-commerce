@@ -72,29 +72,39 @@ const DetailedDescSlide = ({ descImgs = [], detailedDesc }) => {
   const [secondImg, setSecondImg] = useState(descImgs[1]);
   const [desc, setDesc] = useState(detailedDesc);
 
+  useEffect(() => {
+    const textArea = document.getElementById("detailedDesc");
+    textArea.style.height = `${textArea.scrollHeight + 10}px`;
+  }, []);
+
   return (
     <>
       <div className="w-3/4 mx-auto">
         <textarea
           className="my-7 w-full border border-gray-200 rounded-lg"
           value={desc}
+          id="detailedDesc"
           name="detailedDesc"
-          onChange={(e) => setDesc(e.target.value)}
+          onChange={(e) => {
+            e.target.style.height = `${e.target.scrollHeight + 2}px`;
+
+            setDesc(e.target.value);
+          }}
         />
       </div>
       <div className="flex md:flex-row flex-col mt-7 gap-7 mx-24">
         <label className="w-1/2">
           <input
             type="file"
-            onChange={(e) => setFirstImg(e.target.files[0])}
+            onChange={(e) => setFirstImg(URL.createObjectURL(e.target.files[0]))}
             name="firstDescImg"
             accept=".png, .jpg"
-            className="hidden"
+            className="hidden deskImg"
           />
           {firstImg ? (
             <img
               className="bg-[#fff9e5] rounded-lg w-full md:w-1/2 h-[400px]"
-              src={URL.createObjectURL(firstImg)}
+              src={firstImg}
               alt=""
             />
           ) : (
@@ -104,15 +114,15 @@ const DetailedDescSlide = ({ descImgs = [], detailedDesc }) => {
         <label className="w-1/2">
           <input
             type="file"
-            onChange={(e) => setSecondImg(e.target.files[0])}
+            onChange={(e) => setSecondImg(URL.createObjectURL(e.target.files[0]))}
             name="secondDescImg"
             accept=".png, .jpg"
-            className="hidden"
+            className="hidden deskImg"
           />
           {secondImg ? (
             <img
               className="bg-[#fff9e5] rounded-lg w-full md:w-1/2 h-[400px]"
-              src={URL.createObjectURL(secondImg)}
+              src={secondImg}
               alt=""
             />
           ) : (
@@ -125,7 +135,8 @@ const DetailedDescSlide = ({ descImgs = [], detailedDesc }) => {
 };
 
 const AdditionalInfoSlide = ({ additionalInfo }) => {
-  const [editngAdditionalInfo, setEditingAdditionalInfo] = useState(additionalInfo);
+  const [editngAdditionalInfo, setEditingAdditionalInfo] =
+    useState(additionalInfo);
 
   useEffect(() => {
     const textArea = document.getElementById("additionalInfo");
@@ -136,7 +147,7 @@ const AdditionalInfoSlide = ({ additionalInfo }) => {
     <div className="w-3/4 mx-auto ">
       <textarea
         name="additionalInfo"
-        id='additionalInfo'
+        id="additionalInfo"
         value={editngAdditionalInfo}
         onChange={(e) => {
           e.target.style.height = `${e.target.scrollHeight + 2}px`;

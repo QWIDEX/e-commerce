@@ -135,9 +135,10 @@ const SlideImg = ({ img, idx, handleImgUpdate, handleDeleteImg }) => {
         type="file"
         onChange={(e) => handleImgUpdate(e.target.files[0], idx)}
         name="img"
+        files={[img]}
         id={`slideImg-${idx}`}
         accept=".png, .jpg"
-        className="hidden"
+        className="slideImg hidden"
       />
       {img ? (
         <img

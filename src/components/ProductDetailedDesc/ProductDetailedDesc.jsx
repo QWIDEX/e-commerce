@@ -51,13 +51,15 @@ const ProductDetailedDesc = ({ product, editing }) => {
         <SwiperSlide>
           <div className="w-3/4 mx-auto">
             <p className="my-7">{product.detailedDesc}</p>
-            {product.descImgs?.map((img) => {
-              <img
-                className="bg-[#fff9e5] rounded-lg w-full md:w-1/2 h-[400px]"
-                src={img}
-                alt=""
-              />;
-            })}
+            <div className="flex md:flex-row flex-col justify-center mt-7 gap-7 mx-24">
+              {product.descImgs?.map((img) => {
+                <img
+                  className="bg-[#fff9e5] rounded-lg w-full md:w-1/2 h-[400px]"
+                  src={img}
+                  alt=""
+                />;
+              })}
+            </div>
           </div>
         </SwiperSlide>
         <SwiperSlide>

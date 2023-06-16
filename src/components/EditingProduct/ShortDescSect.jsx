@@ -19,12 +19,14 @@ const ShortDescSect = ({ product }) => {
             type="text"
             className="text-4xl border border-gray-200 rounded-lg leading-normal text-center lg-sm:text-left"
             value={label}
+            id="label"
             name="label"
             onChange={(e) => setLabel(e.target.value)}
           />
           <input
             type="number"
             name="price"
+            id="price"
             className="text-2xl leading-normal text-[rgb(159,159,159)] font-medium border border-gray-200 rounded-lg"
             value={price}
             min={0}
@@ -54,6 +56,7 @@ const ShortDescSect = ({ product }) => {
               style={{ width: `${("" + available).length + 2}ch` }}
               value={available}
               name="available"
+              id="available"
               className="text-[#9F9F9F] border border-gray-200 rounded-lg mb-2 text-base"
               onChange={(e) => setAvailable(parseInt(e.target.value))}
             />

@@ -5,7 +5,8 @@ import { getDownloadURL, ref, listAll,  } from "firebase/storage";
 
 const getProduct = async (docID) => {
   const productRef = doc(db, "products", docID);
-  const product = (await getDoc(productRef)).data();
+  const productQueried = await getDoc(productRef)
+  const product = {...productQueried.data(), id: productQueried.id};
 
   const mainImg = await getDownloadURL(
     ref(storage, `images/products/${product.label}`)
@@ -15,13 +16,23 @@ const getProduct = async (docID) => {
     await listAll(ref(storage, `images/products/${product.label}/`))
   ).items;
 
+  const descImgsRefsList =  (
+    await listAll(ref(storage, `images/products/${product.label}/desc/`))
+  ).items;
+
   const imgsList = await Promise.all(
     imgsRefsList.map(
       async (imgRef) => await getDownloadURL(ref(storage, imgRef.fullPath))
     )
   );
 
-  return { ...product, imgsList: [mainImg, ...imgsList] };
+  const descImgs = await Promise.all(
+    descImgsRefsList.map(
+      async (imgRef) => await getDownloadURL(ref(storage, imgRef.fullPath))
+    )
+  );
+
+  return { ...product, imgsList: [mainImg, ...imgsList], descImgs };
 };
 
 export default getProduct;
