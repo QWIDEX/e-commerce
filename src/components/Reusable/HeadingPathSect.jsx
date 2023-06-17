@@ -2,7 +2,7 @@ import React from "react";
 import { useHref } from "react-router";
 import { Link } from "react-router-dom";
 
-const HeadingPathSect = () => {
+const HeadingPathSect = ({ overrideDefaultPath }) => {
   const path = useHref();
 
   const displayPath =
@@ -16,6 +16,7 @@ const HeadingPathSect = () => {
       .toString()
       .slice(1)
       .replace(",", "");
+
   return (
     <>
       <div className="pt-24"></div>
@@ -31,7 +32,9 @@ const HeadingPathSect = () => {
             className="w-[77px] h-[77px] "
             alt="Meubel_House_Logos-05.png"
           />
-          <h2 className="font-medium text-5xl leading-normal">{displayPath}</h2>
+          <h2 className="font-medium text-5xl leading-normal">
+            {overrideDefaultPath ? overrideDefaultPath : displayPath}
+          </h2>
           <div className="flex [&>*]:mr-2 items-center mt-1 h-7">
             <Link to="/" className="text-base font-medium leading-normal">
               Home
@@ -49,7 +52,7 @@ const HeadingPathSect = () => {
               </svg>
             </span>
             <Link className="!mr-0" to={path}>
-              {displayPath}
+              {overrideDefaultPath ? overrideDefaultPath : displayPath}
             </Link>
           </div>
         </div>

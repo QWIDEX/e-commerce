@@ -2,7 +2,7 @@ import React from "react";
 
 const ButtonOutline = ({ children, onClick }) => {
   return (
-    <button onClick={(e) => onClick(e)} className="border-2 rounded-xl px-16 py-4 border-black font-normal max-w-max text-xl">
+    <button onClick={onClick} className="border-2 rounded-xl hover:bg-black hover:text-white transition-all duration-300 px-16 py-4 border-black font-normal max-w-max text-xl">
       {children}
     </button>
   );
