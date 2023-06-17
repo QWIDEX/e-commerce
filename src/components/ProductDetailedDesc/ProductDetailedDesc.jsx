@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Review from "../Review/Review";
 
-const ProductDetailedDesc = ({ product, editing }) => {
+const ProductDetailedDesc = ({ product }) => {
   const [swiper, setSwiper] = useState(null);
   const [slideSelected, setSlideSelected] = useState(0);
 
@@ -51,14 +51,15 @@ const ProductDetailedDesc = ({ product, editing }) => {
         <SwiperSlide>
           <div className="w-3/4 mx-auto">
             <p className="my-7">{product.detailedDesc}</p>
-            <div className="flex md:flex-row flex-col justify-center mt-7 gap-7 mx-24">
-              {product.descImgs?.map((img) => {
+            <div className="flex w-full justify-center flex-col md:flex-row mt-7 gap-7">
+              {product.descImgs.map((img) => (
                 <img
-                  className="bg-[#fff9e5] rounded-lg w-full md:w-1/2 h-[400px]"
+                  key={img}
+                  className="bg-[#fff9e5] w-full md:!w-1/2 rounded-lg"
                   src={img}
                   alt=""
-                />;
-              })}
+                />
+              ))}
             </div>
           </div>
         </SwiperSlide>

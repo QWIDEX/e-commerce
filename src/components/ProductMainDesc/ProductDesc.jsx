@@ -13,7 +13,7 @@ const ProductDesc = ({ product, editing = false }) => {
   const handleProductCount = (count) => {
     if (count <= available && count > 0) setOrderProductCount(count);
     if (count > available) setOrderProductCount(available);
-    if (count < 1) setOrderProductCount(1);
+    if (count < 0) setOrderProductCount(0);
     if (count === "") setOrderProductCount(count);
   };
 
@@ -59,37 +59,43 @@ const ProductDesc = ({ product, editing = false }) => {
         <p>{product.smallDesc}</p>
         <div className="mt-5">
           <p className="text-[#9F9F9F] mb-2 text-base">{available} available</p>
-          <div className="flex gap-5">
-            <div className="flex py-5 px-3 rounded-xl border-[#9F9F9F] border-solid border w-full max-w-[125px] justify-around">
+          {available > 0 ? (
+            <div className="flex gap-5">
+              <div className="flex py-5 px-3 rounded-xl border-[#9F9F9F] border-solid border w-full max-w-[125px] justify-around">
+                <button
+                  className="relative cursor-pointer text-xl -top-[2px]"
+                  onClick={() => handleProductCount(orderProductCount - 1)}
+                >
+                  -
+                </button>
+                <input
+                  className="text-center"
+                  style={{ width: `${("" + orderProductCount).length + 2}ch` }}
+                  type="number"
+                  min={1}
+                  max={available}
+                  value={orderProductCount}
+                  onChange={(e) => handleProductCount(e.target.value)}
+                />
+                <button
+                  className="relative cursor-pointer text-xl -top-[2px]"
+                  onClick={() => handleProductCount(orderProductCount + 1)}
+                >
+                  +
+                </button>
+              </div>
               <button
-                className="relative cursor-pointer text-xl -top-[2px]"
-                onClick={() => handleProductCount(orderProductCount - 1)}
+                className="text-xl lg:px-12 px-8 hover:bg-black transition-all duration-300 hover:text-[#ffffff]  py-4 border border-[#000000] rounded-xl cursor-pointer border-solid"
+                onClick={() => dispatch(addToCart(product, orderProductCount))}
               >
-                -
-              </button>
-              <input
-                className="text-center"
-                style={{ width: `${("" + orderProductCount).length + 2}ch` }}
-                type="number"
-                min={1}
-                max={available}
-                value={orderProductCount}
-                onChange={(e) => handleProductCount(e.target.value)}
-              />
-              <button
-                className="relative cursor-pointer text-xl -top-[2px]"
-                onClick={() => handleProductCount(orderProductCount + 1)}
-              >
-                +
+                Add To Cart
               </button>
             </div>
-            <button
-              className="text-xl lg:px-12 px-8 hover:bg-black transition-all duration-300 hover:text-[#ffffff]  py-4 border border-[#000000] rounded-xl cursor-pointer border-solid"
-              onClick={() => dispatch(addToCart(product, orderProductCount))}
-            >
-              Add To Cart
+          ) : (
+            <button className="text-xl lg:px-12 px-8 hover:bg-black transition-all duration-300 hover:text-[#ffffff]  py-4 border border-[#000000] rounded-xl cursor-pointer border-solid">
+              Notify if present
             </button>
-          </div>
+          )}
         </div>
       </div>
     </div>

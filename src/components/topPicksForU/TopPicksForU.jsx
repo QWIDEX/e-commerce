@@ -5,13 +5,14 @@ import { Link } from "react-router-dom";
 import useProducts from "../../hooks/useProducts";
 import LoadingIndicator from "../LoadingIndicator/LoadingIndicator";
 import ErrorIndicator from "../ErrorIndicator/ErrorIndicator";
+import ShopProductCard from "../ShopProductCard/ShopProductCard";
 
 const TopPicksForU = () => {
   const desideHowManyRender = Math.floor(
     document.documentElement.clientWidth / 282
   ) - 1;
 
-  const {products, error, loading} = useProducts(0, desideHowManyRender)
+  const {products, error, loading} = useProducts(0, desideHowManyRender > 3 ? desideHowManyRender : 3)
 
   return (
     <section>
@@ -27,7 +28,7 @@ const TopPicksForU = () => {
         </div>
         <div className="flex flex-wrap min-h-[370px] mb-5 justify-center">
           { error ? <ErrorIndicator /> : (loading ? <LoadingIndicator /> : products.map((product) => {
-            return <ProductCard product={product} key={product.id} />;
+            return <ShopProductCard product={product} key={product.id} />;
           }))}
         </div>
         <Link to={"/shop"}><ButtonOutlineBtm>View More</ButtonOutlineBtm></Link>

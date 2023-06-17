@@ -10,7 +10,7 @@ import { deleteProduct } from "../../store/slices/productsSlice";
 
 const AddNewProductCard = (props) => {
   const { id, label, price, imgUrl } = props.product;
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const separateThousands = (number) => {
     const reversedNumber = String(number).split("").reverse();
@@ -42,29 +42,36 @@ const AddNewProductCard = (props) => {
       imgsRefsList.map(
         async (imgRef) => await deleteObject(ref(storage, imgRef.fullPath))
       );
-      dispatch(deleteProduct(props.idx))
+      dispatch(deleteProduct(props.idx));
     }
 
     if (error) toast.error(error);
   };
 
   return (
-    <div className="flex flex-col max-w-287px items-center md:!items-start ">
-      <img
-        src={imgUrl}
-        alt="Granite-square-side-table"
-        className="max-w-242px w-full m-5 md:w-11/12"
-      />
-      <div className="w-[100%] flex ">
-        <div className="w-[80%]">
-          <p className="font-normal  text-base leading-snug mb-3 text-center md:text-start max-w-74%">
-            {label}
-          </p>
-          <h2 className="font-medium text-2xl leading-normal">
-            {`${separateThousands(price)}$`}
-          </h2>
+    <div className="flex flex-col relative max-w-287px items-center md:!items-start ">
+      <Link
+        to={`/product/${props.product.id}`}
+        className="flex justify-between flex-col h-full"
+      >
+        <img
+          src={imgUrl}
+          alt="Granite-square-side-table"
+          className="max-w-242px w-full rounded-lg m-5 md:w-11/12"
+        />
+        <div className="w-[100%] flex ">
+          <div className="w-[80%]">
+            <p className="font-normal  text-base leading-snug mb-3 text-center md:text-start max-w-74%">
+              {label}
+            </p>
+            <h2 className="font-medium text-2xl leading-normal">
+              {`${separateThousands(price)}$`}
+            </h2>
+          </div>
         </div>
-        <div className="flex flex-col w-[10%] justify-between max-h-16">
+      </Link>
+      <div className="absolute h-1/5 flex items-center bottom-0 right-12">
+        <div className="flex flex-col w-[10%] justify-between max-h-16 gap-1">
           <Link to={`/edit-product/${id}`} className="group">
             <svg
               xmlns="http://www.w3.org/2000/svg"

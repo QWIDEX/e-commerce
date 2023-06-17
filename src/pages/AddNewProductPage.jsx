@@ -1,21 +1,14 @@
 import React, { useState } from "react";
 import { db, storage } from "../firebase";
-import {
-  collection,
-  addDoc,
-  updateDoc,
-  doc,
-  deleteField,
-} from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 import { ref, uploadBytes } from "firebase/storage";
 import toast, { Toaster } from "react-hot-toast";
 import AddNewProductCard from "../components/AddNewProductCard/AddNewProductCard";
 import CatalogWithFilters from "../components/CatalogWithFilters/CatalogWithFilters";
-import useProducts from "../hooks/useProducts";
 
 const AddNewProductPage = () => {
   const [productName, setProductName] = useState("");
-  const [productPrice, setProductPrice] = useState(0);
+  const [productPrice, setProductPrice] = useState();
   const [imageUpload, setImageUpload] = useState(undefined);
   const [productType, setProductType] = useState("noneSelected");
   const [productsTotal, setProductsTotal] = useState(100);
@@ -27,13 +20,17 @@ const AddNewProductPage = () => {
         label: productName,
         price: productPrice,
         type: productType,
+        detailedDesc: "",
+        additionalInfo: '',
+        available: 0,
+        ordered: 0,
+        reviews: [],
+        smallDesc: ''
       });
     } catch (err) {
       toast.error(err);
     }
   };
-
-  const { products } = useProducts();
 
   const uploadImage = async () => {
     const imagesFolderRef = ref(storage, `images/products/${productName}`);
@@ -48,7 +45,7 @@ const AddNewProductPage = () => {
   const addProduct = async () => {
     if (
       productName !== "" &&
-      productPrice !== 0 &&
+      ((productPrice !== 0 || productPrice === '') && productPrice) &&
       imageUpload !== null &&
       productType !== "noneSelected"
     ) {
@@ -62,11 +59,11 @@ const AddNewProductPage = () => {
       setProductsTotal(productsTotal + 1);
     } else if (productName === "") {
       toast.error("Напиши ім'я продукту");
-    } else if (productPrice === 0) {
+    } else if (productPrice !== 0 || productPrice === '') {
       toast.error("Напиши ціну");
     } else if (productType === "noneSelected") {
       toast.error("Вибери тип");
-    } else {
+    } else if (imageUpload === null) {
       toast.error("Додай картинку");
     }
   };

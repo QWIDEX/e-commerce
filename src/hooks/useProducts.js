@@ -49,7 +49,6 @@ const useProducts = (
   }
 
   useEffect(() => {
-
     if (productsDocs.length === 0) {
       dispatch((dispatch) => {
         getProductsDocs([], orderBy("ordered"))
@@ -70,7 +69,7 @@ const useProducts = (
             JSON.stringify(prevOptDeps) !== JSON.stringify(deps) ||
             to > storeProducts.length
           ) {
-            setLoading(true)
+            setLoading(true);
             const optProdutsDocs = filterProductsDocs(
               productsDocs,
               queryParams,
@@ -79,29 +78,33 @@ const useProducts = (
             dispatch(setOptProductsDocs(optProdutsDocs));
             dispatch((dispatch) => {
               getProducts(optProdutsDocs.slice(0, to))
-                .then((products) => dispatch(setOptProducts(products)))
+                .then((products) => {
+                  setLoading(false);
+
+                  dispatch(setOptProducts(products));
+                })
                 .catch((error) => {
                   setError(error);
-                })
-                .finally(() => {
                   setLoading(false);
                 });
             });
           }
           prevOptDeps = deps;
         } else if (storeProducts.length < to) {
-          setLoading(true)
+          setLoading(true);
           dispatch((dispatch) => {
             getProducts(productsDocs.slice(0, to))
-              .then((products) => dispatch(setProducts(products)))
+              .then((products) => {
+                setLoading(false);
+
+                dispatch(setProducts(products));
+              })
               .catch((error) => {
                 setError(error);
-              })
-              .finally(() => {
                 setLoading(false);
               });
           });
-        } else setLoading(false)
+        } else setLoading(false);
       }, 400);
 
       return () => {

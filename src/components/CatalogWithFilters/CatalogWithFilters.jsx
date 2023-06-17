@@ -7,7 +7,7 @@ import useProducts from "../../hooks/useProducts";
 import SwitchCatalogPage from "../../components/SwitchCatalogPage/SwitchCatalogPage";
 import { useSearchParams } from "react-router-dom";
 
-const CatalogWithFilters = ({ ProductCard }) => {
+const CatalogWithFilters = ({ ProductCard, additionalDeps }) => {
   const { pageParam } = useParams();
   const page = parseInt(pageParam || 1);
   const [searchParams] = useSearchParams();
@@ -35,7 +35,7 @@ const CatalogWithFilters = ({ ProductCard }) => {
   const productsState = useProducts(
     from,
     to,
-    [sortMethod, typeFilters, minPriceFilter, maxPriceFilter],
+    [sortMethod, typeFilters, minPriceFilter, maxPriceFilter, additionalDeps],
     sortMethod,
     filters
   );
