@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route, Routes } from "react-router";
 import Layout from "./components/Layout/Layout";
 import HomePage from "./pages/HomePage";
@@ -11,8 +11,26 @@ import SingleProductPage from "./pages/SingleProductPage";
 import AuthPage from "./pages/AuthPage";
 import ProfilePage from "./pages/ProfilePage";
 import EditProductPage from "./pages/EditProductPage";
+import { useDispatch } from "react-redux";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase";
+import getUserData from "./helpers/getUserData";
+import { setUser } from "./store/slices/userSlice";
 
 const App = () => {
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      dispatch((dispatch) => {
+        getUserData(user.uid).then((user) => {
+          dispatch(setUser(user));
+        });
+      });
+    })
+  }, [])
+
   return (
     <Routes>
       <Route path="/" element={<Layout />}>

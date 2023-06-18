@@ -4,7 +4,7 @@ import Register from "../Register/Register";
 
 const AuthSect = () => {
   return (
-    <div className="px-24 py-16 gap-7 flex justify-between">
+    <div className="lg-sm:px-24 px-10 sm:flex-row flex-col sm:py-16 gap-7 flex justify-center sm:justify-between">
       <Login />
       <Register />
     </div>

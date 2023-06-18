@@ -26,7 +26,7 @@ const HeadingPathSect = ({ overrideDefaultPath }) => {
           className="w-full select-none min-h-[180px]"
           alt="background"
         />
-        <div className="flex flex-col px-5 items-center absolute left-[50%] pb-6 -translate-x-[50%]">
+        <div className="flex w-full flex-col px-5 items-center absolute left-[50%] pb-6 -translate-x-[50%]">
           <img
             src={require("../../images/path/Meubel_House_Logos-05.png")}
             className="w-[77px] h-[77px] "

@@ -46,7 +46,7 @@ const Register = () => {
         e.preventDefault();
         handleRegister();
       }}
-      className="py-9 flex flex-col gap-7 w-1/2 px-20 max-w-xl pr-24"
+      className="py-9 w-full relative flex flex-col gap-7 sm:w-1/2 lg:px-17 md:px-15 xl:px-20 max-w-xl md:pr-12 lg-sm:pr-14 lg:pr-16 xl:pr-24"
     >
       <h1 className="font-semibold text-4xl leading-normal">Register</h1>
       <div className="flex flex-col gap-5">
@@ -115,7 +115,7 @@ const Register = () => {
             )}
           </button>
         </label>
-        <ButtonOutline type={"submit"}>Register</ButtonOutline>
+        <ButtonOutline className="self-center" type={"submit"}>Register</ButtonOutline>
       </div>
     </form>
   );
