@@ -3,6 +3,9 @@ import ButtonOutline from "../Reusable/BtnOutline";
 import { toast } from "react-hot-toast";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
+import { useDispatch } from "react-redux";
+import createUser from "../../helpers/createUser";
+import { setUser } from "../../store/slices/userSlice";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -11,6 +14,8 @@ const Register = () => {
 
   const [passShowing, setPassShowing] = useState(false);
 
+  const dispatch = useDispatch();
+
   const handleRegister = () => {
     if (password !== confirmPassword) toast.error("Passwords don't match");
     else if (!email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/gm))
@@ -18,8 +23,13 @@ const Register = () => {
     else {
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-          console.log(userCredential);
-          console.log(userCredential.user);
+          toast.success("You successfully registered");
+
+          dispatch((dispatch) => {
+            createUser(userCredential.user).then((user) =>
+              dispatch(setUser(user))
+            );
+          });
         })
         .catch((error) => {
           if (error.message === "Firebase: Error (auth/email-already-in-use).")
@@ -31,7 +41,13 @@ const Register = () => {
   const confirmPassRef = useRef();
 
   return (
-    <div className="py-9 flex flex-col gap-7 w-1/2 px-20 max-w-xl pr-24">
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleRegister();
+      }}
+      className="py-9 flex flex-col gap-7 w-1/2 px-20 max-w-xl pr-24"
+    >
       <h1 className="font-semibold text-4xl leading-normal">Register</h1>
       <div className="flex flex-col gap-5">
         <label className="flex flex-col gap-5">
@@ -64,10 +80,11 @@ const Register = () => {
             className="border inline-block border-black border-solid text-lg w-full py-3 px-4 rounded-lg"
           />
           <button
+            type="button"
             onClick={() => {
               if (passShowing) confirmPassRef.current.type = "password";
               else confirmPassRef.current.type = "text";
-              setPassShowing(!passShowing)
+              setPassShowing(!passShowing);
             }}
             className="absolute bottom-[15px] right-3"
           >
@@ -98,9 +115,9 @@ const Register = () => {
             )}
           </button>
         </label>
-        <ButtonOutline onClick={handleRegister}>Register</ButtonOutline>
+        <ButtonOutline type={"submit"}>Register</ButtonOutline>
       </div>
-    </div>
+    </form>
   );
 };
 
