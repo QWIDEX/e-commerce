@@ -22,15 +22,7 @@ const Register = () => {
       toast.error("Email isn't valid");
     else {
       createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          toast.success("You successfully registered");
-
-          dispatch((dispatch) => {
-            createUser(userCredential.user).then((user) =>
-              dispatch(setUser(user))
-            );
-          });
-        })
+        .then(() => toast.success("You successfully signed up"))
         .catch((error) => {
           if (error.message === "Firebase: Error (auth/email-already-in-use).")
             toast.error("Email is already in use");
@@ -48,14 +40,14 @@ const Register = () => {
       }}
       className="py-9 w-full relative flex flex-col gap-7 sm:w-1/2 lg:px-17 md:px-15 xl:px-20 max-w-xl md:pr-12 lg-sm:pr-14 lg:pr-16 xl:pr-24"
     >
-      <h1 className="font-semibold text-4xl leading-normal">Register</h1>
+      <h1 className="font-semibold text-4xl leading-normal">Sign up</h1>
       <div className="flex flex-col gap-5">
         <label className="flex flex-col gap-5">
           <h3 className="font-medium text-2xl leading-normal">Email address</h3>
           <input
             type="email"
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="email"
+            placeholder="Email"
             className="border border-black border-solid text-lg w-full py-3 px-4 rounded-lg"
           />
         </label>
@@ -64,7 +56,7 @@ const Register = () => {
           <input
             type="password"
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="password"
+            placeholder="Password"
             className="border border-black border-solid text-lg w-full py-3 px-4 rounded-lg"
           />
         </label>
@@ -76,7 +68,7 @@ const Register = () => {
             ref={confirmPassRef}
             type="password"
             onChange={(e) => setConfirmPassword(e.target.value)}
-            placeholder="password"
+            placeholder="Password"
             className="border inline-block border-black border-solid text-lg w-full py-3 px-4 rounded-lg"
           />
           <button
@@ -115,7 +107,9 @@ const Register = () => {
             )}
           </button>
         </label>
-        <ButtonOutline className="self-center" type={"submit"}>Register</ButtonOutline>
+        <ButtonOutline className="self-center" type={"submit"}>
+          Register
+        </ButtonOutline>
       </div>
     </form>
   );

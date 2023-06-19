@@ -3,7 +3,7 @@ import { db } from "../firebase";
 
 const createUser = async ({ email, uid }) => {
   const usersColRef = doc(db, `/users/${uid}`);
-  await setDoc(usersColRef, { email, name: "", surname: "" });
+  await setDoc(usersColRef, { email });
   return { email, uid };
 };
 

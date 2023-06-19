@@ -6,9 +6,7 @@ import {
 } from "firebase/auth";
 import { auth } from "../../firebase";
 import { toast } from "react-hot-toast";
-import getUserData from "../../helpers/getUserData";
 import { useDispatch } from "react-redux";
-import { setUser } from "../../store/slices/userSlice";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -61,15 +59,7 @@ const Login = () => {
     if (!password) toast.error("Write down password please");
     else {
       signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          toast.success("Successfully logged in");
-
-          dispatch((dispatch) => {
-            getUserData(userCredential.user.uid).then((user) => {
-              dispatch(setUser(user));
-            });
-          });
-        })
+        .then(() => toast.success("Successfully signed in"))
         .catch((error) => {
           if (error.message === "Firebase: Error (auth/wrong-password).")
             toast.error("Wrong password");
@@ -89,7 +79,7 @@ const Login = () => {
     >
       <div
         ref={forgotPassRef}
-        className="absolute w-full h-full flex justify-center items-center top-0 left-0 transition-all duration-300"
+        className="absolute w-full opacity-0 hidden h-full  justify-center items-center top-0 left-0 transition-all duration-300"
       >
         <button
           onClick={handleForgotPass}
@@ -128,7 +118,8 @@ const Login = () => {
             <input
               type="email"
               onChange={(e) => setRecoveryEmail(e.target.value)}
-              placeholder="email"
+              placeholder="Email"
+              name="recoveryEmail"
               className="border border-black border-solid text-lg w-full py-3 px-4 rounded-lg"
             />
           </label>
@@ -144,14 +135,14 @@ const Login = () => {
           </ButtonOutline>
         </div>
       </div>
-      <h1 className="font-semibold text-4xl leading-normal">Log In</h1>
+      <h1 className="font-semibold text-4xl leading-normal">Sign In</h1>
       <div className="flex flex-col gap-5">
         <label className="flex flex-col gap-5">
           <h3 className="font-medium text-2xl leading-normal">Email address</h3>
           <input
             type="email"
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="email"
+            placeholder="Email"
             className="border border-black border-solid text-lg w-full py-3 px-4 rounded-lg"
           />
         </label>
@@ -160,7 +151,7 @@ const Login = () => {
           <input
             type="password"
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="password"
+            placeholder="Password"
             className="border border-black border-solid text-lg w-full py-3 px-4 rounded-lg"
           />
         </label>

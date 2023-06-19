@@ -97,7 +97,7 @@ const EditProductPage = () => {
         <LoadingIndicator className="py-9 h-[100vh]" />
       ) : (
         <div className="py-9">
-          <MiniHeadingPathSect label={product.label} />
+          <MiniHeadingPathSect label={product.label} labels={["Shop"]} paths={["shop"]} />
           <MainDesc product={product} />
           <div className="border my-12 border-[#D9D9D9] w-full"></div>
           <DetailedDesc product={product} />
