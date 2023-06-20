@@ -161,7 +161,7 @@ const ProfileSect = () => {
         }}
         className="flex flex-col gap-5 items-center"
       >
-        <div className="flex gap-7 w-full justify-center">
+        <div className="flex gap-7 w-full flex-col sm-sm:flex-row justify-center">
           <ClasicInput
             label={"First name"}
             onChange={setFirstName}
@@ -175,7 +175,7 @@ const ProfileSect = () => {
             name={"lastName"}
           />
         </div>
-        <div className="flex gap-7 justify-center w-full">
+        <div className="flex gap-7 w-full flex-col sm-sm:flex-row justify-center">
           <ClasicInput
             label={"Email adress"}
             onChange={setEmail}
@@ -191,7 +191,7 @@ const ProfileSect = () => {
             name={"phoneNumber"}
           />
         </div>
-        <div className="flex gap-7 justify-center w-full">
+        <div className="flex gap-7 w-full flex-col sm-sm:flex-row justify-center">
           <ClasicInput
             label={"Country"}
             onChange={setCountry}
@@ -205,7 +205,7 @@ const ProfileSect = () => {
             name={"city"}
           />
         </div>
-        <div className="flex gap-7 justify-center w-full">
+        <div className="flex gap-7 w-full flex-col sm-sm:flex-row justify-center">
           <ClasicInput
             label={"Street address"}
             onChange={setStreet}
@@ -219,7 +219,7 @@ const ProfileSect = () => {
             name={"zipCode"}
           />
         </div>
-        <div className="flex w-4/5 justify-between mx-auto">
+        <div className="flex lg:flex-row flex-col gap-7 items-center lg:items-start w-4/5 justify-between mx-auto">
           <ButtonOutlineBtm
             className="text-xl pb-0"
             onClick={toggleChangePassword}

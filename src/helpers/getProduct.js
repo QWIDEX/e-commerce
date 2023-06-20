@@ -32,7 +32,7 @@ const getProduct = async (docID) => {
     )
   );
 
-  return { ...product, imgsList: [mainImg, ...imgsList], descImgs };
+  return { ...product, imgsList: [mainImg, ...imgsList], descImgs, imgUrl: mainImg };
 };
 
 export default getProduct;

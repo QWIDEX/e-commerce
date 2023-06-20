@@ -97,11 +97,12 @@ const ChangePasswordBlock = ({
         className="absolute rounded-lg transition-all duration-300 bg-[rgba(0,0,0,0.3)] w-full h-full"
       ></button>
       <ForgotPassBlock
+        className=" sm-sm:max-w-[80%]"
         forgotPassRef={forgotPassRef}
         handleForgotPass={handleForgotPass}
         initialEmail={user.email}
       />
-      <form className="w-4/5 h-4/5 flex relative flex-col gap-7 p-5 z-10 rounded-lg bg-white">
+      <form className="sm-sm:!w-4/5 h-fit w-full sm-sm:h-fit justify-center sm-sm:justify-start flex relative flex-col gap-7 p-5 z-10 rounded-lg bg-white">
         <button
           type="button"
           className="absolute top-[14px] left-2"
@@ -123,7 +124,7 @@ const ChangePasswordBlock = ({
             />
           </svg>
         </button>
-        <h1 className="text-2xl font-semibold leading-normal text-center">
+        <h1 className="text-2xl w-1/2 mx-auto font-semibold leading-normal text-center">
           Change Password
         </h1>
         <ClasicInput
@@ -189,7 +190,7 @@ const ChangePasswordBlock = ({
             )}
           </button>
         </label>
-        <div className="flex justify-around">
+        <div className="flex flex-col sm:flex-row gap-7 justify-around">
           <button
             type="button"
             onClick={handleForgotPass}

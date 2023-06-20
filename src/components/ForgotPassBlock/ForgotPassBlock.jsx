@@ -5,6 +5,7 @@ import { toast } from "react-hot-toast";
 import ButtonOutline from "../Reusable/BtnOutline";
 
 const ForgotPassBlock = ({
+  className = "",
   forgotPassRef,
   handleForgotPass,
   initialEmail = "",
@@ -38,7 +39,7 @@ const ForgotPassBlock = ({
         type="button"
         className="!bg-[rgba(0,0,0,.3)] rounded-lg absolute w-full h-full"
       ></button>
-      <div className="bg-white relative md:max-h-[516px] md:max-w-xl w-full gap-7 flex flex-col p-4 h-full md:h-[85%] rounded-lg md:!w-[75%] z-10">
+      <div className={`bg-white relative max-h-[516px] md:max-w-xl w-full gap-7 flex flex-col p-4 h-full md:h-[85%] rounded-lg md:!w-[75%] z-10 ${className}`}>
         <button
           type="button"
           className="absolute top-[14px] left-2"

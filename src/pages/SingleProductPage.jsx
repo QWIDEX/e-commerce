@@ -29,6 +29,7 @@ const SingleProduct = () => {
         </>
       )}
       <TopPicksForU />
+      <Toaster />
     </div>
   );
 };

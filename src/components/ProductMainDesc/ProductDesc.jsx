@@ -86,7 +86,7 @@ const ProductDesc = ({ product, editing = false }) => {
               </div>
               <button
                 className="text-xl lg:px-12 px-8 hover:bg-black transition-all duration-300 hover:text-[#ffffff]  py-4 border border-[#000000] rounded-xl cursor-pointer border-solid"
-                onClick={() => dispatch(addToCart(product, orderProductCount))}
+                onClick={() => dispatch(addToCart({product, count: orderProductCount, type: 'set'}))}
               >
                 Add To Cart
               </button>
