@@ -27,14 +27,6 @@ const updateUser = async (
     });
   }
 
-  const avatarRef = ref(storage, `images/users/avatars/${user.uid}`);
-
-  if (!error && avatar) {
-    uploadBytes(avatarRef, avatar).catch((err) => {
-      error = err;
-    });
-  }
-
   if (!error) {
     await updateDoc(userDocRef, {
       firstName,
@@ -50,6 +42,14 @@ const updateUser = async (
     });
   }
 
+  const avatarRef = ref(storage, `images/users/avatars/${user.uid}`);
+
+  if (!error && avatar) {
+    await uploadBytes(avatarRef, avatar).catch((err) => {
+      error = err;
+    });
+  }
+  
   if (error) throw error;
 };
 export default updateUser;

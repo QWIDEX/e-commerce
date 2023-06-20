@@ -12,7 +12,7 @@ const MiniHeadingPathSect = ({ label = "", labels = [], paths = [] }) => {
       </Link>
       {labels.map((label, idx) => {
         return (
-          <div key={label}>
+          <span key={label} className='flex gap-3'>
             <span>
               <svg
                 width="20"
@@ -31,7 +31,7 @@ const MiniHeadingPathSect = ({ label = "", labels = [], paths = [] }) => {
             >
               {label}
             </Link>
-          </div>
+          </span>
         );
       })}
       <svg

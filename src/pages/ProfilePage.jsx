@@ -28,7 +28,7 @@ const ProfilePage = () => {
       ) : (
         <div className="px-20 gap-10 flex justify-between">
           <ProfileNav />
-          <div className="w-full shadow-md border-[2px] rounded-lg border-gray-200 p-5">
+          <div className="w-full relative shadow-md border-[2px] rounded-lg border-gray-200 p-5">
             {subpage === undefined ? <ProfileSect /> : <></>}
           </div>
         </div>

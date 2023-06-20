@@ -1,14 +1,22 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import ButtonOutline from "../Reusable/BtnOutline";
 import ButtonOutlineBtm from "../Reusable/BtnOutlineBtm";
 import { toast } from "react-hot-toast";
 import updateUser from "../../helpers/updateUser";
 import { sendEmailVerification } from "firebase/auth";
 import { auth } from "../../firebase";
+import getUserData from "../../helpers/getUserData";
+import { setUser } from "../../store/slices/userSlice";
+import ClasicInput from "../Reusable/ClassicInput";
+import ChangePasswordBlock from "../ChangePasswordBlock/ChangePasswordBlock";
 
 const ProfileSect = () => {
   const user = useSelector((state) => state.user.user);
+  const dispatch = useDispatch();
+
+  const [passwordChangeToggled, setPasswordChangeToggled] = useState(false);
+  const [emailVerified, setEmailVerified] = useState(user.emailVerified);
 
   const [firstName, setFirstName] = useState(user?.firstName || "");
   const [lastName, setLastName] = useState(user?.lastName || "");
@@ -19,7 +27,6 @@ const ProfileSect = () => {
   const [street, setStreet] = useState(user?.street || "");
   const [zipCode, setZipConde] = useState(user?.zipCode || "");
   const [avatar, setAvatar] = useState([user?.avatar, undefined]);
-  const [emailVerified, setEmailVerified] = useState(user.emailVerified);
 
   const handleSubmit = () => {
     if (!email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/gm))
@@ -39,7 +46,14 @@ const ProfileSect = () => {
         },
         user
       )
-        .then(() => toast.success("Successfully updated"))
+        .then(() => {
+          toast.success("Successfully updated");
+          dispatch((dispatch) => {
+            getUserData(auth.currentUser).then((user) => {
+              dispatch(setUser(user));
+            });
+          });
+        })
         .catch((error) => {
           toast.error("Something went wrong, try again later");
           console.error(error);
@@ -54,6 +68,25 @@ const ProfileSect = () => {
         setEmailVerified(true);
       })
       .catch(() => toast.error("Something went wrong, try again later"));
+  };
+
+  const passwordChangeRef = useRef();
+
+  const toggleChangePassword = () => {
+    if (passwordChangeToggled) {
+      passwordChangeRef.current.style.opacity = "0";
+      passwordChangeRef.current.style.pointerEvents = "none";
+      setTimeout(() => {
+        passwordChangeRef.current.style.display = "none";
+      }, 300);
+    } else {
+      passwordChangeRef.current.style.display = "flex";
+      setTimeout(() => {
+        passwordChangeRef.current.style.pointerEvents = "auto";
+        passwordChangeRef.current.style.opacity = "1";
+      }, 300);
+    }
+    setPasswordChangeToggled(!passwordChangeToggled);
   };
 
   return (
@@ -73,6 +106,11 @@ const ProfileSect = () => {
       ) : (
         <></>
       )}
+      <ChangePasswordBlock
+        passwordChangeRef={passwordChangeRef}
+        toggleChangePassword={toggleChangePassword}
+        user={user}
+      />
       <h1 className="text-2xl font-semibold leading-normal text-center">
         Profile Settings
       </h1>
@@ -124,113 +162,69 @@ const ProfileSect = () => {
         className="flex flex-col gap-5 items-center"
       >
         <div className="flex gap-7 w-full justify-center">
-          <label className="flex w-full flex-col gap-5 max-w-sm">
-            <h3 className="font-medium text-[20px] leading-normal">
-              First name
-            </h3>
-            <input
-              type="text"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              placeholder="First name"
-              name="firstName"
-              className="border border-black border-solid text-base w-full py-3 px-4 rounded-lg"
-            />
-          </label>
-          <label className="flex w-full flex-col gap-5 max-w-sm">
-            <h3 className="font-medium text-[20px] leading-normal">
-              Last name
-            </h3>
-            <input
-              type="text"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              placeholder="Last name"
-              name="lastName"
-              className="border border-black border-solid text-base w-full py-3 px-4 rounded-lg"
-            />
-          </label>
+          <ClasicInput
+            label={"First name"}
+            onChange={setFirstName}
+            value={firstName}
+            name={"firstName"}
+          />
+          <ClasicInput
+            label={"Last name"}
+            onChange={setLastName}
+            value={lastName}
+            name={"lastName"}
+          />
         </div>
         <div className="flex gap-7 justify-center w-full">
-          <label className="flex w-full flex-col gap-5 max-w-sm">
-            <h3 className="font-medium text-[20px] leading-normal">
-              Email adress
-            </h3>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email"
-              name="email"
-              className="border border-black border-solid text-base w-full py-3 px-4 rounded-lg"
-            />
-          </label>
-          <label className="flex w-full flex-col gap-5 max-w-sm">
-            <h3 className="font-medium text-[20px] leading-normal">
-              Phone number
-            </h3>
-            <input
-              type="tel"
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-              placeholder="Phone number"
-              name="phoneNumber"
-              className="border border-black border-solid text-base w-full py-3 px-4 rounded-lg"
-            />
-          </label>
+          <ClasicInput
+            label={"Email adress"}
+            onChange={setEmail}
+            type="email"
+            value={email}
+            name={"email"}
+          />
+          <ClasicInput
+            label={"Phone number"}
+            onChange={setPhoneNumber}
+            type="tel"
+            value={phoneNumber}
+            name={"phoneNumber"}
+          />
         </div>
         <div className="flex gap-7 justify-center w-full">
-          <label className="flex w-full flex-col gap-5 max-w-sm">
-            <h3 className="font-medium text-[20px] leading-normal">Country</h3>
-            <input
-              type="text"
-              value={country}
-              onChange={(e) => setCountry(e.target.value)}
-              placeholder="Country"
-              name="Country"
-              className="border border-black border-solid text-base w-full py-3 px-4 rounded-lg"
-            />
-          </label>
-          <label className="flex w-full flex-col gap-5 max-w-sm">
-            <h3 className="font-medium text-[20px] leading-normal">City</h3>
-            <input
-              type="text"
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
-              placeholder="City"
-              name="city"
-              className="border border-black border-solid text-base w-full py-3 px-4 rounded-lg"
-            />
-          </label>
+          <ClasicInput
+            label={"Country"}
+            onChange={setCountry}
+            value={country}
+            name={"country"}
+          />
+          <ClasicInput
+            label={"City"}
+            onChange={setCity}
+            value={city}
+            name={"city"}
+          />
         </div>
         <div className="flex gap-7 justify-center w-full">
-          <label className="flex w-full flex-col gap-5 max-w-sm">
-            <h3 className="font-medium text-[20px] leading-normal">
-              Street address
-            </h3>
-            <input
-              type="text"
-              value={street}
-              onChange={(e) => setStreet(e.target.value)}
-              placeholder="Street"
-              name="street"
-              className="border border-black border-solid text-base w-full py-3 px-4 rounded-lg"
-            />
-          </label>
-          <label className="flex w-full flex-col gap-5 max-w-sm">
-            <h3 className="font-medium text-[20px] leading-normal">ZIP code</h3>
-            <input
-              type="text"
-              value={zipCode}
-              onChange={(e) => setZipConde(e.target.value)}
-              placeholder="ZIP code"
-              name="zipCode"
-              className="border border-black border-solid text-base w-full py-3 px-4 rounded-lg"
-            />
-          </label>
+          <ClasicInput
+            label={"Street address"}
+            onChange={setStreet}
+            value={street}
+            name={"street"}
+          />
+          <ClasicInput
+            label={"ZIP code"}
+            onChange={setZipConde}
+            value={zipCode}
+            name={"zipCode"}
+          />
         </div>
         <div className="flex w-4/5 justify-between mx-auto">
-          <ButtonOutlineBtm className="text-xl pb-0" type="button">
+          <ButtonOutlineBtm
+            className="text-xl pb-0"
+            onClick={toggleChangePassword}
+            type="button"
+          >
             Change Password
           </ButtonOutlineBtm>
           <ButtonOutline type="submit">Save Changes</ButtonOutline>
