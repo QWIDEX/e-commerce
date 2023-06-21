@@ -12,7 +12,7 @@ const ShopProductCard = ({ product }) => {
         <button
           type="button"
           className="group"
-          onClick={() => dispatch(addToCart({product, count: 1}))}
+          onClick={() => dispatch(addToCart({product, quantity: 1}))}
         >
           <svg
             width="28"

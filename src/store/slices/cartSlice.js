@@ -9,20 +9,13 @@ const cartSlice = createSlice({
 
   reducers: {
     addToCart(state, action) {
-      const { product, count, type = "add" } = action.payload;
+      const { product, quantity } = action.payload;
       const idx = state.products.findIndex((doc) => product.id === doc.id);
       if (idx !== -1) {
-        if (type === "set") {
+        if (state.products[idx].quantity + quantity <= product.available) {
           state.products = [
             ...state.products.slice(0, idx),
-            { ...product, count: count },
-            ...state.products.slice(idx + 1),
-          ];
-          toast.success("Added to cart");
-        } else if (state.products[idx].count + count <= product.available) {
-          state.products = [
-            ...state.products.slice(0, idx),
-            { ...product, count: state.products[idx].count + count },
+            { ...product, quantity: state.products[idx].quantity + quantity },
             ...state.products.slice(idx + 1),
           ];
           toast.success("Added to cart");
@@ -30,19 +23,37 @@ const cartSlice = createSlice({
           toast.error(`Only ${product.available} ${product.label} available`);
           state.products = [
             ...state.products.slice(0, idx),
-            { ...product, count: product.available },
+            { ...product, quantity: product.available },
             ...state.products.slice(idx + 1),
           ];
           toast.success(`Added to cart ${product.available} ${product.label} `);
         }
       } else {
         toast.success("Added to cart");
-        state.products.push({ ...product, count });
+        state.products.push({ ...product, quantity });
       }
     },
 
+    setToCart(state, action) {
+      const { product, quantity } = action.payload;
+      const idx = state.products.findIndex((doc) => product.id === doc.id);
+      if (idx !== -1) {
+        state.products = [
+          ...state.products.slice(0, idx),
+          { ...product, quantity: quantity || product.quantity },
+          ...state.products.slice(idx + 1),
+        ];
+      } else {
+        state.products.push({ ...product, quantity: quantity || product.quantity });
+      }
+
+      if (quantity) toast.success("Added to cart");
+    }, 
+
     deleteFromCart(state, action) {
-      const idx = state.products.findIndex((product) => action.payload.id === product.id);
+      const idx = state.products.findIndex(
+        (product) => action.payload.id === product.id
+      );
 
       state.products = [
         ...state.products.slice(0, idx),
@@ -53,4 +64,4 @@ const cartSlice = createSlice({
 });
 
 export default cartSlice.reducer;
-export const { addToCart, deleteFromCart } = cartSlice.actions;
+export const { addToCart, setToCart, deleteFromCart } = cartSlice.actions;

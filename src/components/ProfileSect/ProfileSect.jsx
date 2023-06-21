@@ -219,7 +219,7 @@ const ProfileSect = () => {
             name={"zipCode"}
           />
         </div>
-        <div className="flex lg:flex-row flex-col gap-7 items-center lg:items-start w-4/5 justify-between mx-auto">
+        <div className="flex max-w-[770px] lg:flex-row flex-col gap-7 items-center lg:items-start w-4/5 justify-between mx-auto">
           <ButtonOutlineBtm
             className="text-xl pb-0"
             onClick={toggleChangePassword}

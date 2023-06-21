@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Outlet } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 import MiniCart from "../MiniCart/MiniCart";
@@ -9,21 +9,28 @@ const Layout = () => {
   const closeBtnRef = useRef();
   const miniCartRef = useRef();
 
+  const navigate = useNavigate();
+
   const toggleMiniCart = () => {
-    if (miniCartActive) {
-      closeBtnRef.current.style.opacity = "0";
-      miniCartRef.current.style.top = "-730px";
-      closeBtnRef.current.style.pointerEvents = "none";
-      setTimeout(() => {
-        closeBtnRef.current.style.display = "none";
-      }, 300);
+    if (document.documentElement.scrollWidth < 768) {
+      navigate("/cart")
+      setMiniCartActive(false);
     } else {
-      closeBtnRef.current.style.display = "block";
-      setTimeout(() => {
-        miniCartRef.current.style.top = "0px";
-        closeBtnRef.current.style.pointerEvents = "auto";
-        closeBtnRef.current.style.opacity = "1";
-      }, 300);
+      if (miniCartActive) {
+        closeBtnRef.current.style.opacity = "0";
+        miniCartRef.current.style.top = "-730px";
+        closeBtnRef.current.style.pointerEvents = "none";
+        setTimeout(() => {
+          closeBtnRef.current.style.display = "none";
+        }, 300);
+      } else {
+        closeBtnRef.current.style.display = "block";
+        setTimeout(() => {
+          miniCartRef.current.style.top = "0px";
+          closeBtnRef.current.style.pointerEvents = "auto";
+          closeBtnRef.current.style.opacity = "1";
+        }, 300);
+      }
     }
 
     setMiniCartActive(!miniCartActive);

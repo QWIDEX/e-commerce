@@ -1,10 +1,15 @@
 import React from 'react'
+import HeadingPathSect from '../components/Reusable/HeadingPathSect'
+import BenefitsBlock from '../components/BenefitsBlock/BenefitsBlock'
+import CartSect from '../components/CartSect/CartSect'
 
 const CartPage = () => {
   return (
-    <div>
-      
-    </div>
+    <>
+     <HeadingPathSect />
+     <CartSect />
+     <BenefitsBlock /> 
+    </>
   )
 }
 

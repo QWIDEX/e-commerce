@@ -1,8 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import MiniCartProductCard from "../MiniCartProductCard/MiniCartProductCard";
+import MiniCartProductCard from "../CartProductCard/MiniCartProductCard";
 import BtnRoundedOutline from "../Reusable/BtnRoundedOutline";
-import { redirect, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 
 const MiniCart = ({ closeBtnRef, miniCartRef, toggleMiniCart }) => {
   const productsInCart = useSelector((state) => state.cart.products);
@@ -12,7 +12,7 @@ const MiniCart = ({ closeBtnRef, miniCartRef, toggleMiniCart }) => {
   let totalPrice = 0;
 
   productsInCart.map((product) => {
-    totalPrice += product.count * product.price;
+    totalPrice += product.quantity * product.price;
   });
 
   const separateThousands = (number) => {
@@ -39,7 +39,7 @@ const MiniCart = ({ closeBtnRef, miniCartRef, toggleMiniCart }) => {
       ></button>
       <div
         ref={miniCartRef}
-        className="w-[29%] max-h-[730px] -top-[730px] bg-white transition-all duration-300 absolute z-50 right-0 p-7"
+        className=" max-h-[730px] w-[417px] -top-[730px] bg-white transition-all duration-300 absolute z-50 right-0 p-7"
       >
         <button
           type="button"
@@ -63,7 +63,7 @@ const MiniCart = ({ closeBtnRef, miniCartRef, toggleMiniCart }) => {
         </button>
         <h1 className="text-2xl leading-normal font-semibold">Shopping Cart</h1>
         <div className="h-[1px] w-4/5 bg-[#D9D9D9] mt-7 mb-10"></div>
-        <div className="flex overflow-y-auto max-h-[444px] flex-col gap-5">
+        <div className="flex overflow-y-auto h-[444px] flex-col gap-5">
           {productsInCart?.map((product) => (
             <MiniCartProductCard key={product.id} product={product} />
           ))}

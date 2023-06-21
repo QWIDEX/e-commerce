@@ -12,7 +12,7 @@ const ProfileNav = () => {
   const navigate = useNavigate();
 
   return (
-    <nav className="sm:w-1/3 w-full min-w-[200px] max-w-xs h-fit border-[2px] rounded-lg border-gray-200 px-7 py-4">
+    <nav className="sm:w-1/3 w-full min-w-[200px] lg-sm:!self-start max-w-xs h-fit border-[2px] rounded-lg border-gray-200 px-7 py-4">
       <ul className=" text-xl">
         <li className="my-4">
           <NavLink

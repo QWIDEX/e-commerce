@@ -102,7 +102,7 @@ const ChangePasswordBlock = ({
         handleForgotPass={handleForgotPass}
         initialEmail={user.email}
       />
-      <form className="sm-sm:!w-4/5 h-fit w-full sm-sm:h-fit justify-center sm-sm:justify-start flex relative flex-col gap-7 p-5 z-10 rounded-lg bg-white">
+      <form className="sm-sm:!w-4/5 h-fit w-full max-w-2xl sm-sm:h-fit justify-center sm-sm:justify-start flex relative flex-col gap-7 p-5 z-10 rounded-lg bg-white">
         <button
           type="button"
           className="absolute top-[14px] left-2"

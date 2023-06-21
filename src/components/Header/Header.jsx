@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 const Header = ({ toggleMiniCart }) => {
   const user = useSelector((state) => state.user.user);
 
+
   return (
     <header className="grid max-w-laptop grid-rows-2 left-1/2 -translate-x-1/2 grid-columns-1 absolute w-full place-items-center h-24 md:grid-cols-3 md:grid md:grid-rows-1">
       <div className="hidden md:block"></div>

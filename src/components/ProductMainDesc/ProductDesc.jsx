@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
 import RateProduct from "../RateProduct/RateProduct";
 import { useDispatch } from "react-redux";
-import { addToCart } from "../../store/slices/cartSlice";
+import { setToCart } from "../../store/slices/cartSlice";
 
 const ProductDesc = ({ product, editing = false }) => {
   const { available } = product;
 
-  const [orderProductCount, setOrderProductCount] = useState(1);
+  const [orderProductQuantity, setOrderProductQuantity] = useState(1);
 
   const dispatch = useDispatch();
 
-  const handleProductCount = (count) => {
-    if (count <= available && count > 0) setOrderProductCount(count);
-    if (count > available) setOrderProductCount(available);
-    if (count < 0) setOrderProductCount(0);
-    if (count === "") setOrderProductCount(count);
+  const handleOrderProductQuantity = (quantity) => {
+    if (quantity <= available && quantity > 0) setOrderProductQuantity(quantity);
+    if (quantity > available) setOrderProductQuantity(available);
+    if (isNaN(quantity)) setOrderProductQuantity('');
+    if (quantity < 0) setOrderProductQuantity(0);
   };
 
   const separateThousands = (number) => {
@@ -64,29 +64,29 @@ const ProductDesc = ({ product, editing = false }) => {
               <div className="flex py-5 px-3 rounded-xl border-[#9F9F9F] border-solid border w-full max-w-[125px] justify-around">
                 <button
                   className="relative cursor-pointer text-xl -top-[2px]"
-                  onClick={() => handleProductCount(orderProductCount - 1)}
+                  onClick={() => handleOrderProductQuantity(orderProductQuantity - 1)}
                 >
                   -
                 </button>
                 <input
-                  className="text-center"
-                  style={{ width: `${("" + orderProductCount).length + 2}ch` }}
+                  className="text-center border border-gray-300 rounded-lg"
+                  style={{ width: `${("" + orderProductQuantity).length + 2}ch` }}
                   type="number"
                   min={1}
                   max={available}
-                  value={orderProductCount}
-                  onChange={(e) => handleProductCount(e.target.value)}
+                  value={orderProductQuantity}
+                  onChange={(e) => handleOrderProductQuantity(parseInt(e.target.value))}
                 />
                 <button
                   className="relative cursor-pointer text-xl -top-[2px]"
-                  onClick={() => handleProductCount(orderProductCount + 1)}
+                  onClick={() => handleOrderProductQuantity(orderProductQuantity + 1)}
                 >
                   +
                 </button>
               </div>
               <button
                 className="text-xl lg:px-12 px-8 hover:bg-black transition-all duration-300 hover:text-[#ffffff]  py-4 border border-[#000000] rounded-xl cursor-pointer border-solid"
-                onClick={() => dispatch(addToCart({product, count: orderProductCount, type: 'set'}))}
+                onClick={() => dispatch(setToCart({product, quantity: orderProductQuantity}))}
               >
                 Add To Cart
               </button>

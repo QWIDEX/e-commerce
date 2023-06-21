@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { deleteFromCart } from "../../store/slices/cartSlice";
 
 const MiniCartProductCard = ({ product }) => {
-  const { imgUrl, id, label, count, price } = product;
+  const { imgUrl, id, label, quantity, price } = product;
 
   const dispatch = useDispatch();
 
@@ -25,13 +25,13 @@ const MiniCartProductCard = ({ product }) => {
     <div className="flex justify-between">
       <img
         src={imgUrl}
-        className="aspect-square w-24 rounded-lg bg-[#fbebb5]"
+        className="aspect-square w-24 p-1 rounded-lg bg-[#fbebb5]"
         alt=""
       />
       <div className=" w-1/2 flex flex-col justify-center">
         <h1 className="text-base">{label}</h1>
         <div className="items-center gap-4 w-full flex">
-          {count}
+          {quantity}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="15"
