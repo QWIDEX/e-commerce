@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import MiniCartProductCard from "../CartProductCard/MiniCartProductCard";
 import BtnRoundedOutline from "../Reusable/BtnRoundedOutline";
 import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 
 const MiniCart = ({ closeBtnRef, miniCartRef, toggleMiniCart }) => {
   const productsInCart = useSelector((state) => state.cart.products);
@@ -64,9 +65,17 @@ const MiniCart = ({ closeBtnRef, miniCartRef, toggleMiniCart }) => {
         <h1 className="text-2xl leading-normal font-semibold">Shopping Cart</h1>
         <div className="h-[1px] w-4/5 bg-[#D9D9D9] mt-7 mb-10"></div>
         <div className="flex overflow-y-auto h-[444px] flex-col gap-5">
-          {productsInCart?.map((product) => (
-            <MiniCartProductCard key={product.id} product={product} />
-          ))}
+          {productsInCart.length > 0 ? (
+            productsInCart?.map((product) => (
+              <MiniCartProductCard key={product.id} product={product} />
+            ))
+          ) : (
+            <div className=" flex flex-col justify-around h-full items-center gap-3 text-center">
+              <img src={require('../../images/Empty Cart illustartion.png')} alt="Empty Cart illustartion" />
+              <h1 className="font-bold text-2xl">Your Cart is Empty</h1>
+              <p className="text-lg font-medium text-[#9E9E9E]">Looks like you haven’t added anything to your cart yet</p>
+            </div>
+          )}
         </div>
         <div className="flex justify-between mt-7 w-9/12">
           <h3>Subtotal</h3>
