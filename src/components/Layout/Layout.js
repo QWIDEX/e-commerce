@@ -3,6 +3,7 @@ import { Outlet, useNavigate } from "react-router";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 import MiniCart from "../MiniCart/MiniCart";
+import { Toaster } from "react-hot-toast";
 
 const Layout = () => {
   const [miniCartActive, setMiniCartActive] = useState(false);
@@ -48,6 +49,7 @@ const Layout = () => {
         <Outlet />
       </main>
       <Footer />
+      <Toaster />
     </>
   );
 };

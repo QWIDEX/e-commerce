@@ -4,6 +4,7 @@ import MiniCartProductCard from "../CartProductCard/MiniCartProductCard";
 import BtnRoundedOutline from "../Reusable/BtnRoundedOutline";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 const MiniCart = ({ closeBtnRef, miniCartRef, toggleMiniCart }) => {
   const productsInCart = useSelector((state) => state.cart.products);
@@ -95,8 +96,10 @@ const MiniCart = ({ closeBtnRef, miniCartRef, toggleMiniCart }) => {
           </BtnRoundedOutline>
           <BtnRoundedOutline
             onClick={() => {
-              toggleMiniCart();
-              navigate("/checkout");
+              if (productsInCart.length > 0) {
+                toggleMiniCart();
+                navigate("/checkout");
+              } else toast.error("You have to add something to cart at first")
             }}
           >
             Checkout

@@ -7,7 +7,6 @@ import TopPicksForU from "../components/topPicksForU/TopPicksForU";
 import useProduct from "../hooks/useProduct";
 import ErrorIndicator from "../components/ErrorIndicator/ErrorIndicator";
 import LoadingIndicator from "../components/LoadingIndicator/LoadingIndicator";
-import { Toaster } from "react-hot-toast";
 
 const SingleProduct = () => {
   const { productID } = useParams();
@@ -29,7 +28,6 @@ const SingleProduct = () => {
         </>
       )}
       <TopPicksForU />
-      <Toaster />
     </div>
   );
 };

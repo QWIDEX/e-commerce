@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { db, storage } from "../firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { ref, uploadBytes } from "firebase/storage";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import AddNewProductCard from "../components/AddNewProductCard/AddNewProductCard";
 import CatalogWithFilters from "../components/CatalogWithFilters/CatalogWithFilters";
 
@@ -139,7 +139,6 @@ const AddNewProductPage = () => {
         </button>
       </div>
       <CatalogWithFilters ProductCard={AddNewProductCard} />
-      <Toaster />
     </>
   );
 };
