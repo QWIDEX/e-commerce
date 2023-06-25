@@ -51,7 +51,7 @@ const useProducts = (
   useEffect(() => {
     if (productsDocs.length === 0) {
       dispatch((dispatch) => {
-        getProductsDocs([], orderBy("ordered"))
+        getProductsDocs([], orderBy("ordered", 'desc'))
           .then((productsDocs) => {
             dispatch(setProductsDocs(productsDocs));
           })
@@ -80,7 +80,6 @@ const useProducts = (
               getProducts(optProdutsDocs.slice(0, to))
                 .then((products) => {
                   setLoading(false);
-
                   dispatch(setOptProducts(products));
                 })
                 .catch((error) => {
@@ -89,6 +88,7 @@ const useProducts = (
                 });
             });
           }
+          setLoading(false)
           prevOptDeps = deps;
         } else if (storeProducts.length < to) {
           setLoading(true);

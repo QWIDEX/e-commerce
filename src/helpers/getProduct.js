@@ -3,7 +3,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { storage } from "../firebase";
 import { getDownloadURL, ref, listAll,  } from "firebase/storage";
 
-const getProduct = async (docID) => {
+const getProduct = async (docID, overwriteFields = {}) => {
   const productRef = doc(db, "products", docID);
   const productQueried = await getDoc(productRef)
   const product = {...productQueried.data(), id: productQueried.id};
@@ -32,7 +32,7 @@ const getProduct = async (docID) => {
     )
   );
 
-  return { ...product, imgsList: [mainImg, ...imgsList], descImgs, imgUrl: mainImg };
+  return { ...product, imgsList: [mainImg, ...imgsList], descImgs, imgUrl: mainImg, ...overwriteFields };
 };
 
 export default getProduct;

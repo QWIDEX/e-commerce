@@ -1,8 +1,9 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { deleteFromCart } from "../../store/slices/cartSlice";
+import { Link } from "react-router-dom";
 
-const MiniCartProductCard = ({ product }) => {
+const MiniCartProductCard = ({ product, toggleMiniCart }) => {
   const { imgUrl, id, label, quantity, price } = product;
 
   const dispatch = useDispatch();
@@ -22,14 +23,18 @@ const MiniCartProductCard = ({ product }) => {
   };
 
   return (
-    <div className="flex justify-between">
+    <Link
+      to={`/product/${id}`}
+      onClick={() => toggleMiniCart()}
+      className="flex justify-between items-center"
+    >
       <img
         src={imgUrl}
         className="aspect-square w-24 p-1 rounded-lg bg-[#fbebb5]"
         alt=""
       />
       <div className=" w-1/2 flex flex-col justify-center">
-        <h1 className="text-base">{label}</h1>
+        <h1 className="text-base text-start">{label}</h1>
         <div className="items-center gap-4 w-full flex">
           {quantity}
           <svg
@@ -67,7 +72,7 @@ const MiniCartProductCard = ({ product }) => {
           </g>
         </svg>
       </button>
-    </div>
+    </Link>
   );
 };
 

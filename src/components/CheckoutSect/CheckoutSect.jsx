@@ -10,11 +10,13 @@ import { auth } from "../../firebase";
 import { setUser } from "../../store/slices/userSlice";
 import getUserData from "../../helpers/getUserData";
 import updateUser from "../../helpers/updateUser";
+import { useNavigate } from "react-router";
 
 const CheckoutSect = () => {
   const user = useSelector((state) => state.user.user);
   const productsInCart = useSelector((state) => state.cart.products);
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   const [firstName, setFirstName] = useState(user?.firstName || "");
   const [lastName, setLastName] = useState(user?.lastName || "");
@@ -24,7 +26,6 @@ const CheckoutSect = () => {
   const [city, setCity] = useState(user?.city || "");
   const [street, setStreet] = useState(user?.street || "");
   const [zipCode, setZipConde] = useState(user?.zipCode || "");
-  const [aditionalInfo, setAditionalInfo] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("Direct Bank Transfer");
 
   const productsInCartFiltered = productsInCart.filter((product) =>
@@ -49,40 +50,37 @@ const CheckoutSect = () => {
     return result.split("").reverse().join("");
   };
 
+  function filterArr(arr) {
+    if (!Array.isArray(arr)) return [];
+    return arr.filter((arg) => {
+      if (Array.isArray(arg)) {
+        return arg.length !== 0;
+      }
+      return arg !== undefined && arg !== null && arg !== "";
+    });
+  }
+
   const handleCheckout = () => {
     if (!email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/gm))
       toast.error("Email isn't valid");
+    else if (
+      filterArr([
+        paymentMethod,
+        zipCode,
+        street,
+        city,
+        country,
+        phoneNumber,
+        email,
+        lastName,
+        firstName,
+      ]).length < 9
+    )
+      toast.error("You must fill in all fields before order");
     else {
-      toast(
-        (t) => (
-          <div className="flex items-center gap-3">
-            <h1 className="font-medium">
-              Shall we save this information for future orders?
-            </h1>
-            <button
-              onClick={() => {
-                toast.dismiss(t.id);
-                handleSaveInfo()
-              }}
-              className="transition-all text-white duration-300 hover:bg-green-600 rounded-lg bg-green-500 border px-5 py-2"
-            >
-              Yes
-            </button>
-            <button
-              onClick={() => toast.dismiss(t.id)}
-              className="border border-red-500 transition-all duration-300 rounded-lg hover:bg-red-500 px-[19px] py-[7px]"
-            >
-              No
-            </button>
-          </div>
-        ),
-        { duration: 6000, style: { maxWidth: "550px", minWidth: "318px" } }
-      );
-
       createOrder(
         {
           paymentMethod,
-          aditionalInfo,
           zipCode,
           street,
           city,
@@ -97,7 +95,33 @@ const CheckoutSect = () => {
         productsInCartFiltered
       )
         .then(() => {
+          navigate('/profile/orders')
           toast.success("Order placed");
+          toast(
+            (t) => (
+              <div className="flex items-center gap-3">
+                <h1 className="font-medium">
+                  Shall we save this information for future orders?
+                </h1>
+                <button
+                  onClick={() => {
+                    toast.dismiss(t.id);
+                    handleSaveInfo();
+                  }}
+                  className="transition-all text-white duration-300 hover:bg-green-600 rounded-lg bg-green-500 border px-5 py-2"
+                >
+                  Yes
+                </button>
+                <button
+                  onClick={() => toast.dismiss(t.id)}
+                  className="border border-red-500 transition-all duration-300 rounded-lg hover:bg-red-500 px-[19px] py-[7px]"
+                >
+                  No
+                </button>
+              </div>
+            ),
+            { duration: 6000, style: { maxWidth: "550px", minWidth: "318px" } }
+          );
           dispatch(setCart([]));
         })
         .catch(() => toast.error("Something went wrong, try again later"));
@@ -132,23 +156,21 @@ const CheckoutSect = () => {
       });
   };
 
-  useEffect(() => {
-
-  });
+  useEffect(() => {});
 
   return (
     <>
+      <h1 className="font-semibold text-center text-4xl ">Billing details</h1>
       <form
         onSubmit={(e) => {
           e.preventDefault();
           handleCheckout();
         }}
-        className="flex justify-between gap-6 px-24"
+        className="flex justify-between xl:flex-row flex-col-reverse gap-6 px-5 sm:px-14 md:px-24"
       >
-        <div className="px-20 w-2/3">
-          <h1 className="font-semibold text-4xl ">Billing details</h1>
+        <div className="lg:px-20 w-full sm:px-10 px-0 xl:!w-2/3">
           <div className="flex flex-col mt-7 gap-7">
-            <div className="flex gap-5 items-center mb-5 justify-between rounded-lg">
+            <div className="flex gap-5 sm-md:items-center mb-5 items-start sm-md:flex-row sm-md:justify-between  flex-col  rounded-lg">
               <ClasicInput
                 className="py-5 px-8 text-base border-gray-300 max-w-[624px]"
                 wrapperClassName="!w-full max-w-full"
@@ -166,7 +188,7 @@ const CheckoutSect = () => {
                 name={"lastName"}
               />
             </div>
-            <div className="flex gap-5 items-center mb-5 justify-between rounded-lg">
+            <div className="flex gap-5 sm-md:items-center mb-5 items-start sm-md:flex-row sm-md:justify-between  flex-col  rounded-lg">
               <ClasicInput
                 className="py-5 px-8 text-base border-gray-300 "
                 wrapperClassName="!w-full max-w-full"
@@ -186,7 +208,7 @@ const CheckoutSect = () => {
                 name={"phoneNumber"}
               />
             </div>
-            <div className="flex gap-5 items-center mb-5 justify-between rounded-lg">
+            <div className="flex gap-5 sm-md:items-center mb-5 items-start sm-md:flex-row sm-md:justify-between  flex-col  rounded-lg">
               <ClasicInput
                 className="py-5 px-8 text-base border-gray-300 max-w-[624px]"
                 wrapperClassName="!w-full max-w-full"
@@ -204,7 +226,7 @@ const CheckoutSect = () => {
                 name={"city"}
               />
             </div>
-            <div className="flex gap-5 items-center mb-5 justify-between rounded-lg">
+            <div className="flex gap-5 sm-md:items-center mb-5 items-start sm-md:flex-row sm-md:justify-between  flex-col  rounded-lg">
               <ClasicInput
                 className="py-5 px-8 text-base border-gray-300 max-w-[624px]"
                 wrapperClassName="!w-full max-w-full"
@@ -213,7 +235,6 @@ const CheckoutSect = () => {
                 value={street}
                 name={"street"}
               />
-
               <ClasicInput
                 className="py-5 px-8 text-base border-gray-300 max-w-[624px]"
                 wrapperClassName="!w-full max-w-full"
@@ -223,19 +244,10 @@ const CheckoutSect = () => {
                 name={"zipCode"}
               />
             </div>
-
-            <ClasicInput
-              className="py-5 px-8 text-base border-gray-300 max-w-[634]"
-              wrapperClassName="!max-w-[634]"
-              label={"Aditional information"}
-              onChange={setAditionalInfo}
-              value={aditionalInfo}
-              name={"aditionalInfo"}
-            />
           </div>
         </div>
 
-        <div className="w-1/3">
+        <div className="xl:!w-1/3 w-full max-w-[500px] mx-auto mb-5">
           <div className=" grid mt-16 grid-cols-2 h-min gap-5">
             <h1 className="text-2xl font-medium">Product</h1>
             <h1 className="text-2xl font-medium text-end">Subtotal</h1>

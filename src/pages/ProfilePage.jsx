@@ -29,7 +29,7 @@ const ProfilePage = () => {
       ) : (
         <div className="md:px-20 lg-sm:flex-row flex-col items-center px-2 sm-sm:px-8 gap-10 flex justify-between">
           <ProfileNav />
-          <div className="w-full relative shadow-md  border-[2px] rounded-lg border-gray-200 p-5">
+          <div className="w-full relative shadow-md min-h-[75vh] border-[2px] rounded-lg border-gray-200 p-5">
             {subpage === undefined ? (
               <ProfileSect />
             ) : subpage === "orders" ? (

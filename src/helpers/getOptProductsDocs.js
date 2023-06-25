@@ -4,6 +4,8 @@ const filterProductsDocs = (productsDocs, queryParams, orderProducts) => {
       return ["price", "asc"];
     } else if (sortMethod === "priceDown") {
       return ["price", "desc"];
+    } else if (sortMethod === "ordered") {
+      return ["ordered", 'desc']
     } else if (sortMethod) {
       return [sortMethod, "asc"];
     }

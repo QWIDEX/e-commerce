@@ -1,9 +1,9 @@
 import React from "react";
 import "./LoadingIndicator.css";
 
-const LoadingIndicator = ({ className }) => {
+const LoadingIndicator = ({ className = ''}) => {
   return (
-    <div className={`flex items-center justify-center w-full ${className || ''}`}>
+    <div className={`flex items-center justify-center w-full ${className}`}>
       <div
         style={{
           "--size": "64px",

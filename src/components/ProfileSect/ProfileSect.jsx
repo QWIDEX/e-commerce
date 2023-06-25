@@ -91,8 +91,16 @@ const ProfileSect = () => {
 
   return (
     <>
+      <ChangePasswordBlock
+        passwordChangeRef={passwordChangeRef}
+        toggleChangePassword={toggleChangePassword}
+        user={user}
+      />
+      <h1 className="text-3xl mb-5 font-semibold leading-normal text-center">
+        Profile Settings
+      </h1>
       {!emailVerified ? (
-        <div className="flex bg-[#faf4f4] items-center mb-5 justify-between px-5 py-4 rounded-lg">
+        <div className="flex bg-[#faf4f4] max-w-3xl mx-auto items-center mb-5 justify-between px-5 py-4 rounded-lg">
           <h1 className="w-fit">
             We need to verify your email before you can buy something
           </h1>
@@ -106,14 +114,6 @@ const ProfileSect = () => {
       ) : (
         <></>
       )}
-      <ChangePasswordBlock
-        passwordChangeRef={passwordChangeRef}
-        toggleChangePassword={toggleChangePassword}
-        user={user}
-      />
-      <h1 className="text-2xl font-semibold leading-normal text-center">
-        Profile Settings
-      </h1>
       <label className="block w-fit mx-auto mt-2 mb-5">
         <input
           type="file"

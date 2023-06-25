@@ -19,7 +19,7 @@ const ChekoutProductCard = ({ product }) => {
   
     return (
       <>
-        <div className="flex items-center gap-2">
+        <div className="flex  items-center gap-2">
           <h6>{label}</h6>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -34,7 +34,7 @@ const ChekoutProductCard = ({ product }) => {
           </svg>
           <p className="text-base">{quantity}</p>
         </div>
-        <p className="text-end font-medium">{separateThousands(price * quantity)}</p>
+        <p className="text-end flex items-center justify-end font-medium">{separateThousands(price * quantity)}$</p>
       </>
     );
   };

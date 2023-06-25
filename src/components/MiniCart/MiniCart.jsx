@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import MiniCartProductCard from "../CartProductCard/MiniCartProductCard";
 import BtnRoundedOutline from "../Reusable/BtnRoundedOutline";
 import { useNavigate } from "react-router";
-import { Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
 
 const MiniCart = ({ closeBtnRef, miniCartRef, toggleMiniCart }) => {
@@ -68,7 +67,7 @@ const MiniCart = ({ closeBtnRef, miniCartRef, toggleMiniCart }) => {
         <div className="flex overflow-y-auto h-[444px] flex-col gap-5">
           {productsInCart.length > 0 ? (
             productsInCart?.map((product) => (
-              <MiniCartProductCard key={product.id} product={product} />
+              <MiniCartProductCard key={product.id} toggleMiniCart={toggleMiniCart} product={product} />
             ))
           ) : (
             <div className=" flex flex-col justify-around h-full items-center gap-3 text-center">
