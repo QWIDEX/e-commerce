@@ -1,0 +1,49 @@
+@keyframes like {
+  0% {
+    fill: transparent;
+  }
+  50% {
+    transform: scale(130%);
+  }
+
+  100% {
+    fill: red;
+    transform: scale(100%);
+  }
+}
+
+.like {
+  animation: like 0.5s;
+  transition: all 0.5s;
+  fill: red;
+}
+
+.like path {
+  transition: all 0.5s;
+  stroke-width: 0%;
+}
+
+.un-like {
+  transition: all 0.5s;
+  fill: transparent;
+  animation: unLike 0.5s;
+}
+
+.un-like path {
+  transition: all 0.5s;
+  stroke-width: 2;
+}
+
+@keyframes unLike {
+  0% {
+    fill: red;
+  }
+  50% {
+    transform: scale(90%);
+  }
+
+  100% {
+    fill: transparent;
+    transform: scale(100%);
+  }
+}

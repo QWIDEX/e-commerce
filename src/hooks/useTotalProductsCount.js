@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 let renderCount = 0
 let prevQueryParams = []
 
-const useTotalProductsCount = (queryParams) => {
+const useTotalProductsCount = (queryParams = {}) => {
   const currentProductsDocs = useSelector((state) => {
     let products;
     if (filterArr(Object.values(queryParams)).length !== 0) {

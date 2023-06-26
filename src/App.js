@@ -16,6 +16,9 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "./firebase";
 import getUserData from "./helpers/getUserData";
 import { setUser } from "./store/slices/userSlice";
+import ProfileSect from "./components/ProfileSect/ProfileSect";
+import OrdersSect from "./components/OrdersSect/OrdersSect";
+import FavoritesSect from "./components/FavoritesSect/FavoritesSect";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -40,10 +43,14 @@ const App = () => {
         <Route path="contacts" element={<ContactPage />} />
         <Route path="/" element={<HomePage />} />
         <Route path="auth" element={<AuthPage />} />
-        <Route path="profile/:subpage?" element={<ProfilePage />} />
         <Route path="shop/:pageParam?" element={<ShopPage />} />
         <Route path="add-product" element={<AddNewProductPage />} />
         <Route path="product/:productID" element={<SingleProductPage />} />
+        <Route path="profile" element={<ProfilePage />}>
+          <Route path="/profile" element={<ProfileSect />} />
+          <Route path="orders" element={<OrdersSect />} />
+          <Route path="favorites/:pageParam?" element={<FavoritesSect />} />
+        </Route>
         <Route path="edit-product/:productID" element={<EditProductPage />} />
       </Route>
     </Routes>

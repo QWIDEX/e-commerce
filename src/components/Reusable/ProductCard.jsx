@@ -28,7 +28,7 @@ const ProductCard = (props) => {
   return (
     <div
       style={{ display: imageLoaded ? "flex" : "none" }}
-      className="flex flex-col max-w-287px relative items-center md:!items-start "
+      className="flex h-[400px] flex-col w-[282px] relative items-center md:!items-start "
     >
       <Link to={`/product/${props.product.id}`} className="flex justify-between flex-col h-full">
         <img

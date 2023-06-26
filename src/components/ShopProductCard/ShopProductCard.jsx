@@ -2,13 +2,14 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../store/slices/cartSlice";
 import ProductCard from "../Reusable/ProductCard";
+import AddToFavoritesBtn from "../Reusable/AddToFavoritesBtn/AddToFavoritesBtn";
 
 const ShopProductCard = ({ product }) => {
   const dispatch = useDispatch();
 
   return (
     <ProductCard product={product}>
-      <div className="flex flex-col w-[10%] justify-center">
+      <div className="flex flex-col w-[10%] gap-2 justify-center">
         <button
           type="button"
           className="group"
@@ -28,6 +29,7 @@ const ShopProductCard = ({ product }) => {
             />
           </svg>
         </button>
+        <AddToFavoritesBtn productId={product.id} />
       </div>
     </ProductCard>
   );

@@ -9,8 +9,11 @@ const userSlice = createSlice({
     setUser(state, action) {
       state.user = action.payload;
     },
+    setFavorites(state, action) {
+      state.user.favorites = action.payload;
+    },
   },
 });
 
 export default userSlice.reducer;
-export const { setUser } = userSlice.actions;
+export const { setUser, setFavorites } = userSlice.actions;
