@@ -1,5 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
-import mergeSearchParams from "../../helpers/mergeSearchParams";
+import React, { useState, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import TypeFilter from "../TypeFilter/TypeFilter";
@@ -9,7 +8,7 @@ import ShowCards from "../ShowCards/ShowCards";
 
 const Filters = ({ productsLength = 0, showedCards, productsMaxFind = 16 }) => {
   const [filtersOpened, setFilters] = useState(false);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const { pageParam } = useParams();
 
   const page = Number(pageParam || 1);

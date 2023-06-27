@@ -3,6 +3,7 @@ import RateProduct from "../RateProduct/RateProduct";
 import { useDispatch } from "react-redux";
 import { setToCart } from "../../store/slices/cartSlice";
 import AddToFavoritesBtn from "../Reusable/AddToFavoritesBtn/AddToFavoritesBtn";
+import separateThousands from "../../utils/separateThousands";
 
 const ProductDesc = ({ product, editing = false }) => {
   const { available } = product;
@@ -17,20 +18,6 @@ const ProductDesc = ({ product, editing = false }) => {
     if (quantity > available) setOrderProductQuantity(available);
     if (isNaN(quantity)) setOrderProductQuantity("");
     if (quantity < 0) setOrderProductQuantity(0);
-  };
-
-  const separateThousands = (number) => {
-    const reversedNumber = String(number).split("").reverse();
-    let result = "";
-
-    for (let i = 0; i < reversedNumber.length; i++) {
-      if (i % 3 === 0 && i !== 0) {
-        result += ",";
-      }
-      result += reversedNumber[i];
-    }
-
-    return result.split("").reverse().join("");
   };
 
   useEffect(() => {

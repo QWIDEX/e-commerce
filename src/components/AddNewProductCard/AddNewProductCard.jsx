@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { deleteDoc, doc } from "firebase/firestore";
 import toast from "react-hot-toast";
 import { db } from "../../firebase";
@@ -7,24 +7,11 @@ import { storage } from "../../firebase";
 import { ref, deleteObject, listAll } from "firebase/storage";
 import { useDispatch } from "react-redux";
 import { deleteProduct } from "../../store/slices/productsSlice";
+import separateThousands from "../../utils/separateThousands";
 
 const AddNewProductCard = (props) => {
   const { id, label, price, imgUrl } = props.product;
   const dispatch = useDispatch();
-
-  const separateThousands = (number) => {
-    const reversedNumber = String(number).split("").reverse();
-    let result = "";
-
-    for (let i = 0; i < reversedNumber.length; i++) {
-      if (i % 3 === 0 && i !== 0) {
-        result += ",";
-      }
-      result += reversedNumber[i];
-    }
-
-    return result.split("").reverse().join("");
-  };
 
   const deleteProductFromDB = async () => {
     let error = false;

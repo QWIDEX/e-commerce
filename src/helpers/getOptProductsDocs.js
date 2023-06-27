@@ -1,3 +1,5 @@
+import filterArr from "../utils/filterArr";
+
 const filterProductsDocs = (productsDocs, queryParams, orderProducts) => {
   function convertSortMethod(sortMethod) {
     if (sortMethod === "priceUp") {
@@ -9,16 +11,6 @@ const filterProductsDocs = (productsDocs, queryParams, orderProducts) => {
     } else if (sortMethod) {
       return [sortMethod, "asc"];
     }
-  }
-
-  function filterArr(arr) {
-    if (!Array.isArray(arr)) return [];
-    return arr.filter((arg) => {
-      if (Array.isArray(arg)) {
-        return arg.length !== 0;
-      }
-      return arg !== undefined && arg !== null && arg !== "";
-    });
   }
 
   function orderByField(obj1, obj2, [field, direction = "asc"]) {

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { deleteFromCart, setToCart } from "../../store/slices/cartSlice";
+import separateThousands from "../../utils/separateThousands";
 
 const CartProductCard = ({ product }) => {
   const { imgUrl, id, label, quantity, available, price } = product;
@@ -11,20 +12,6 @@ const CartProductCard = ({ product }) => {
   useEffect(() => {
     dispatch(setToCart({ product: { ...product, quantity: productQuantity } }));
   }, [productQuantity]);
-
-  const separateThousands = (number) => {
-    const reversedNumber = String(number).split("").reverse();
-    let result = "";
-
-    for (let i = 0; i < reversedNumber.length; i++) {
-      if (i % 3 === 0 && i !== 0) {
-        result += ",";
-      }
-      result += reversedNumber[i];
-    }
-
-    return result.split("").reverse().join("");
-  };
 
   const handleProductQuantity = (quantity) => {
     if (quantity <= available && quantity > 0) setProductQuantity(quantity);

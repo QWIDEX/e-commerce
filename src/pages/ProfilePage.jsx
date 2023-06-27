@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router";
 import MiniHeadingPathSect from "../components/Reusable/MiniHeadingPathSect";
 import ProfileNav from "../components/ProfileNav/ProfileNav";
-import { Toaster } from "react-hot-toast";
 import LoadingIndicator from "../components/LoadingIndicator/LoadingIndicator";
 
 let firstRender = true;
@@ -30,8 +29,6 @@ const ProfilePage = () => {
           </div>
         </div>
       )}
-
-      <Toaster />
     </>
   );
 };

@@ -2,25 +2,12 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { deleteFromCart } from "../../store/slices/cartSlice";
 import { Link } from "react-router-dom";
+import separateThousands from "../../utils/separateThousands";
 
 const MiniCartProductCard = ({ product, toggleMiniCart }) => {
   const { imgUrl, id, label, quantity, price } = product;
 
   const dispatch = useDispatch();
-
-  const separateThousands = (number) => {
-    const reversedNumber = String(number).split("").reverse();
-    let result = "";
-
-    for (let i = 0; i < reversedNumber.length; i++) {
-      if (i % 3 === 0 && i !== 0) {
-        result += ",";
-      }
-      result += reversedNumber[i];
-    }
-
-    return result.split("").reverse().join("");
-  };
 
   return (
     <Link

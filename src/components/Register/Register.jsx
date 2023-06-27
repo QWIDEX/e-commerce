@@ -3,9 +3,6 @@ import ButtonOutline from "../Reusable/BtnOutline";
 import { toast } from "react-hot-toast";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
-import { useDispatch } from "react-redux";
-import createUser from "../../helpers/createUser";
-import { setUser } from "../../store/slices/userSlice";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -13,8 +10,6 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [passShowing, setPassShowing] = useState(false);
-
-  const dispatch = useDispatch();
 
   const handleRegister = () => {
     if (password !== confirmPassword) toast.error("Passwords don't match");

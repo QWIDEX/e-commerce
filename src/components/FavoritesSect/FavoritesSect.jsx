@@ -2,7 +2,7 @@ import React from "react";
 import Catalog from "../Catalog/Catalog";
 import ShopProductCard from "../ShopProductCard/ShopProductCard";
 import { useParams } from "react-router";
-import SwitchCatalogPage from "../../components/SwitchCatalogPage/SwitchCatalogPage";
+import CatalogPageSwitcher from "../CatalogPageSwitcher/CatalogPageSwitcher";
 import useFavorites from "../../hooks/useFavorites";
 
 const FavoritesSect = () => {
@@ -26,25 +26,11 @@ const FavoritesSect = () => {
         }}
         ProductCard={ShopProductCard}
       />
-      <div className="flex gap-2 justify-center mt-5 items-center">
-        {page - 1 !== 0 ? (
-          <SwitchCatalogPage>{page - 1}</SwitchCatalogPage>
-        ) : (
-          ""
-        )}
-        <SwitchCatalogPage>{page}</SwitchCatalogPage>
-        <SwitchCatalogPage disabled={products.products.length <= page * 16}>
-          {page + 1}
-        </SwitchCatalogPage>
-        <SwitchCatalogPage
-          disabled={products.products.length <= (page + 1) * 16}
-        >
-          {page + 2}
-        </SwitchCatalogPage>
-        <SwitchCatalogPage disabled={products.products.length <= page * 16}>
-          {"Next"}
-        </SwitchCatalogPage>
-      </div>
+      <CatalogPageSwitcher
+        page={page}
+        showedCards={16}
+        productsMaxFind={products.products.length}
+      />
     </div>
   );
 };

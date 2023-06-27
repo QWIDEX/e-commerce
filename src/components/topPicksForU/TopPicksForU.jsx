@@ -1,6 +1,5 @@
 import React from "react";
 import ButtonOutlineBtm from "../Reusable/BtnOutlineBtm";
-import ProductCard from "../Reusable/ProductCard";
 import { Link } from "react-router-dom";
 import useProducts from "../../hooks/useProducts";
 import LoadingIndicator from "../LoadingIndicator/LoadingIndicator";

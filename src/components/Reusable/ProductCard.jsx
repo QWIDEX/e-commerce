@@ -1,23 +1,10 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import separateThousands from "../../utils/separateThousands";
 
 const ProductCard = (props) => {
   const { label, price, imgUrl } = props.product;
   const icons = props.children;
-
-  const separateThousands = (number) => {
-    const reversedNumber = String(number).split("").reverse();
-    let result = "";
-
-    for (let i = 0; i < reversedNumber.length; i++) {
-      if (i % 3 === 0 && i !== 0) {
-        result += ",";
-      }
-      result += reversedNumber[i];
-    }
-
-    return result.split("").reverse().join("");
-  };
 
   const [imageLoaded, setImageLoaded] = useState(false);
 

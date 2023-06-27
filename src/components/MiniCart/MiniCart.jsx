@@ -4,6 +4,7 @@ import MiniCartProductCard from "../CartProductCard/MiniCartProductCard";
 import BtnRoundedOutline from "../Reusable/BtnRoundedOutline";
 import { useNavigate } from "react-router";
 import { toast } from "react-hot-toast";
+import separateThousands from "../../utils/separateThousands";
 
 const MiniCart = ({ closeBtnRef, miniCartRef, toggleMiniCart }) => {
   const productsInCart = useSelector((state) => state.cart.products);
@@ -15,20 +16,6 @@ const MiniCart = ({ closeBtnRef, miniCartRef, toggleMiniCart }) => {
   productsInCart.map((product) => {
     totalPrice += product.quantity * product.price;
   });
-
-  const separateThousands = (number) => {
-    const reversedNumber = String(number).split("").reverse();
-    let result = "";
-
-    for (let i = 0; i < reversedNumber.length; i++) {
-      if (i % 3 === 0 && i !== 0) {
-        result += ",";
-      }
-      result += reversedNumber[i];
-    }
-
-    return result.split("").reverse().join("");
-  };
 
   return (
     <>

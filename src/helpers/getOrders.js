@@ -1,6 +1,6 @@
 import getProduct from "./getProduct";
 import { db } from "../firebase";
-import { collection, doc, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 
 const getOrders = async (user) => {
   const ordersCollRef = collection(db, "/orders");

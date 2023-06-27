@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import ProgressDeliveryBar from "../ProgressDeliveryBar/ProgressDeliveryBar";
 import { Link } from "react-router-dom";
+import separateThousands from "../../utils/separateThousands";
 
 const OrderCard = ({ order }) => {
   const [displayedFullInfo, setDisplayedFullInfo] = useState(false);
@@ -36,20 +37,6 @@ const OrderCard = ({ order }) => {
     }
 
     setDisplayedFullInfo(!displayedFullInfo);
-  };
-
-  const separateThousands = (number) => {
-    const reversedNumber = String(number).split("").reverse();
-    let result = "";
-
-    for (let i = 0; i < reversedNumber.length; i++) {
-      if (i % 3 === 0 && i !== 0) {
-        result += ",";
-      }
-      result += reversedNumber[i];
-    }
-
-    return result.split("").reverse().join("");
   };
 
   return (
@@ -179,20 +166,6 @@ export default OrderCard;
 
 const MyOrdersProductCard = ({ product }) => {
   const { imgUrl, id, label, quantity, price } = product;
-
-  const separateThousands = (number) => {
-    const reversedNumber = String(number).split("").reverse();
-    let result = "";
-
-    for (let i = 0; i < reversedNumber.length; i++) {
-      if (i % 3 === 0 && i !== 0) {
-        result += ",";
-      }
-      result += reversedNumber[i];
-    }
-
-    return result.split("").reverse().join("");
-  };
 
   return (
     <Link

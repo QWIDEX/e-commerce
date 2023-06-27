@@ -9,6 +9,7 @@ import {
   setOptProductsDocs,
 } from "../store/slices/optProductsSlice";
 import filterProductsDocs from "../helpers/getOptProductsDocs";
+import filterArr from "../utils/filterArr";
 
 let prevOptDeps = [];
 
@@ -37,16 +38,6 @@ const useProducts = (
 
   let productsDocs = useSelector((state) => state.products.productsDocs);
   const dispatch = useDispatch();
-
-  function filterArr(arr) {
-    if (!Array.isArray(arr)) return [];
-    return arr.filter((arg) => {
-      if (Array.isArray(arg)) {
-        return arg.length !== 0;
-      }
-      return arg !== undefined && arg !== null && arg !== "";
-    });
-  }
 
   useEffect(() => {
     if (productsDocs.length === 0) {

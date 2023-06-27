@@ -4,8 +4,8 @@ import Catalog from "../Catalog/Catalog";
 import { useParams } from "react-router";
 import useTotalProductsCount from "../../hooks/useTotalProductsCount";
 import useProducts from "../../hooks/useProducts";
-import SwitchCatalogPage from "../../components/SwitchCatalogPage/SwitchCatalogPage";
 import { useSearchParams } from "react-router-dom";
+import CatalogPageSwitcher from "../CatalogPageSwitcher/CatalogPageSwitcher";
 
 const CatalogWithFilters = ({ ProductCard, additionalDeps }) => {
   const { pageParam } = useParams();
@@ -53,26 +53,11 @@ const CatalogWithFilters = ({ ProductCard, additionalDeps }) => {
           ProductCard={ProductCard}
         ></Catalog>
       </div>
-
-      <div className="flex gap-2 justify-center mt-5 items-center">
-        {page - 1 !== 0 ? (
-          <SwitchCatalogPage>{page - 1}</SwitchCatalogPage>
-        ) : (
-          ""
-        )}
-        <SwitchCatalogPage>{page}</SwitchCatalogPage>
-        <SwitchCatalogPage disabled={productsMaxFind <= page * showedCards}>
-          {page + 1}
-        </SwitchCatalogPage>
-        <SwitchCatalogPage
-          disabled={productsMaxFind <= (page + 1) * showedCards}
-        >
-          {page + 2}
-        </SwitchCatalogPage>
-        <SwitchCatalogPage disabled={productsMaxFind <= page * showedCards}>
-          {"Next"}
-        </SwitchCatalogPage>
-      </div>
+      <CatalogPageSwitcher
+        page={page}
+        productsMaxFind={productsMaxFind}
+        showedCards={showedCards}
+      />
     </section>
   );
 };
