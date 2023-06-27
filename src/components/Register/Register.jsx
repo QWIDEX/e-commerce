@@ -6,13 +6,19 @@ import { auth } from "../../firebase";
 
 const Register = () => {
   const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [passShowing, setPassShowing] = useState(false);
 
   const handleRegister = () => {
-    if (password !== confirmPassword) toast.error("Passwords don't match");
+    if (!firstName)
+      toast.error("You need to write your first name to continue");
+    else if (!lastName)
+      toast.error("You need to write your last name to continue");
+    else if (password !== confirmPassword) toast.error("Passwords don't match");
     else if (!email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/gm))
       toast.error("Email isn't valid");
     else {
@@ -37,6 +43,24 @@ const Register = () => {
     >
       <h1 className="font-semibold text-4xl leading-normal">Sign up</h1>
       <div className="flex flex-col gap-5">
+        <label className="flex flex-col gap-5">
+          <h3 className="font-medium text-2xl leading-normal">First name</h3>
+          <input
+            type="text"
+            onChange={(e) => setFirstName(e.target.value)}
+            placeholder="firstName"
+            className="border border-black border-solid text-lg w-full py-3 px-4 rounded-lg"
+          />
+        </label>
+        <label className="flex flex-col gap-5">
+          <h3 className="font-medium text-2xl leading-normal">Last name</h3>
+          <input
+            type="text"
+            onChange={(e) => setLastName(e.target.value)}
+            placeholder="lastName"
+            className="border border-black border-solid text-lg w-full py-3 px-4 rounded-lg"
+          />
+        </label>
         <label className="flex flex-col gap-5">
           <h3 className="font-medium text-2xl leading-normal">Email address</h3>
           <input

@@ -1,19 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import Review from "../Review/Review";
+import { useSearchParams } from "react-router-dom";
+import mergeSearchParams from "../../helpers/mergeSearchParams";
+import ReviewBlock from "../ReviewBlock/ReviewBlock";
 
 const ProductDetailedDesc = ({ product }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const [swiper, setSwiper] = useState(null);
-  const [slideSelected, setSlideSelected] = useState(0);
+  const [slideSelected, setSlideSelected] = useState(parseInt(searchParams.get("slide")));
 
   const handleSlideSelector = (idx) => {
-    swiper.enable();
-    swiper.slideTo(idx);
+    setSearchParams(mergeSearchParams(searchParams, { slide: idx }));
+    swiper?.enable();
+    swiper?.slideTo(idx);
     setSlideSelected(idx);
-    swiper.disable();
+    swiper?.disable();
   };
 
   useEffect(() => {
+    swiper?.slideTo(slideSelected);
     swiper?.disable();
   }, [swiper]);
 
@@ -69,9 +75,7 @@ const ProductDetailedDesc = ({ product }) => {
           </div>
         </SwiperSlide>
         <SwiperSlide>
-          <div className="flex gap-5">
-            <Review />
-          </div>
+          <ReviewBlock reviews = {product?.reviews} productId={product.id} />
         </SwiperSlide>
       </Swiper>
     </div>

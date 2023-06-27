@@ -1,14 +1,64 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-const RateProduct = ({ className, size = 20 }) => {
+const RateProduct = ({
+  className,
+  size = 20,
+  initialRating = 5,
+  editing = false,
+  currentRating
+}) => {
+  const [stars, setStars] = useState([]);
+  const [rating, setRating] = useState(initialRating);
+
+  const onMouseEnter = (idx) => {
+    if (editing) {
+      setRating(idx + 1);
+    }
+  };
+
+  const handleSetRating = (idx) => {
+    if (editing) {
+      currentRating.current = idx + 1;
+      setRating(idx + 1);
+    }
+  };
+
+  const onMouseLeave = () => {
+    if (editing) {
+      setRating(currentRating.current);
+    }
+  };
+
+  useEffect(() => {
+    const localStars = [];
+    for (let i = 0; i < Math.floor(rating); i++) {
+      localStars.push("fullStar");
+    }
+    if (rating % 1 !== 0) localStars.push("halfStar");
+    if (localStars.length < 5) {
+      const emptyStars = [];
+      for (let i = 0; i < 5 - localStars.length; i++)
+        emptyStars.push("emptyStar");
+      localStars.push(...emptyStars);
+    }
+    setStars(localStars);
+  }, [rating]);
+
   return (
-    <div  className={`flex gap-5 ${className}`}>
-      <div className="flex">  
-        <Star type={"fullStar"} size={size} />
-        <Star type={"fullStar"} size={size} />
-        <Star type={"fullStar"} size={size} />
-        <Star type={"halfStar"} size={size} />
-        <Star type={"emptyStar"} size={size} />
+    <div className={`flex gap-5 ${className}`}>
+      <div className="flex">
+        {stars.map((star, idx) => (
+          <Star
+            editing={editing}
+            onMouseLeave={onMouseLeave}
+            onMouseEnter={onMouseEnter}
+            handleSetRating={handleSetRating}
+            type={star}
+            key={idx}
+            idx={idx}
+            size={size}
+          />
+        ))}
       </div>
     </div>
   );
@@ -16,10 +66,32 @@ const RateProduct = ({ className, size = 20 }) => {
 
 export default RateProduct;
 
-const Star = ({ type, size }) => {
-  if (type === "fullStar") return <FullStar size={size} />;
-  if (type === "halfStar") return <HalfStar size={size} />;
-  if (type === "emptyStar") return <EmptyStar size={size} />;
+const Star = ({
+  type,
+  size,
+  idx,
+  handleSetRating,
+  onMouseLeave,
+  onMouseEnter,
+  editing,
+}) => {
+  let renderingStar;
+  if (type === "fullStar") renderingStar = <FullStar size={size} />;
+
+  if (type === "halfStar") renderingStar = <HalfStar size={size} />;
+
+  if (type === "emptyStar") renderingStar = <EmptyStar size={size} />;
+  if (editing) {
+    return (
+      <button
+        onClick={() => handleSetRating(idx)}
+        onMouseEnter={() => onMouseEnter(idx)}
+        onMouseLeave={onMouseLeave}
+      >
+        {renderingStar}
+      </button>
+    );
+  } else return renderingStar
 };
 
 const FullStar = ({ size }) => {
@@ -42,8 +114,8 @@ const FullStar = ({ size }) => {
 const HalfStar = ({ size }) => {
   return (
     <svg
-    width={size}
-    height={size}
+      width={size}
+      height={size}
       viewBox="0 0 20 20"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -63,8 +135,8 @@ const HalfStar = ({ size }) => {
 const EmptyStar = ({ size }) => {
   return (
     <svg
-    width={size}
-    height={size}
+      width={size}
+      height={size}
       viewBox="0 0 20 20"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

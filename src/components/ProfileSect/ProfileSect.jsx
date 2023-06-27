@@ -29,7 +29,11 @@ const ProfileSect = () => {
   const [avatar, setAvatar] = useState([user?.avatar, undefined]);
 
   const handleSubmit = () => {
-    if (!email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/gm))
+    if (!firstName)
+      toast.error("You need to write your first name to continue");
+    else if (!lastName)
+      toast.error("You need to write your last name to continue");
+    else if (!email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/gm))
       toast.error("Email isn't valid");
     else {
       updateUser(

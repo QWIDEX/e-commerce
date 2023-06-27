@@ -1,10 +1,14 @@
 import React, { useRef, useState } from "react";
 import ProgressDeliveryBar from "../ProgressDeliveryBar/ProgressDeliveryBar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import separateThousands from "../../utils/separateThousands";
+import { useSelector } from "react-redux";
+import ButtonOutline from "../Reusable/BtnOutline";
 
 const OrderCard = ({ order }) => {
   const [displayedFullInfo, setDisplayedFullInfo] = useState(false);
+
+  const user = useSelector((state) => state.user.user);
 
   const {
     orderId,
@@ -51,7 +55,7 @@ const OrderCard = ({ order }) => {
               status === "Pending"
                 ? { backgroundColor: "lightgray" }
                 : status === "Delivered"
-                ? { backgroundColor: "#00e500" }
+                ? { backgroundColor: "#22c55e" }
                 : { backgroundColor: "yellow" }
             }
             className="absolute h-[110%] top-1/2 -translate-y-1/2 -left-4 w-2 rounded-full"
@@ -147,7 +151,11 @@ const OrderCard = ({ order }) => {
           <div className="flex w-1/3 min-w-fit flex-col gap-5">
             <h3 className="font-medium text-lg">Ordered Products</h3>
             {products.map((product) => (
-              <MyOrdersProductCard key={product.id} product={product} />
+              <MyOrdersProductCard
+                key={product.id}
+                status={status}
+                product={product}
+              />
             ))}
             <p className="font-medium">
               Total price: {""}
@@ -164,39 +172,53 @@ const OrderCard = ({ order }) => {
 
 export default OrderCard;
 
-const MyOrdersProductCard = ({ product }) => {
+const MyOrdersProductCard = ({ product, status }) => {
   const { imgUrl, id, label, quantity, price } = product;
 
+  const navigate = useNavigate();
+
   return (
-    <Link
-      to={`/product/${id}`}
-      className="flex flex-col sm-sm-sm:flex-row gap-5 items-center justify-between"
-    >
-      <img
-        src={imgUrl}
-        className="aspect-square w-24 p-1 rounded-lg bg-[#fbebb5]"
-        alt=""
-      />
-      <div className=" w-full flex flex-col justify-center">
-        <h1 className="text-base">{label}</h1>
-        <div className="items-center gap-4 w-full flex">
-          {quantity}
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="15"
-            height="15"
-            viewBox="0 0 15 15"
-          >
-            <path
-              fill="currentColor"
-              d="M3.64 2.27L7.5 6.13l3.84-3.84A.92.92 0 0 1 12 2a1 1 0 0 1 1 1a.9.9 0 0 1-.27.66L8.84 7.5l3.89 3.89A.9.9 0 0 1 13 12a1 1 0 0 1-1 1a.92.92 0 0 1-.69-.27L7.5 8.87l-3.85 3.85A.92.92 0 0 1 3 13a1 1 0 0 1-1-1a.9.9 0 0 1 .27-.66L6.16 7.5L2.27 3.61A.9.9 0 0 1 2 3a1 1 0 0 1 1-1c.24.003.47.1.64.27Z"
-            />
-          </svg>
-          <span className="font-medium text-[#B88E2F]">
-            {separateThousands(price)}$
-          </span>
+    <div className="flex justify-between items-center gap-2">
+      <Link
+        to={`/product/${id}`}
+        className="flex flex-col sm-sm-sm:flex-row gap-5 items-center justify-between"
+      >
+        <img
+          src={imgUrl}
+          className="aspect-square w-24 p-1 rounded-lg bg-[#fbebb5]"
+          alt=""
+        />
+        <div className=" w-full flex flex-col justify-center">
+          <h1 className="text-base">{label}</h1>
+          <div className="items-center gap-4 w-full flex">
+            {quantity}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="15"
+              height="15"
+              viewBox="0 0 15 15"
+            >
+              <path
+                fill="currentColor"
+                d="M3.64 2.27L7.5 6.13l3.84-3.84A.92.92 0 0 1 12 2a1 1 0 0 1 1 1a.9.9 0 0 1-.27.66L8.84 7.5l3.89 3.89A.9.9 0 0 1 13 12a1 1 0 0 1-1 1a.92.92 0 0 1-.69-.27L7.5 8.87l-3.85 3.85A.92.92 0 0 1 3 13a1 1 0 0 1-1-1a.9.9 0 0 1 .27-.66L6.16 7.5L2.27 3.61A.9.9 0 0 1 2 3a1 1 0 0 1 1-1c.24.003.47.1.64.27Z"
+              />
+            </svg>
+            <span className="font-medium text-[#B88E2F]">
+              {separateThousands(price)}$
+            </span>
+          </div>
         </div>
-      </div>
-    </Link>
+      </Link>
+      {status === "Delivered" ? (
+        <ButtonOutline
+          onClick={() => navigate(`/product/${id}/?slide=2`)}
+          className="px-2 !text-sm h-min border-[1px] !py-2 w-full"
+        >
+          Leave a reveiw
+        </ButtonOutline>
+      ) : (
+        <></>
+      )}
+    </div>
   );
 };

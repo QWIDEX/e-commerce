@@ -40,7 +40,10 @@ const ProgressDeliveryBar = ({ status }) => {
       <div className="flex absolute w-full top-0 left-0">
         <div
           style={
-            status === "Pending"
+            status === "Pending" ||
+            status === "Packing" ||
+            status === "Delivering" ||
+            status === "Delivered"
               ? { backgroundColor: "#22c55e" }
               : { backgroundColor: "#d1d5db" }
           }
@@ -48,7 +51,9 @@ const ProgressDeliveryBar = ({ status }) => {
         ></div>
         <div
           style={
-            status === "Packing"
+            status === "Packing" ||
+            status === "Delivering" ||
+            status === "Delivered"
               ? { backgroundColor: "#22c55e" }
               : { backgroundColor: "#d1d5db" }
           }
@@ -56,7 +61,7 @@ const ProgressDeliveryBar = ({ status }) => {
         ></div>
         <div
           style={
-            status === "Delivering"
+            status === "Delivering" || status === "Delivered"
               ? { backgroundColor: "#22c55e" }
               : { backgroundColor: "#d1d5db" }
           }
