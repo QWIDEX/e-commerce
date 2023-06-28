@@ -7,16 +7,17 @@ import ButtonOutline from "../Reusable/BtnOutline";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { toast } from "react-hot-toast";
-import { useNavigate } from "react-router";
 
 const ReviewBlock = ({ productId, reviews }) => {
   const user = useSelector((state) => state.user.user);
+
+  const [currentReviews, setCurrentReviews] = useState(reviews);
 
   const [review, setReview] = useState();
   const [order, setOrder] = useState();
 
   useEffect(() => {
-    setReview(reviews.find((review) => review.userId === user.uid));
+    setReview(currentReviews.find((review) => review.userId === user?.uid));
     if (user) {
       getOrders(user).then((orders) => {
         setOrder(
@@ -33,9 +34,13 @@ const ReviewBlock = ({ productId, reviews }) => {
       <div className="flex w-11/12 mt-5 mx-auto flex-col gap-5">
         <label className="p-2 border border-gray-200 rounded-lg">
           <h1 className="text-center font-medium text-xl">Leave a reveiw</h1>
-          <CreateReviewBlock reviews={reviews} productId={productId} />
+          <CreateReviewBlock
+            setCurrentReviews={setCurrentReviews}
+            reviews={currentReviews}
+            productId={productId}
+          />
         </label>
-        {reviews.map((review, idx) => (
+        {currentReviews.map((review, idx) => (
           <Review review={review} key={idx} />
         ))}
       </div>
@@ -46,24 +51,34 @@ const ReviewBlock = ({ productId, reviews }) => {
         <div className="p-2 border border-gray-200 rounded-lg">
           <h1 className="text-center font-medium text-xl">Your review</h1>
           <CreateReviewBlock
-            reviews={reviews}
+            reviews={currentReviews}
             review={review}
+            setCurrentReviews={setCurrentReviews}
             change={true}
             productId={productId}
           />
         </div>
-        {reviews.map((review, idx) => (
+        {currentReviews.map((review, idx) => (
           <Review review={review} key={idx} />
         ))}
       </div>
     );
-  } else {
-    <div className="flex w-11/12 mt-5 mx-auto flex-col gap-5">
-      {reviews.map((review, idx) => (
-        <Review review={review} key={idx} />
-      ))}
-    </div>;
-  }
+  } else if (currentReviews.length > 0) {
+    return (
+      <div className="flex w-11/12 mt-5 mx-auto flex-col gap-5">
+        {currentReviews.map((review, idx) => (
+          <Review review={review} key={idx} />
+        ))}
+      </div>
+    );
+  } else
+    return (
+      <div className="flex justify-center items-center w-full h-full">
+        <h1 className="text-center font-medium text-xl">
+          Looks like there are no reviews yet
+        </h1>
+      </div>
+    );
 };
 
 export default ReviewBlock;
@@ -72,6 +87,7 @@ const CreateReviewBlock = ({
   productId,
   reviews,
   change = false,
+  setCurrentReviews,
   review = {},
 }) => {
   const user = useSelector((state) => state.user.user);
@@ -83,20 +99,24 @@ const CreateReviewBlock = ({
     if (currentRating.current === 0) toast.error("You have to rate it");
     else {
       const productRef = doc(db, `/products/${productId}`);
+
+      const updatedReviews = [
+        ...reviews,
+        {
+          reviewText,
+          rating: currentRating.current,
+          userId: user.uid,
+        },
+      ];
+
       updateDoc(productRef, {
-        reviews: [
-          ...reviews,
-          {
-            reviewText,
-            rating: currentRating.current,
-            userId: user.uid,
-          },
-        ],
-      }).then(() => toast.success("Successfully posted"));
+        reviews: updatedReviews,
+      }).then(() => {
+        toast.success("Successfully posted");
+        setCurrentReviews(updatedReviews);
+      });
     }
   };
-
-  const navigate = useNavigate();
 
   const changeReview = () => {
     if (currentRating.current === 0) toast.error("You have to rate it");
@@ -105,28 +125,37 @@ const CreateReviewBlock = ({
       const reviewIdx = reviews.findIndex(
         (review) => review.userId === user.uid
       );
+
+      const updatedReviews = [
+        ...reviews.slice(0, reviewIdx),
+        {
+          reviewText,
+          rating: currentRating.current,
+          userId: user.uid,
+        },
+        ...reviews.slice(reviewIdx + 1),
+      ];
+
       updateDoc(productRef, {
-        reviews: [
-          ...reviews.slice(0, reviewIdx),
-          {
-            reviewText,
-            rating: currentRating.current,
-            userId: user.uid,
-          },
-          ...reviews.slice(reviewIdx + 1),
-        ],
+        reviews: updatedReviews,
       }).then(() => {
+        setCurrentReviews(updatedReviews);
         toast.success("Successfully changed");
       });
     }
   };
 
+  useEffect(() => {
+    const textArea = document.getElementById("review");
+    textArea.style.height = `${textArea.scrollHeight + 10}px`;
+  }, []);
+
   return (
-    <div className="bg-gray-100 w-full mt-7 flex gap-5 rounded-lg p-5">
+    <div className="bg-gray-100 flex-col sm-sm:flex-row w-full mt-7 flex gap-5 rounded-lg p-5">
       <img
-        src={require("../../images/photo_2022-04-04_10-14-37.jpg")}
+        src={user.avatar}
         alt=""
-        className="rounded-full h-20"
+        className="rounded-full aspect-square w-fit h-20"
       />
       <div className="w-full">
         <h2 className="text-xl font-medium">
@@ -139,7 +168,7 @@ const CreateReviewBlock = ({
           className="py-1"
           currentRating={currentRating}
         />
-        <div className="flex items-center justify-between gap-5">
+        <div className="flex items-center flex-col sm-sm:flex-row justify-between gap-5">
           <textarea
             name="review"
             id="review"

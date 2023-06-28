@@ -36,8 +36,8 @@ const Filters = ({ productsLength = 0, showedCards, productsMaxFind = 16 }) => {
 
   return (
     <>
-      <div className="bg-[#FAF4F4] w-full flex justify-between py-5 px-[10%]">
-        <div className="flex items-center flex-wrap">
+      <div className="bg-[#FAF4F4] w-full flex  py-5 flex-wrap gap-3 lg-sm:justify-between justify-center px-[10%]">
+        <div className="flex items-center justify-center flex-wrap">
           <div className="pl-5 flex justify-around gap-6 after:bg-[transparent] after:w-0.5 sm-sm:after:bg-[#9f9f9f] ">
             <button
               type="button"
@@ -96,7 +96,7 @@ const Filters = ({ productsLength = 0, showedCards, productsMaxFind = 16 }) => {
             {productsMaxFind ? productsMaxFind : "many"} results
           </div>
         </div>
-        <div className="flex">
+        <div className="flex gap-3 justify-between">
           <ShowCards />
           <SortBy />
         </div>

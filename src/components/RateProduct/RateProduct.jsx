@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 const RateProduct = ({
   className,
   size = 20,
-  initialRating = 5,
+  initialRating = 0,
   editing = false,
   currentRating
 }) => {
@@ -28,6 +28,10 @@ const RateProduct = ({
       setRating(currentRating.current);
     }
   };
+
+  useEffect(() => {
+    setRating(initialRating)
+  }, [initialRating])
 
   useEffect(() => {
     const localStars = [];

@@ -39,8 +39,8 @@ const Review = ({ review }) => {
     );
   } else if (reviewText?.length > 0) {
     return (
-      <div className="bg-gray-100 w-full mt-7 flex gap-5 rounded-lg p-5">
-        <img src={user.avatar} alt="" className="rounded-full h-20" />
+      <div className="bg-gray-100 w-full mt-7 flex-col sm-sm:flex-row flex gap-5 rounded-lg p-5">
+        <img src={user.avatar} alt="" className="float-right w-fit aspect-square rounded-full h-20" />
         <div>
           <h2 className="text-xl font-medium">
             {user.firstName} {user.lastName}
@@ -50,7 +50,18 @@ const Review = ({ review }) => {
         </div>
       </div>
     );
-  } else return <></>
+  } else
+    return (
+      <div className="bg-gray-100 flex-col sm-sm:flex-row w-full mt-7 flex gap-5 rounded-lg p-5">
+        <img src={user.avatar} alt="" className="rounded-full aspect-square w-fit h-20" />
+        <div className=" h-full flex flex-col justify-center">
+          <h2 className="text-xl font-medium">
+            {user.firstName} {user.lastName}
+          </h2>
+          <RateProduct size={17} initialRating={rating} className="py-1" />
+        </div>
+      </div>
+    );
 };
 
 export default Review;

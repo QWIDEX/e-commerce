@@ -4,19 +4,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { db } from "../../../firebase";
 import { setFavorites } from "../../../store/slices/userSlice";
 import "./AddToFavoritesBtn.css";
+import { toast } from "react-hot-toast";
 
-const AddToFavoritesBtn = ({ productId, className = '' }) => {
+const AddToFavoritesBtn = ({ productId, className = "" }) => {
   const user = useSelector((state) => state.user.user);
-  const favorites = user.favorites;
+  const favorites = user?.favorites || [];
 
   const dispatch = useDispatch();
-  const userRef = doc(db, `/users/${user.uid}`);
+  const userRef = doc(db, `/users/${user?.uid}`);
 
-  const [liked, setLiked] = useState(
-    user.favorites?.includes(productId) || false
-  );
+  const [liked, setLiked] = useState(favorites?.includes(productId) || false);
   const likedPrev = useRef(liked);
-  
+
   const likeIconRef = useRef();
 
   const mounted = useRef();
@@ -30,7 +29,7 @@ const AddToFavoritesBtn = ({ productId, className = '' }) => {
         }, 500);
 
         likedPrev.current = liked;
-        
+
         return () => {
           clearTimeout(debounceTimer);
         };
@@ -39,10 +38,13 @@ const AddToFavoritesBtn = ({ productId, className = '' }) => {
   }, [favorites]);
 
   const addToFavorites = () => {
-    setLiked(true);
-    likeIconRef.current.classList.remove("un-like");
-    likeIconRef.current.classList.add("like");
-    dispatch(setFavorites([...favorites, productId]));
+    if (!user) toast.error("You have to sign up first");
+    else {
+      setLiked(true);
+      likeIconRef.current.classList.remove("un-like");
+      likeIconRef.current.classList.add("like");
+      dispatch(setFavorites([...favorites, productId]));
+    }
   };
 
   const removeFromFavorites = () => {
@@ -63,7 +65,10 @@ const AddToFavoritesBtn = ({ productId, className = '' }) => {
   };
 
   return (
-    <button className={className} onClick={liked ? removeFromFavorites : addToFavorites}>
+    <button
+      className={className}
+      onClick={liked ? removeFromFavorites : addToFavorites}
+    >
       <svg
         width="28"
         height="28"

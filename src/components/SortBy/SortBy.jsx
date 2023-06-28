@@ -21,12 +21,12 @@ const SortBy = () => {
   }
 
   return (
-    <label className="text-xl">
+    <label className="text-xl flex gap-2 justify-start items-center flex-wrap">
       Sort by
       <select
         onChange={(e) => handleSortMethod(e)}
         value={sortMethod}
-        className="text-[#9f9f9f] ml-2 px-3 text-lg py-1"
+        className="text-[#9f9f9f] px-3 text-lg py-1"
       >
         <option value="ordered">Popularity</option>
         <option value="label">Name</option>

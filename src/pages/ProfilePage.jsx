@@ -1,19 +1,22 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router";
 import MiniHeadingPathSect from "../components/Reusable/MiniHeadingPathSect";
 import ProfileNav from "../components/ProfileNav/ProfileNav";
 import LoadingIndicator from "../components/LoadingIndicator/LoadingIndicator";
 
-let firstRender = true;
-
 const ProfilePage = () => {
   const user = useSelector((state) => state.user.user);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!firstRender && !user) navigate("/auth");
-    else firstRender = false;
+    const waitingForData = setTimeout(() => {
+      if (!user) navigate("/auth")
+    }, 5000)
+
+    return () => {
+      clearTimeout(waitingForData)
+    }
   }, [user]);
 
   return (

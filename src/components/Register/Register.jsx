@@ -26,7 +26,7 @@ const Register = () => {
         .then(() => toast.success("You successfully signed up"))
         .catch((error) => {
           if (error.message === "Firebase: Error (auth/email-already-in-use).")
-            toast.error("Email is already in use");
+            toast.error("Email is already registered");
         });
     }
   };

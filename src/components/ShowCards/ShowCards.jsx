@@ -28,7 +28,7 @@ const ShowCards = () => {
   }
 
   return (
-    <label className="text-xl mr-2">
+    <label className="text-xl flex flex-wrap justify-center gap-2 mr-2 items-center">
       Show
       <input
         type="number"
@@ -36,7 +36,7 @@ const ShowCards = () => {
         max={20}
         value={showedCards}
         onInput={(e) => handleShowedCards(e)}
-        className="ml-2 w-[4.5ch] text-[#9f9f9f] px-3 text-lg py-1"
+        className=" w-[4.5ch] text-[#9f9f9f] px-3 text-lg py-1"
       />
     </label>
   );

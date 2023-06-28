@@ -27,6 +27,12 @@ const ProductDesc = ({ product, editing = false }) => {
     }
   });
 
+  const rating =
+    product.reviews.reduce(
+      (prevValue, currValue) => prevValue.rating * currValue.rating,
+      { rating: 1 }
+    ) / product.reviews.length;
+
   return (
     <div className="w-full lg-sm:w-1/2">
       <div className=" max-w-md mx-auto">
@@ -39,7 +45,7 @@ const ProductDesc = ({ product, editing = false }) => {
         </p>
 
         <div className="flex gap-5 items-center">
-          <RateProduct className="py-2" />{" "}
+          <RateProduct initialRating={rating || 0} className="py-2" />
           <div className="h-7 w-0.5 rounded-lg bg-[#9F9F9F]" />
           <div className="text-sm leading-normal text-[#9F9F9F]">
             {product.reviews.length} Customer Reviews

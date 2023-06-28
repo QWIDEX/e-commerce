@@ -18,7 +18,7 @@ const CheckoutSect = () => {
   const user = useSelector((state) => state.user.user);
   const productsInCart = useSelector((state) => state.cart.products);
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [firstName, setFirstName] = useState(user?.firstName || "");
   const [lastName, setLastName] = useState(user?.lastName || "");
@@ -54,7 +54,9 @@ const CheckoutSect = () => {
         firstName,
       ]).length < 9
     )
-      toast.error("You must fill in all fields before order");
+      toast.error("You must fill in all fields");
+    else if (!user)
+      toast.error("You must sign up before you can order something");
     else {
       createOrder(
         {
@@ -73,7 +75,7 @@ const CheckoutSect = () => {
         productsInCartFiltered
       )
         .then(() => {
-          navigate('/profile/orders')
+          navigate("/profile/orders");
           toast.success("Order placed");
           toast(
             (t) => (
@@ -102,7 +104,10 @@ const CheckoutSect = () => {
           );
           dispatch(setCart([]));
         })
-        .catch(() => toast.error("Something went wrong, try again later"));
+        .catch((err) => {
+          toast.error("Something went wrong, try again later");
+          console.log(err);
+        });
     }
   };
 
