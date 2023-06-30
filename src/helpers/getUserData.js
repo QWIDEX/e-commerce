@@ -12,7 +12,9 @@ const getUserData = async ({ uid, emailVerified, email }) => {
     () => (userAvatar = undefined)
   );
 
-  return { ...user, avatar: userAvatar, emailVerified, uid, email };
+  if (email && emailVerified)
+    return { ...user, avatar: userAvatar, emailVerified, uid, email };
+  else return { ...user, avatar: userAvatar, uid };
 };
 
 export default getUserData;

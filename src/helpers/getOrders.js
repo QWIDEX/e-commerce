@@ -4,10 +4,9 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 
 const getOrders = async (user) => {
   const ordersCollRef = collection(db, "/orders");
-  const currentUserOrdersRef = query(
-    ordersCollRef,
-    where("userId", "==", user.uid)
-  );
+  const currentUserOrdersRef = user
+    ? query(ordersCollRef, where("userId", "==", user.uid))
+    : ordersCollRef;
 
   const orders = (await getDocs(currentUserOrdersRef)).docs.map((doc) => {
     return { ...doc.data(), orderId: doc.id };

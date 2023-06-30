@@ -5,7 +5,7 @@ import separateThousands from "../../utils/separateThousands";
 import { useSelector } from "react-redux";
 import ButtonOutline from "../Reusable/BtnOutline";
 
-const OrderCard = ({ order }) => {
+const OrderCard = ({ order, children }) => {
   const [displayedFullInfo, setDisplayedFullInfo] = useState(false);
 
   const user = useSelector((state) => state.user.user);
@@ -58,10 +58,15 @@ const OrderCard = ({ order }) => {
                 ? { backgroundColor: "#22c55e" }
                 : { backgroundColor: "yellow" }
             }
-            className="absolute h-[110%] top-1/2 -translate-y-1/2 -left-4 w-2 rounded-full"
+            className="absolute transition-all duration-300 h-[110%] top-1/2 -translate-y-1/2 -left-4 w-2 rounded-full"
           ></div>
-          <h1 className="font-medium text-base">Order: {orderId}</h1>
-          <p className="text-[#9F9F9F]">Status: {status}</p>
+          <div className="flex flex-wrap gap-7 items-center">
+            <div>
+              <h1 className="font-medium text-base">Order: {orderId}</h1>
+              <p className="text-[#9F9F9F]">Status: {status}</p>
+            </div>
+            {children}
+          </div>
         </div>
         <button>
           {displayedFullInfo ? (
@@ -209,16 +214,8 @@ const MyOrdersProductCard = ({ product, status }) => {
           </div>
         </div>
       </Link>
-      {status === "Delivered" ? (
-        <ButtonOutline
-          onClick={() => navigate(`/product/${id}/?slide=2`)}
-          className="px-2 !text-sm h-min border-[1px] !py-2 w-full"
-        >
-          Leave a reveiw
-        </ButtonOutline>
-      ) : (
-        <></>
-      )}
     </div>
   );
 };
+
+export { MyOrdersProductCard };

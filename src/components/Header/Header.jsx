@@ -8,28 +8,16 @@ const Header = ({ toggleMiniCart }) => {
   return (
     <header className="grid max-w-laptop grid-rows-2 left-1/2 -translate-x-1/2 grid-columns-1 absolute w-full place-items-center h-24 md:grid-cols-3 md:grid md:grid-rows-1">
       <div className="hidden md:block"></div>
-      <nav className="flex justify-evenly w-full max-w-md mt-3 md:mt-0 font-medium">
-        <ul>
+      <nav className="w-full max-w-md" >
+        <ul className="flex justify-evenly w-full max-w-md mt-3 md:mt-0 font-medium">
           <li>
             <Link to="/">Home</Link>
           </li>
-        </ul>
-        <ul>
           <li>
             <Link to="/shop">Shop</Link>
           </li>
-        </ul>
-        <ul>
-          <li>
-            <Link to="/blog">About</Link>
-          </li>
-        </ul>
-        <ul>
           <li>
             <Link to="/contacts">Contact</Link>
-          </li>
-          <li>
-            <Link to="/add-product">Add Product</Link>
           </li>
         </ul>
       </nav>
@@ -108,7 +96,7 @@ const Header = ({ toggleMiniCart }) => {
                 </svg>
               </Link>
             ) : (
-              <button>
+              <Link to="/auth">
                 <svg
                   width="28"
                   height="28"
@@ -124,7 +112,7 @@ const Header = ({ toggleMiniCart }) => {
                     strokeLinejoin="round"
                   />
                 </svg>
-              </button>
+              </Link>
             )}
           </li>
           <li>

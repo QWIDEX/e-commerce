@@ -14,22 +14,12 @@ const ReviewBlock = ({ productId, reviews }) => {
   const [currentReviews, setCurrentReviews] = useState(reviews);
 
   const [review, setReview] = useState();
-  const [order, setOrder] = useState();
 
   useEffect(() => {
     setReview(currentReviews.find((review) => review.userId === user?.uid));
-    if (user) {
-      getOrders(user).then((orders) => {
-        setOrder(
-          orders.find((order) =>
-            order.products.find((product) => productId === product.id)
-          )
-        );
-      });
-    }
-  }, [user]);
+  }, [user, currentReviews]);
 
-  if (order?.status === "Delivered" && !review) {
+  if (user && !review) {
     return (
       <div className="flex w-11/12 mt-5 mx-auto flex-col gap-5">
         <label className="p-2 border border-gray-200 rounded-lg">
@@ -66,6 +56,11 @@ const ReviewBlock = ({ productId, reviews }) => {
   } else if (currentReviews.length > 0) {
     return (
       <div className="flex w-11/12 mt-5 mx-auto flex-col gap-5">
+        <div className="bg-gray-100 flex-col justify-center sm-sm:flex-row w-full mt-7 flex gap-5 rounded-lg p-5">
+          <h1 className="text-center font-medium text-xl">
+            You have to sign up to leave a review
+          </h1>
+        </div>
         {currentReviews.map((review, idx) => (
           <Review review={review} key={idx} />
         ))}
@@ -73,7 +68,10 @@ const ReviewBlock = ({ productId, reviews }) => {
     );
   } else
     return (
-      <div className="flex justify-center items-center w-full h-full">
+      <div className="bg-gray-100 flex-col justify-center  w-full mt-7 flex gap-5 rounded-lg p-5">
+        <h1 className="text-center font-medium text-xl">
+          You have to sign up to leave a review
+        </h1>
         <h1 className="text-center font-medium text-xl">
           Looks like there are no reviews yet
         </h1>

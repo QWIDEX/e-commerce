@@ -42,7 +42,7 @@ const CatalogWithFilters = ({ ProductCard, additionalDeps }) => {
 
   return (
     <section>
-      <div className="relative h-full">
+      <div className="relative  overflow-hidden h-full">
         <Filters
           productsLength={productsState.products.length}
           productsMaxFind={productsMaxFind}

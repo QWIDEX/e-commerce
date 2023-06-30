@@ -1,13 +1,13 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase";
 import { setUser } from "../../store/slices/userSlice";
 import { useHref, useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 
-const ProfileNav = () => {
-  const href = useHref()
+const ProfileNav = ({ accesLevel }) => {
+  const href = useHref();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -17,7 +17,9 @@ const ProfileNav = () => {
         <li className="my-4">
           <NavLink
             to={"/profile"}
-            style={href === "/profile" ? {} : {backgroundColor: "transparent"}}
+            style={
+              href === "/profile" ? {} : { backgroundColor: "transparent" }
+            }
             className="px-3 py-2 w-full transition-all duration-300 hover:!bg-[#fbebb5] rounded-lg"
           >
             Profile
@@ -39,6 +41,18 @@ const ProfileNav = () => {
             Favorites
           </NavLink>
         </li>
+        {accesLevel === "admin" ? (
+          <li className="my-4">
+            <Link
+              to={"/admin"}
+              className="px-3 py-2 w-full transition-all hover:bg-[#fbebb5] duration-300 rounded-lg"
+            >
+              Administration
+            </Link>
+          </li>
+        ) : (
+          <></>
+        )}
         <li className="my-4">
           <button
             onClick={() => {

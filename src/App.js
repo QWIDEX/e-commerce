@@ -6,19 +6,22 @@ import CartPage from "./pages/CartPage";
 import ChekoutPage from "./pages/ChekoutPage";
 import ContactPage from "./pages/ContactPage";
 import ShopPage from "./pages/ShopPage";
-import AddNewProductPage from "./pages/AddNewProductPage";
 import SingleProductPage from "./pages/SingleProductPage";
 import AuthPage from "./pages/AuthPage";
 import ProfilePage from "./pages/ProfilePage";
 import EditProductPage from "./pages/EditProductPage";
 import { useDispatch } from "react-redux";
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
 import getUserData from "./helpers/getUserData";
 import { setUser } from "./store/slices/userSlice";
 import ProfileSect from "./components/ProfileSect/ProfileSect";
 import OrdersSect from "./components/OrdersSect/OrdersSect";
 import FavoritesSect from "./components/FavoritesSect/FavoritesSect";
+import AdminPage from "./pages/AdminPage";
+import AdminProductsSect from "./components/AdminProductsSect/AdminProductsSect";
+import AdminOrdersSect from "./components/AdminOrdersSect/AdminOrdersSect";
+import AdminUsersSect from "./components/AdminUsersSect/AdminUsersSect";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -32,7 +35,7 @@ const App = () => {
           });
         });
       }
-    })
+    });
   }, []);
 
   return (
@@ -44,8 +47,12 @@ const App = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="auth" element={<AuthPage />} />
         <Route path="shop/:pageParam?" element={<ShopPage />} />
-        <Route path="add-product" element={<AddNewProductPage />} />
         <Route path="product/:productID" element={<SingleProductPage />} />
+        <Route path="admin" element={<AdminPage />}>
+          <Route path="/admin" element={<AdminProductsSect />} />
+          <Route path="orders" element={<AdminOrdersSect />} />
+          <Route path="users" element={<AdminUsersSect />} />
+        </Route>
         <Route path="profile" element={<ProfilePage />}>
           <Route path="/profile" element={<ProfileSect />} />
           <Route path="orders" element={<OrdersSect />} />
