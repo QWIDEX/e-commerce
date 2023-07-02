@@ -22,6 +22,7 @@ import AdminPage from "./pages/AdminPage";
 import AdminProductsSect from "./components/AdminProductsSect/AdminProductsSect";
 import AdminOrdersSect from "./components/AdminOrdersSect/AdminOrdersSect";
 import AdminUsersSect from "./components/AdminUsersSect/AdminUsersSect";
+import AdminContactRequests from "./components/AdminContactRequests/AdminContactRequests";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -52,6 +53,7 @@ const App = () => {
           <Route path="/admin" element={<AdminProductsSect />} />
           <Route path="orders" element={<AdminOrdersSect />} />
           <Route path="users" element={<AdminUsersSect />} />
+          <Route path="messages" element={<AdminContactRequests />} />
         </Route>
         <Route path="profile" element={<ProfilePage />}>
           <Route path="/profile" element={<ProfileSect />} />

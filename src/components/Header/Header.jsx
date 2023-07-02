@@ -17,7 +17,7 @@ const Header = ({ toggleMiniCart }) => {
             <Link to="/shop">Shop</Link>
           </li>
           <li>
-            <Link to="/contacts">Contact</Link>
+            <Link to="/contact">Contact</Link>
           </li>
         </ul>
       </nav>

@@ -1,14 +1,14 @@
 import getProduct from "./getProduct";
 import { db } from "../firebase";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs, query } from "firebase/firestore";
 
-const getOrders = async (user) => {
+const getOrders = async (params) => {
   const ordersCollRef = collection(db, "/orders");
-  const currentUserOrdersRef = user
-    ? query(ordersCollRef, where("userId", "==", user.uid))
+  const ordersRef = params
+    ? query(ordersCollRef, ...params)
     : ordersCollRef;
 
-  const orders = (await getDocs(currentUserOrdersRef)).docs.map((doc) => {
+  const orders = (await getDocs(ordersRef)).docs.map((doc) => {
     return { ...doc.data(), orderId: doc.id };
   });
 

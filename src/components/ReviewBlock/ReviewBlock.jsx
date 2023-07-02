@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import getOrders from "../../helpers/getOrders";
 import Review from "../Review/Review";
 import RateProduct from "../RateProduct/RateProduct";
 import ButtonOutline from "../Reusable/BtnOutline";
