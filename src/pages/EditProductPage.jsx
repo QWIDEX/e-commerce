@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import DetailedDesc from "../components/EditingProduct/DetailedDesc";
 import MainDesc from "../components/EditingProduct/MainDesc";
 import useProduct from "../hooks/useProduct";
@@ -10,6 +10,9 @@ import { uploadBytes, ref, listAll, deleteObject } from "firebase/storage";
 import { updateDoc, doc } from "firebase/firestore";
 import { storage } from "../firebase";
 import { db } from "../firebase";
+import { useNavigate } from "react-router";
+import { useSelector } from "react-redux";
+import { toast } from "react-hot-toast";
 
 const EditProductPage = () => {
   const { productID } = useParams();
@@ -24,6 +27,21 @@ const EditProductPage = () => {
       return arg !== undefined && arg !== null && arg !== "";
     });
   }
+
+  const user = useSelector((state) => state.user.user);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const waitingForData = setTimeout(() => {
+      if (!user) navigate("/auth");
+    }, 5000);
+
+    if (user?.accesLevel !== "admin" && user) navigate("/");
+
+    return () => {
+      clearTimeout(waitingForData);
+    };
+  }, [user]);
 
   const handleSubmit = () => {
     let slideImgs = [...document.querySelectorAll(".slideImg")];
@@ -49,7 +67,10 @@ const EditProductPage = () => {
 
     getImgsIdxs().then((imgsIdxs) => {
       for (let i = slideImgs.length; i < imgsIdxs.length; i++) {
-        const objectRef = ref(storage, `images/products/${product.label}/${i === 0 ? 1 : i}`);
+        const objectRef = ref(
+          storage,
+          `images/products/${product.label}/${i === 0 ? 1 : i}`
+        );
         deleteObject(objectRef);
       }
     });
@@ -61,7 +82,9 @@ const EditProductPage = () => {
       available: parseInt(available),
       detailedDesc,
       additionalInfo,
-    });
+    })
+      .then(() => toast.success("Successfully updated"))
+      .catch(() => toast.error("Something went wrong"));
   };
 
   const getImgsIdxs = async () => {
@@ -93,11 +116,15 @@ const EditProductPage = () => {
     <>
       {error ? (
         <ErrorIndicator />
-      ) : loading ? (
+      ) : loading || !user ? (
         <LoadingIndicator className="py-9 h-[100vh]" />
       ) : (
         <div className="py-9">
-          <MiniHeadingPathSect label={product.label} labels={["Shop"]} paths={["shop"]} />
+          <MiniHeadingPathSect
+            label={product.label}
+            labels={["Shop"]}
+            paths={["shop"]}
+          />
           <MainDesc product={product} />
           <div className="border my-12 border-[#D9D9D9] w-full"></div>
           <DetailedDesc product={product} />

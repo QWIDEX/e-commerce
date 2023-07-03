@@ -59,7 +59,9 @@ const DetailedDesc = ({ product }) => {
         </SwiperSlide>
         <SwiperSlide>
           <div className="flex gap-5">
-            <Review />
+            {product.reviews.map((review) => (
+              <Review review={review} key={review.userId} />
+            ))}
           </div>
         </SwiperSlide>
       </Swiper>
@@ -96,7 +98,9 @@ const DetailedDescSlide = ({ descImgs = [], detailedDesc }) => {
         <label className="w-1/2">
           <input
             type="file"
-            onChange={(e) => setFirstImg(URL.createObjectURL(e.target.files[0]))}
+            onChange={(e) =>
+              setFirstImg(URL.createObjectURL(e.target.files[0]))
+            }
             name="firstDescImg"
             accept=".png, .jpg"
             className="hidden deskImg"
@@ -114,7 +118,9 @@ const DetailedDescSlide = ({ descImgs = [], detailedDesc }) => {
         <label className="w-1/2">
           <input
             type="file"
-            onChange={(e) => setSecondImg(URL.createObjectURL(e.target.files[0]))}
+            onChange={(e) =>
+              setSecondImg(URL.createObjectURL(e.target.files[0]))
+            }
             name="secondDescImg"
             accept=".png, .jpg"
             className="hidden deskImg"
