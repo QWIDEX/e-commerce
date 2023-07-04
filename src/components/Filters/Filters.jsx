@@ -6,16 +6,11 @@ import PriceFilter from "../PriceFilter/PriceFilter";
 import SortBy from "../SortBy/SortBy";
 import ShowCards from "../ShowCards/ShowCards";
 
-const Filters = ({ productsLength = 0, showedCards, productsMaxFind = 16 }) => {
+const Filters = ({ productsLength = 0, showedCards, productsMaxFind = 16, setCardStyle = () => {} }) => {
   const [filtersOpened, setFilters] = useState(false);
-  const [searchParams] = useSearchParams();
   const { pageParam } = useParams();
 
   const page = Number(pageParam || 1);
-
-  const [cardStyle, setCardStyle] = useState(
-    searchParams.get("cardStyle") || "blocks"
-  );
 
   function toggleFilters() {
     if (filtersOpened) {
@@ -61,7 +56,7 @@ const Filters = ({ productsLength = 0, showedCards, productsMaxFind = 16 }) => {
               </svg>
               Filters
             </button>
-            <button type="button">
+            <button onClick={() => setCardStyle("blocks")} type="button">
               <svg
                 width="28"
                 height="28"
@@ -75,7 +70,7 @@ const Filters = ({ productsLength = 0, showedCards, productsMaxFind = 16 }) => {
                 />
               </svg>
             </button>
-            <button type="button">
+            <button onClick={() => setCardStyle("rows")} type="button">
               <svg
                 width="24"
                 height="24"

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Filters from "../Filters/Filters";
 import Catalog from "../Catalog/Catalog";
 import { useParams } from "react-router";
@@ -7,7 +7,11 @@ import useProducts from "../../hooks/useProducts";
 import { useSearchParams } from "react-router-dom";
 import CatalogPageSwitcher from "../CatalogPageSwitcher/CatalogPageSwitcher";
 
-const CatalogWithFilters = ({ ProductCard, additionalDeps }) => {
+const CatalogWithFilters = ({
+  ProductCard,
+  additionalDeps,
+  RowProductCard,
+}) => {
   const { pageParam } = useParams();
   const page = parseInt(pageParam || 1);
   const [searchParams] = useSearchParams();
@@ -17,6 +21,10 @@ const CatalogWithFilters = ({ ProductCard, additionalDeps }) => {
   const typeFilters = searchParams.get("typeFilters")?.split(",") || [];
   const minPriceFilter = searchParams.get("from");
   const maxPriceFilter = searchParams.get("to");
+
+  const [cardStyle, setCardStyle] = useState(
+    searchParams.get("cardStyle") || "blocks"
+  );
 
   const filters = {
     typeFilters,
@@ -47,11 +55,21 @@ const CatalogWithFilters = ({ ProductCard, additionalDeps }) => {
           productsLength={productsState.products.length}
           productsMaxFind={productsMaxFind}
           showedCards={showedCards}
+          setCardStyle={setCardStyle}
         ></Filters>
-        <Catalog
-          productsState={productsState}
-          ProductCard={ProductCard}
-        ></Catalog>
+        {cardStyle === "blocks" || !RowProductCard ? (
+          <Catalog
+            productsState={productsState}
+            ProductCard={ProductCard}
+          ></Catalog>
+        ) : (
+          <div className="mt-5">
+            <Catalog
+              productsState={productsState}
+              ProductCard={RowProductCard}
+            ></Catalog>
+          </div>
+        )}
       </div>
       <CatalogPageSwitcher
         page={page}

@@ -110,3 +110,4 @@ firestore.indexes.json
 firestore.rules
 storage.rules
 .firebase
+build/
