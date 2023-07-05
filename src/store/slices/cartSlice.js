@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { ToastBar, toast } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 const cartSlice = createSlice({
   name: "products",

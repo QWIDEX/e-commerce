@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import OrderCard from "./OrderCard";
 import useOrders from "../../hooks/useOrders";
 import ErrorIndicator from "../ErrorIndicator/ErrorIndicator";

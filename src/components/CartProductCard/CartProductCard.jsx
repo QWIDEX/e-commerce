@@ -4,7 +4,7 @@ import { deleteFromCart, setToCart } from "../../store/slices/cartSlice";
 import separateThousands from "../../utils/separateThousands";
 
 const CartProductCard = ({ product }) => {
-  const { imgUrl, id, label, quantity, available, price } = product;
+  const { imgUrl, label, quantity, available, price } = product;
 
   const dispatch = useDispatch();
   const [productQuantity, setProductQuantity] = useState(quantity);

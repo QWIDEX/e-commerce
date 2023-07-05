@@ -1,5 +1,4 @@
 import React, { useState, useRef } from "react";
-import { useSearchParams } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import TypeFilter from "../TypeFilter/TypeFilter";
 import PriceFilter from "../PriceFilter/PriceFilter";

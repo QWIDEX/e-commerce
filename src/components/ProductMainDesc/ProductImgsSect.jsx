@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import img from "../../images/HomePage/Asgaard-sofa-1.png";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 

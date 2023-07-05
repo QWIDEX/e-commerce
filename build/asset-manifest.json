@@ -1,20 +1,20 @@
 {
   "files": {
     "main.css": "/static/css/main.0480f42c.css",
-    "main.js": "/static/js/main.f1e9d462.js",
+    "main.js": "/static/js/main.98e096b7.js",
     "static/media/Asgaard-sofa-1.png": "/static/media/Asgaard-sofa-1.e7d716dce69d96fb54d1.png",
     "static/media/background.png": "/static/media/background.bbc15d6b4c2c0c0c962f.png",
     "static/media/Rocket-single-seater-1.png": "/static/media/Rocket-single-seater-1.e2b0bc4301b69934c4fd.png",
     "static/media/Instagram-bg.png": "/static/media/Instagram-bg.efa43648d72281cce362.png",
-    "static/media/Cloud-sofa-three-seater-ottoman_3.png": "/static/media/Cloud-sofa-three-seater-ottoman_3.7f93d8ba4494b1829b18.png",
     "static/media/Granite-square-side-table-1.png": "/static/media/Granite-square-side-table-1.ee853bcab2fa244f9607.png",
+    "static/media/Mask group.png": "/static/media/Mask group.6f3a29d96abfdd745c06.png",
     "static/media/Empty Cart illustartion.png": "/static/media/Empty Cart illustartion.00569a005fdca7ee808f.png",
     "index.html": "/index.html",
     "main.0480f42c.css.map": "/static/css/main.0480f42c.css.map",
-    "main.f1e9d462.js.map": "/static/js/main.f1e9d462.js.map"
+    "main.98e096b7.js.map": "/static/js/main.98e096b7.js.map"
   },
   "entrypoints": [
     "static/css/main.0480f42c.css",
-    "static/js/main.f1e9d462.js"
+    "static/js/main.98e096b7.js"
   ]
 }

@@ -23,6 +23,7 @@ import AdminProductsSect from "./components/AdminProductsSect/AdminProductsSect"
 import AdminOrdersSect from "./components/AdminOrdersSect/AdminOrdersSect";
 import AdminUsersSect from "./components/AdminUsersSect/AdminUsersSect";
 import AdminContactRequests from "./components/AdminContactRequests/AdminContactRequests";
+import PageNotFound from "./pages/PageNotFound";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -61,6 +62,7 @@ const App = () => {
           <Route path="favorites/:pageParam?" element={<FavoritesSect />} />
         </Route>
         <Route path="edit-product/:productID" element={<EditProductPage />} />
+        <Route path="*" element={<PageNotFound />} />
       </Route>
     </Routes>
   );

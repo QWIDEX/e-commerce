@@ -1,14 +1,10 @@
 import React, { useRef, useState } from "react";
 import ProgressDeliveryBar from "../ProgressDeliveryBar/ProgressDeliveryBar";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import separateThousands from "../../utils/separateThousands";
-import { useSelector } from "react-redux";
-import ButtonOutline from "../Reusable/BtnOutline";
 
 const OrderCard = ({ order, children }) => {
   const [displayedFullInfo, setDisplayedFullInfo] = useState(false);
-
-  const user = useSelector((state) => state.user.user);
 
   const {
     orderId,
@@ -179,8 +175,6 @@ export default OrderCard;
 
 const MyOrdersProductCard = ({ product, status }) => {
   const { imgUrl, id, label, quantity, price } = product;
-
-  const navigate = useNavigate();
 
   return (
     <div className="flex justify-between items-center gap-2">
