@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { toast } from "react-hot-toast";
+import { ToastBar, toast } from "react-hot-toast";
 
 const cartSlice = createSlice({
   name: "products",
@@ -18,7 +18,6 @@ const cartSlice = createSlice({
             { ...product, quantity: state.products[idx].quantity + quantity },
             ...state.products.slice(idx + 1),
           ];
-          toast.success("Added to cart");
         } else {
           toast.error(`Only ${product.available} ${product.label} available`);
           state.products = [
@@ -29,8 +28,10 @@ const cartSlice = createSlice({
           toast.success(`Added to cart ${product.available} ${product.label} `);
         }
       } else {
-        toast.success("Added to cart");
-        state.products.push({ ...product, quantity });
+        if (product.available >= quantity) {
+          toast.success("Added to cart");
+          state.products.push({ ...product, quantity });
+        } else toast.error("Product is out of stock");
       }
     },
 
@@ -44,11 +45,14 @@ const cartSlice = createSlice({
           ...state.products.slice(idx + 1),
         ];
       } else {
-        state.products.push({ ...product, quantity: quantity || product.quantity });
+        state.products.push({
+          ...product,
+          quantity: quantity || product.quantity,
+        });
       }
 
       if (quantity) toast.success("Added to cart");
-    }, 
+    },
 
     deleteFromCart(state, action) {
       const idx = state.products.findIndex(
@@ -62,10 +66,11 @@ const cartSlice = createSlice({
     },
 
     setCart(state, action) {
-      state.products = action.payload
-    }
+      state.products = action.payload;
+    },
   },
 });
 
 export default cartSlice.reducer;
-export const { addToCart, setToCart, deleteFromCart, setCart } = cartSlice.actions;
+export const { addToCart, setToCart, deleteFromCart, setCart } =
+  cartSlice.actions;

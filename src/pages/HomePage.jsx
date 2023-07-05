@@ -2,9 +2,10 @@ import React from "react";
 import ButtonOutlineBtm from "../components/Reusable/BtnOutlineBtm";
 import ButtonOutline from "../components/Reusable/BtnOutline";
 import TopPicksForU from "../components/topPicksForU/TopPicksForU";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const HomePage = () => {
+  const navigate = useNavigate()
   return (
     <>
       <section className="pt-24 h-1000px bg-slightly-yellow">
@@ -35,16 +36,16 @@ const HomePage = () => {
             <h2 className="font-medium text-4xl leading-snug mb-6">
               Side Table
             </h2>
-            <ButtonOutlineBtm>View More</ButtonOutlineBtm>
+            <ButtonOutlineBtm onClick={() => {navigate("/product/YaorAIxyLC3J3yjCWdgd")}}>View More</ButtonOutlineBtm>
           </div>
           <div className="flex flex-col md:w-5/12  max-w-md items-center md:!items-start">
             <img
-              src={require("../images/HomePage/Cloud-sofa-three-seater-ottoman_3.png")}
+              src={require("../images/HomePage/Mask group.png")}
               alt="Granite-square-side-table"
               className="max-w-sm w-full md:w-11/12 md:ml-6 m-0"
             />
             <h2 className="font-medium text-4xl leading-snug mb-6">Sofa</h2>
-            <ButtonOutlineBtm>View More</ButtonOutlineBtm>
+            <ButtonOutlineBtm onClick={() => navigate("/product/TUbLQ88zCkAjEVRqz2B8")}>View More</ButtonOutlineBtm>
           </div>
         </div>
       </section>
@@ -61,7 +62,7 @@ const HomePage = () => {
             <h1 className="text-5xl leading-normal font-bold mb-8 md">
               Asgard sofa
             </h1>
-            <ButtonOutline>Order Now</ButtonOutline>
+            <ButtonOutline onClick={() => navigate("/product/Q06g7UnmGMy5yeecs6vx")}>Order Now</ButtonOutline>
           </div>
         </div>
       </section>
