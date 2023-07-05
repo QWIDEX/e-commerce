@@ -18,20 +18,25 @@ const FavoritesSect = () => {
       : page * 16;
 
   return (
-    <div className="flex flex-col !min-h-[70vh] justify-between">
-      <Catalog
-        productsState={{
-          ...products,
-          products: products.products.slice(from, to),
-        }}
-        ProductCard={ShopProductCard}
-      />
-      <CatalogPageSwitcher
-        page={page}
-        showedCards={16}
-        productsMaxFind={products.products.length}
-      />
-    </div>
+    <>
+      <h1 className="text-3xl mb-5 font-semibold leading-normal text-center">
+        Favorites
+      </h1>
+      <div className="flex flex-col !min-h-[70vh] justify-between">
+        <Catalog
+          productsState={{
+            ...products,
+            products: products.products.slice(from, to),
+          }}
+          ProductCard={ShopProductCard}
+        />
+        <CatalogPageSwitcher
+          page={page}
+          showedCards={16}
+          productsMaxFind={products.products.length}
+        />
+      </div>
+    </>
   );
 };
 

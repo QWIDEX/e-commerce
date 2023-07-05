@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import OrderCard from "./OrderCard";
 import useOrders from "../../hooks/useOrders";
 import ErrorIndicator from "../ErrorIndicator/ErrorIndicator";
@@ -16,9 +16,22 @@ const OrdersSect = () => {
         {error ? (
           <ErrorIndicator />
         ) : loading ? (
-          <LoadingIndicator className='min-h-[100%]' />
+          <LoadingIndicator className="min-h-[100%]" />
         ) : (
-          orders?.map((order) => <OrderCard key={order.orderId} order={order} />)
+          <>
+            {orders?.length === 0 ? (
+              <div className="flex justify-center items-center">
+                <h1 className="text-xl font-semibold">
+                  Seems like you haven't ordered anything yet
+                </h1>
+              </div>
+            ) : (
+              <></>
+            )}
+            {orders?.map((order) => (
+              <OrderCard key={order.orderId} order={order} />
+            ))}
+          </>
         )}
       </div>
     </>

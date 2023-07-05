@@ -96,6 +96,15 @@ const AdminUsersSect = () => {
         </div>
 
         <div>
+          {users.length === 0 ? (
+            <div className="justify-center flex items-center w-full h-full">
+              <h1 className="text-xl font-semibold">
+                Seems like nobody registred yet
+              </h1>
+            </div>
+          ) : (
+            <></>
+          )}
           {users.map((user) => (
             <UserCard
               handleAccesLevel={handleAccesLevel}

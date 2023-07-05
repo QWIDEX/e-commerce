@@ -6,7 +6,12 @@ import PriceFilter from "../PriceFilter/PriceFilter";
 import SortBy from "../SortBy/SortBy";
 import ShowCards from "../ShowCards/ShowCards";
 
-const Filters = ({ productsLength = 0, showedCards, productsMaxFind = 16, setCardStyle = () => {} }) => {
+const Filters = ({
+  productsLength = 0,
+  showedCards,
+  productsMaxFind = 16,
+  handleCardStyle = () => {},
+}) => {
   const [filtersOpened, setFilters] = useState(false);
   const { pageParam } = useParams();
 
@@ -56,7 +61,7 @@ const Filters = ({ productsLength = 0, showedCards, productsMaxFind = 16, setCar
               </svg>
               Filters
             </button>
-            <button onClick={() => setCardStyle("blocks")} type="button">
+            <button onClick={() => handleCardStyle("blocks")} type="button">
               <svg
                 width="28"
                 height="28"
@@ -70,7 +75,7 @@ const Filters = ({ productsLength = 0, showedCards, productsMaxFind = 16, setCar
                 />
               </svg>
             </button>
-            <button onClick={() => setCardStyle("rows")} type="button">
+            <button onClick={() => handleCardStyle("rows")} type="button">
               <svg
                 width="24"
                 height="24"
@@ -87,7 +92,7 @@ const Filters = ({ productsLength = 0, showedCards, productsMaxFind = 16, setCar
           </div>
           <div className="text-lg pl-5">
             Showing {(page - 1) * showedCards + 1}–
-            {(page - 1) * showedCards + productsLength } of{" "}
+            {(page - 1) * showedCards + productsLength} of{" "}
             {productsMaxFind ? productsMaxFind : "many"} results
           </div>
         </div>
@@ -96,45 +101,48 @@ const Filters = ({ productsLength = 0, showedCards, productsMaxFind = 16, setCar
           <SortBy />
         </div>
       </div>
-        <div style={{zIndex: filtersOpened ? 100 : -1}} className="absolute flex w-full h-[calc(100%-76px)]  ">
-          <div
-            className="m-0 w-1/3 z-10 h-full flex p-5 gap-2 flex-col relative bg-[#faf4f4] transition-all duration-300 -left-1/3"
-            ref={filtersBlock}
-          >
-            <button className="absolute top-5 right-5" onClick={toggleFilters}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="currentColor"
-                  d="M16.066 8.995a.75.75 0 1 0-1.06-1.061L12 10.939L8.995 7.934a.75.75 0 1 0-1.06 1.06L10.938 12l-3.005 3.005a.75.75 0 0 0 1.06 1.06L12 13.06l3.005 3.006a.75.75 0 0 0 1.06-1.06L13.062 12l3.005-3.005Z"
-                />
-              </svg>
-            </button>
-            <div>
-              <h2 className="text-2xl font-semibold">Types</h2>
-              <TypeFilter name={"Table"}>Table</TypeFilter>
-              <TypeFilter name={"CoffeTable"}>Coffe Table</TypeFilter>
-              <TypeFilter name={"Console"}>Console</TypeFilter>
-              <TypeFilter name={"Sofa"}>Sofa</TypeFilter>
-              <TypeFilter name={"ChairTable"}>Chair & Table</TypeFilter>
-              <TypeFilter name={"SofaSet"}>Sofa Set</TypeFilter>
-              <TypeFilter name={"Sideboard"}>Sideboard</TypeFilter>
-            </div>
-            <div>
-              <h2 className="text-2xl font-semibold">Price</h2>
-              <PriceFilter />
-            </div>
+      <div
+        style={{ zIndex: filtersOpened ? 100 : -1 }}
+        className="absolute flex w-full h-[calc(100%-76px)]  "
+      >
+        <div
+          className="m-0 w-1/3 z-10 h-full flex p-5 gap-2 flex-col relative bg-[#faf4f4] transition-all duration-300 -left-1/3"
+          ref={filtersBlock}
+        >
+          <button className="absolute top-5 right-5" onClick={toggleFilters}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill="currentColor"
+                d="M16.066 8.995a.75.75 0 1 0-1.06-1.061L12 10.939L8.995 7.934a.75.75 0 1 0-1.06 1.06L10.938 12l-3.005 3.005a.75.75 0 0 0 1.06 1.06L12 13.06l3.005 3.006a.75.75 0 0 0 1.06-1.06L13.062 12l3.005-3.005Z"
+              />
+            </svg>
+          </button>
+          <div>
+            <h2 className="text-2xl font-semibold">Types</h2>
+            <TypeFilter name={"Table"}>Table</TypeFilter>
+            <TypeFilter name={"CoffeTable"}>Coffe Table</TypeFilter>
+            <TypeFilter name={"Console"}>Console</TypeFilter>
+            <TypeFilter name={"Sofa"}>Sofa</TypeFilter>
+            <TypeFilter name={"ChairTable"}>Chair & Table</TypeFilter>
+            <TypeFilter name={"SofaSet"}>Sofa Set</TypeFilter>
+            <TypeFilter name={"Sideboard"}>Sideboard</TypeFilter>
           </div>
-          <button
-            className="bg-[rgba(0,0,0,0.3)] opacity-0 w-full absolute h-full z-[-1] transition-all duration-300"
-            ref={hideFilters}
-            onClick={toggleFilters}
-          ></button>
+          <div>
+            <h2 className="text-2xl font-semibold">Price</h2>
+            <PriceFilter />
+          </div>
         </div>
+        <button
+          className="bg-[rgba(0,0,0,0.3)] opacity-0 w-full absolute h-full z-[-1] transition-all duration-300"
+          ref={hideFilters}
+          onClick={toggleFilters}
+        ></button>
+      </div>
     </>
   );
 };

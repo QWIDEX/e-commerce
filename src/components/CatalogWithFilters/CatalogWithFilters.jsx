@@ -6,6 +6,7 @@ import useTotalProductsCount from "../../hooks/useTotalProductsCount";
 import useProducts from "../../hooks/useProducts";
 import { useSearchParams } from "react-router-dom";
 import CatalogPageSwitcher from "../CatalogPageSwitcher/CatalogPageSwitcher";
+import mergeSearchParams from "../../helpers/mergeSearchParams";
 
 const CatalogWithFilters = ({
   ProductCard,
@@ -14,7 +15,7 @@ const CatalogWithFilters = ({
 }) => {
   const { pageParam } = useParams();
   const page = parseInt(pageParam || 1);
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const showedCards = searchParams.get("showedCards") || 16;
   const sortMethod = searchParams.get("sortMethod") || "ordered";
@@ -25,6 +26,11 @@ const CatalogWithFilters = ({
   const [cardStyle, setCardStyle] = useState(
     searchParams.get("cardStyle") || "blocks"
   );
+
+  const handleCardStyle = (cardStyle) => {
+    setCardStyle(cardStyle);
+    setSearchParams(mergeSearchParams(searchParams, { cardStyle }));
+  };
 
   const filters = {
     typeFilters,
@@ -55,7 +61,7 @@ const CatalogWithFilters = ({
           productsLength={productsState.products.length}
           productsMaxFind={productsMaxFind}
           showedCards={showedCards}
-          setCardStyle={setCardStyle}
+          handleCardStyle={handleCardStyle}
         ></Filters>
         {cardStyle === "blocks" || !RowProductCard ? (
           <Catalog

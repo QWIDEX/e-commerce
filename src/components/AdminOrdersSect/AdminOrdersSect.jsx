@@ -112,29 +112,40 @@ const AdminOrdersSect = () => {
         ) : loading ? (
           <LoadingIndicator className="min-h-[100%]" />
         ) : (
-          orders?.map((order, idx) => (
-            <OrderCard key={order.orderId} order={order}>
-              <h1 className="font-medium text-base">
-                Receiver: {order.firstName} {order.lastName}
-              </h1>
-              <div className="flex items-center gap-2">
-                <h1 className="font-medium text-base">Status:</h1>
-                <select
-                  className="border border-gray-300 rounded-lg px-3 py-2"
-                  onClick={(e) => e.stopPropagation()}
-                  value={order.status}
-                  onChange={(e) =>
-                    handleOrderStatus(order.orderId, idx, e.target.value)
-                  }
-                >
-                  <option value="Pending">Pending</option>
-                  <option value="Packing">Packing</option>
-                  <option value="Delivering">Delivering</option>
-                  <option value="Delivered">Delivered</option>
-                </select>
+          <>
+            {orders?.length === 0 ? (
+              <div className="flex justify-center items-center">
+                <h1 className="text-xl font-semibold">
+                  Orders wasn't found
+                </h1>
               </div>
-            </OrderCard>
-          ))
+            ) : (
+              <></>
+            )}
+            {orders?.map((order, idx) => (
+              <OrderCard key={order.orderId} order={order}>
+                <h1 className="font-medium text-base">
+                  Receiver: {order.firstName} {order.lastName}
+                </h1>
+                <div className="flex items-center gap-2">
+                  <h1 className="font-medium text-base">Status:</h1>
+                  <select
+                    className="border border-gray-300 rounded-lg px-3 py-2"
+                    onClick={(e) => e.stopPropagation()}
+                    value={order.status}
+                    onChange={(e) =>
+                      handleOrderStatus(order.orderId, idx, e.target.value)
+                    }
+                  >
+                    <option value="Pending">Pending</option>
+                    <option value="Packing">Packing</option>
+                    <option value="Delivering">Delivering</option>
+                    <option value="Delivered">Delivered</option>
+                  </select>
+                </div>
+              </OrderCard>
+            ))}
+          </>
         )}
       </div>
     </>
