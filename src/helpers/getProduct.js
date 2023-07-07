@@ -1,22 +1,30 @@
 import { db } from "../firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { storage } from "../firebase";
-import { getDownloadURL, ref, listAll,  } from "firebase/storage";
+import { getDownloadURL, ref, listAll } from "firebase/storage";
 
 const getProduct = async (docID, overwriteFields = {}) => {
   const productRef = doc(db, "products", docID);
-  const productQueried = await getDoc(productRef)
-  const product = {...productQueried.data(), id: productQueried.id};
+  const productQueried = await getDoc(productRef);
+
+  const product = { ...productQueried.data(), id: productQueried.id };
+
+  const reviewCollRef = collection(db, `products/${docID}/reviews`);
+  const reviewsQueried = (await getDocs(reviewCollRef)).docs;
+
+  const reviews = reviewsQueried.map((review) => {
+    return { ...review.data(), reviewId: review.id };
+  });
 
   const mainImg = await getDownloadURL(
     ref(storage, `images/products/${product.label}`)
   );
-
+  
   const imgsRefsList = (
     await listAll(ref(storage, `images/products/${product.label}/`))
   ).items;
 
-  const descImgsRefsList =  (
+  const descImgsRefsList = (
     await listAll(ref(storage, `images/products/${product.label}/desc/`))
   ).items;
 
@@ -32,7 +40,14 @@ const getProduct = async (docID, overwriteFields = {}) => {
     )
   );
 
-  return { ...product, imgsList: [mainImg, ...imgsList], descImgs, imgUrl: mainImg, ...overwriteFields };
+  return {
+    ...product,
+    imgsList: [mainImg, ...imgsList],
+    descImgs,
+    imgUrl: mainImg,
+    reviews,
+    ...overwriteFields,
+  };
 };
 
 export default getProduct;

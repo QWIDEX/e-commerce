@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import Review from "../Review/Review";
 import RateProduct from "../RateProduct/RateProduct";
 import ButtonOutline from "../Reusable/BtnOutline";
-import { doc, updateDoc } from "firebase/firestore";
+import { addDoc, collection, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { toast } from "react-hot-toast";
 
@@ -95,7 +95,7 @@ const CreateReviewBlock = ({
   const postReview = () => {
     if (currentRating.current === 0) toast.error("You have to rate it");
     else {
-      const productRef = doc(db, `/products/${productId}`);
+      const reviewsCollRef = collection(db, `/products/${productId}/reviews`);
 
       const updatedReviews = [
         ...reviews,
@@ -106,8 +106,10 @@ const CreateReviewBlock = ({
         },
       ];
 
-      updateDoc(productRef, {
-        reviews: updatedReviews,
+      addDoc(reviewsCollRef, {
+        reviewText,
+        rating: currentRating.current,
+        userId: user.uid,
       }).then(() => {
         toast.success("Successfully posted");
         setCurrentReviews(updatedReviews);
@@ -118,7 +120,11 @@ const CreateReviewBlock = ({
   const changeReview = () => {
     if (currentRating.current === 0) toast.error("You have to rate it");
     else {
-      const productRef = doc(db, `/products/${productId}`);
+      const reviewRef = doc(
+        db,
+        `/products/${productId}/reviews/${review.reviewId}`
+      );
+
       const reviewIdx = reviews.findIndex(
         (review) => review.userId === user.uid
       );
@@ -129,12 +135,15 @@ const CreateReviewBlock = ({
           reviewText,
           rating: currentRating.current,
           userId: user.uid,
+          reviewId: review.reviewId
         },
         ...reviews.slice(reviewIdx + 1),
       ];
 
-      updateDoc(productRef, {
-        reviews: updatedReviews,
+      updateDoc(reviewRef, {
+        reviewText,
+        rating: currentRating.current,
+        userId: user.uid,
       }).then(() => {
         setCurrentReviews(updatedReviews);
         toast.success("Successfully changed");
