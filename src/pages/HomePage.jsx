@@ -66,19 +66,6 @@ const HomePage = () => {
           </div>
         </div>
       </section>
-      <section className="bg-no-repeat bg-center bg-cover bg-[url(images/HomePage/Instagram-bg.png)]">
-        <div className="max-w-laptop mx-auto flex flex-col items-center py-32">
-          <h1 className="leading-normal font-bold text-6xl text-center">
-            Our Instagram
-          </h1>
-          <p className="font-normal leading-normal text-xl pb-4">
-            Follow our store on Instagram
-          </p>
-          <button className="px-20 shadow-xl py-4 leading-normal text-xl font-normal tex rounded-full bg-FAF4F4">
-            Follow Us
-          </button>
-        </div>
-      </section>
     </>
   );
 };
